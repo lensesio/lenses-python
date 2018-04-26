@@ -4,7 +4,7 @@ import json
 from pprint import pprint as pp
 import time
 
-from Kafkalenses.ConvertDateTime import ConvertDateTime
+from lenses_python.ConvertDateTime import ConvertDateTime
 
 class SubscribeHandler:
 
