@@ -1,5 +1,5 @@
 from requests import *
-from Kafkalenses.ReadConfigFile import ReadConfigFile
+from lenses_python.ReadConfigFile import ReadConfigFile
 
 class SchemasHandler:
 
