@@ -1,6 +1,6 @@
 from requests import *
 from pprint import pprint as pp
-from Kafkalenses.ReadConfigFile import ReadConfigFile
+from lenses_python.ReadConfigFile import ReadConfigFile
 
 class TopicHandler:
 
