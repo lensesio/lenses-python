@@ -3,7 +3,7 @@ import pandas as pd
 from json import loads
 import sseclient
 
-from Kafkalenses.ConvertDateTime import ConvertDateTime
+from lenses_python.ConvertDateTime import ConvertDateTime
 
 class SqlHandler:
 
