@@ -139,8 +139,8 @@ class SchemasHandler:
             if temp_dict.get("compatibility", None) is not None:
                 # The option name of option must be config and have json format
                 compatibility = temp_dict["compatibility"]
-        else:
-            raise Exception("In file there isn't section compatibility\n")
+            else:
+                raise Exception("In file there isn't section compatibility\n")
         url = self.url+"/api/proxy-sr/config"
         response = put(url, headers=self.default_headers, json=compatibility)
         if response.status_code != 200:
