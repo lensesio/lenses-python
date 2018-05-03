@@ -48,25 +48,33 @@ class TestLenses(TestCase):
         conn = lenses("http://localhost:3030", "admin", "admin")
         self.assertEqual(conn.TopicsNames(), recv)
 
-    # def test_UpdateTopicConfig(self):
-    #     self.fail()
+    def test_UpdateTopicConfig(self):
+        config = {"configs": [{"key": "cleanup.policy", "value": "compact"}]
+                  }
+        conn = lenses("http://localhost:3030", "admin", "admin")
+        try:
+            conn.UpdateTopicConfig('_kafka_lenses_lsql_storage', config)
+        except Exception as e:
+            raise AssertionError('Unexpected raise exception:', e)
 
-    # def test_CreateTopic(self):
-    #     config = {
-    #         "cleanup.policy": "compact",
-    #          "compression.type":"snappy"
-    #          }
-    #     conn = lenses("http://localhost:3030", "admin", "admin")
-    #     raised = False
-    #     try:
-    #         conn.CreateTopic("test1", 1, 1, config)
-    #     except:
-    #         raised = True
-    #     assert (raised == False)
+    def test_CreateTopic(self):
+        config = {
+            "cleanup.policy": "compact",
+            "compression.type": "snappy"
+            }
+        conn = lenses("http://localhost:3030", "admin", "admin")
+        try:
+            conn.CreateTopic("test_topic", 1, 1, config)
+        except Exception as e:
+            raise AssertionError('Unexpected raise exception:', e)
 
-    # def test_DeleteTopic(self):
-    #     self.fail()
-    #
+    def test_DeleteTopic(self):
+        conn = lenses("http://localhost:3030", "admin", "admin")
+        try:
+            conn.DeleteTopic("test_topic")
+        except Exception as e:
+            raise AssertionError('Unexpected raise exception:', e)
+
     def test_CreateProcessor(self):
         query = " SET autocreate=true; insert into body SELECT  body FROM  `reddit_posts` WHERE score> 10 and _" \
                 "ktype=AVRO and _vtype=AVRO "
@@ -102,7 +110,7 @@ class TestLenses(TestCase):
             processor_id = conn.CreateProcessor("test_processor_4", query, 1, 'dev', 'ns', '1')
             conn.PauseConnector(processor_id)
         except Exception as e:
-            raise AssertionError('Unexcepted raise exception:', e)
+            raise AssertionError('Unexpected raise exception:', e)
 
     def test_UpdateProcessorRunners(self):
         query = " SET autocreate=true; insert into body SELECT  body FROM  `reddit_posts` WHERE score> 10 and _" \
@@ -165,17 +173,38 @@ class TestLenses(TestCase):
     # def test_GetCompatibility(self):
     #     self.fail()
     #
-    # def test_DeleteSubj(self):
-    #     self.fail()
-    #
-    # def test_DeleteSchemaByVersion(self):
-    #     self.fail()
-    #
-    # def test_ChangeCompatibility(self):
-    #     self.fail()
-    #
-    # def test_UpdateGlobalCompatibility(self):
-    #     self.fail()
+    def test_DeleteSubj(self):
+        subj = "telecom_italia_data-key"
+        conn = lenses("http://localhost:3030", "admin", "admin")
+        try:
+            conn.DeleteSubj(subj)
+        except Exception as e:
+            raise AssertionError('Unexcepted raise exception:', e)
+
+    def test_DeleteSchemaByVersion(self):
+        subj = "cc_payments-value"
+        conn = lenses("http://localhost:3030", "admin", "admin")
+        try:
+            conn.DeleteSchemaByVersion(subj, '1')
+        except Exception as e:
+            raise AssertionError('Unexcepted raise exception:', e)
+
+    def test_ChangeCompatibility(self):
+        config = {'compatibility': 'BACKWARD'}
+        subj = "cc_payments-value"
+        conn = lenses("http://localhost:3030", "admin", "admin")
+        try:
+            conn.ChangeCompatibility(subj, config)
+        except Exception as e:
+            raise AssertionError('Unexcepted raise exception:', e)
+
+    def test_UpdateGlobalCompatibility(self):
+        config = {'compatibility': 'BACKWARD'}
+        conn = lenses("http://localhost:3030", "admin", "admin")
+        try:
+            conn.UpdateGlobalCompatibility(config)
+        except Exception as e:
+            raise AssertionError('Unexcepted raise exception:', e)
 
     def test_ListAllConnectors(self):
         recv = ['logs-broker', 'nullsink']
@@ -235,21 +264,21 @@ class TestLenses(TestCase):
         try:
             conn.RestartConnector('dev', 'logs-broker')
         except Exception as e:
-            raise AssertionError('Unexcepted raise exception:', e)
+            raise AssertionError('Unexpected raise exception:', e)
 
     def test_ResumeConnector(self):
         conn = lenses("http://localhost:3030", "admin", "admin")
         try:
             conn.ResumeConnector('dev', 'logs-broker')
         except Exception as e:
-            raise AssertionError('Unexcepted raise exception:', e)
+            raise AssertionError('Unexpected raise exception:', e)
 
     def test_RestartConnector(self):
         conn = lenses("http://localhost:3030", "admin", "admin")
         try:
             conn.RestartConnector('dev', 'logs-broker')
         except Exception as e:
-            raise AssertionError('Unexcepted raise exception:',e)
+            raise AssertionError('Unexpected raise exception:',e)
 
 
     # def test_CreateConnector(self):
@@ -285,7 +314,7 @@ class TestLenses(TestCase):
         try:
             conn.SetAcl("Topic", "transactions", "GROUPA:UserA", "Allow", "*", "Read")
         except Exception as e:
-            raise AssertionError('Unexcepted raise exception:', e)
+            raise AssertionError('Unexpected raise exception:', e)
 
     def test_GetQuotas(self):
         conn = lenses("http://localhost:3030", "admin", "admin")
