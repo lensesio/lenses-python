@@ -186,9 +186,9 @@ class TestLenses(unittest.TestCase):
             raise AssertionError('Unexcepted raise exception, no version of subject has retrieve')
 
     def test_DeleteSubj(self):
-        subj = "telecom_italia_data-key"
         # conn = lenses("http://localhost:3030", "admin", "admin")
         try:
+            subj = self.conn.GetAllSubjects()[0]
             self.conn.DeleteSubj(subj)
         except Exception as e:
             raise AssertionError('Unexcepted raise exception:', e)
