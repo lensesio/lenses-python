@@ -318,7 +318,7 @@ class TestLenses(unittest.TestCase):
                             'name': 'nullsink'}
         # conn = lenses("http://localhost:3030", "admin", "admin")
         try:
-            self.conn.SetConnectorConfig('dev','test_connector', config)
+            self.conn.SetConnectorConfig('dev', 'nullsink', config)
         except Exception as e:
             raise AssertionError('Unexpected raise exception:', e)
 
