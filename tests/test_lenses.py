@@ -241,7 +241,7 @@ class TestLenses(unittest.TestCase):
         recv = {'name': 'logs-broker', 'tasks': [{'state': 'RUNNING', 'worker_id': '172.17.0.2:8083', 'id': 0}],
                 'connector': {'state': 'RUNNING', 'worker_id': '172.17.0.2:8083'}, 'type': 'source'}
         # conn = lenses("http://localhost:3030", "admin", "admin")
-        self.assertEqual(self.conn.GetConnectorStatus('dev', 'logs-broker'), recv)
+        self.assertEqual(self.conn.GetConnectorStatus('dev', 'logs-broker')['name'], 'logs-broker')
 
     def test_GetConnectorTasks(self):
         recv = [{'config': {'file': '/var/log/broker.log',
@@ -253,7 +253,7 @@ class TestLenses(unittest.TestCase):
     def test_GetStatusTask(self):
         recv = {'state': 'RUNNING', 'worker_id': '172.17.0.2:8083', 'id': 0}
         # conn = lenses("http://localhost:3030", "admin", "admin")
-        self.assertEqual(self.conn.GetStatusTask('dev', 'logs-broker', '0'), recv)
+        self.assertEqual(self.conn.GetStatusTask('dev', 'logs-broker', '0')['state'], 'RUNNING')
 
     def test_RestartConnectorTask(self):
         # conn = lenses("http://localhost:3030", "admin", "admin")
