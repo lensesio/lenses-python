@@ -137,7 +137,7 @@ class TestLenses(unittest.TestCase):
                             '"namespace":"com.landoop.social.reddit.post.key",'
                             '"fields":[{"name":"testit_id","type":"string"}]}'
                   }
-        schema_id = self.conn.RegisterNewSchema("test_schema", schema)['id']
+        schema_id = str(self.conn.RegisterNewSchema("test_schema", schema)['id'])
         self.assertEqual(self.conn.GetSchemaById(schema_id)['name'], 'testit_id')
 
 
