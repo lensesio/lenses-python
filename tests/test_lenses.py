@@ -147,8 +147,13 @@ class TestLenses(unittest.TestCase):
         recv = {'schema': '{"type":"record","name":"Key","namespace":'
                           '"com.landoop.telecom.telecomitalia.telecommunications","fields":[{"name":"SquareId",'
                           '"type":"int","doc":" The id of the square that is part of the Milano GRID."}]}'}
+        schema = {'schema': '{"type":"record","name":"reddit_post_key",'
+                            '"namespace":"com.landoop.social.reddit.post.key",'
+                            '"fields":[{"name":"testit_id","type":"string"}]}'
+                  }
+        schema_id = self.conn.RegisterNewSchema("test_schema", schema)['id']
         # conn = lenses("http://localhost:3030", "admin", "admin")
-        self.assertEqual(self.conn.GetSchemaById('8'), recv)
+        self.assertEqual(self.conn.GetSchemaById(schema_id)['name'], 'testit_id')
 
 
     def test_GetSchemaByVer(self):
