@@ -138,7 +138,7 @@ class TestLenses(unittest.TestCase):
                             '"fields":[{"name":"testit_id","type":"string"}]}'
                   }
         schema_id = str(self.conn.RegisterNewSchema("test_schema", schema)['id'])
-        self.assertEqual(self.conn.GetSchemaById(schema_id)['name'], 'testit_id')
+        self.assertEqual(list(self.conn.GetSchemaById(schema_id).keys())[0], 'schema')
 
 
     def test_GetSchemaByVer(self):
