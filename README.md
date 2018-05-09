@@ -23,7 +23,7 @@ pip3 install lenses_python
 ## Jupyter Example
 
 <p align="center">
-  <img src="https://pbs.twimg.com/media/DbeXsAZXcAAw8uy.jpg" width="200"/>
+  <img src="https://pbs.twimg.com/media/DbeXsAZXcAAw8uy.jpg" width="400"/>
 </p>
 
 ## License
