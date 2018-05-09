@@ -315,7 +315,7 @@ class lenses:
         QuotaHandler(self.token, self.url).SetQuotaUser(user, config)
 
     def SetQuotaAllClient(self, config):
-        QuotaHandler(self.token, self.token).SetQuotaAllClient(config)
+        QuotaHandler(self.token, self.url).SetQuotaAllClient(config)
 
     def SetQuotaClient(self, clientid, config):
         QuotaHandler(self.token, self.url).SetQuotaClient(clientid, config)
