@@ -1,4 +1,3 @@
-# from unittest import TestCase
 import unittest
 from lenses_python.lenses import lenses
 
@@ -28,7 +27,6 @@ class TestLenses(unittest.TestCase):
 
     def test_GetAllTopics(self):
         recv = {'topicName': '_kafka_lenses_lsql_storage'}
-        # conn = lenses("http://localhost:3030", "admin", "admin")
         self.assertEqual(self.conn.GetAllTopics()[0]['topicName'], recv['topicName'])
 
     def test_TopicInfo(self):
@@ -37,15 +35,8 @@ class TestLenses(unittest.TestCase):
         self.assertEqual(self.conn.TopicInfo(topic_name)['topicName'], recv['topicName'])
 
     def test_TopicsNames(self):
-        # recv = ['_kafka_lenses_lsql_storage', 'cc_data', '_kafka_lenses_cluster', 'telecom_italia_grid', 'cc_payments',
-        #         'connect-configs', 'fast_vessel_processor', 'reddit_posts', '__consumer_offsets', 'backblaze_smart',
-        #         'telecom_italia_data', '_kafka_lenses_processors', 'nyc_yellow_taxi_trip_data',
-        #         'sea_vessel_position_reports', '_schemas', '_kafka_lenses_audits', '_kafka_lenses_alerts',
-        #         '_kafka_lenses_profiles', 'connect-offsets', 'logs_broker', 'connect-statuses',
-        #         '_kafka_lenses_alerts_settings']
         if len(list(self.conn.TopicsNames())) < 1:
-            raise AssertionError('Unexcepted raise exception,no topic names retrive')
-        # self.assertEqual(conn.TopicsNames(), recv)
+            raise AssertionError('Unexpected raise exception,no topic names retrieve')
 
     def test_UpdateTopicConfig(self):
         config = {"configs": [{"key": "cleanup.policy", "value": "compact"}]
@@ -113,26 +104,15 @@ class TestLenses(unittest.TestCase):
             raise AssertionError('Unexcepted raise exception:', e)
 
     def test_GetAllSubjects(self):
-        # recv = ['telecom_italia_data-key', 'cc_payments-value', 'reddit_posts-value',
-        #         'sea_vessel_position_reports-value', 'telecom_italia_grid-value', 'fast_vessel_processor-value',
-        #         'reddit_posts-key', 'telecom_italia_grid-key', 'telecom_italia_data-value',
-        #         'nyc_yellow_taxi_trip_data-value', 'sea_vessel_position_reports-key', 'cc_data-value',
-        #         'fast_vessel_processor-key', 'logs_broker-value']
         if len(list(self.conn.GetAllSubjects())) < 1:
             raise AssertionError('Unexcepted raise exception, no subjects retrieve')
-        # self.assertEqual(conn.GetAllSubjects(), recv)
 
     def test_ListVersionsSubj(self):
-        # subj = 'telecom_italia_data-key'
         subj = self.conn.GetAllSubjects()[0]
         if len(list(self.conn.ListVersionsSubj(subj))) < 0:
             raise AssertionError('Unexcepted raise exception, no version of subject has retrieve')
-        # self.assertEqual(conn.ListVersionsSubj(subj), [1])
 
     def test_GetSchemaById(self):
-        recv = {'schema': '{"type":"record","name":"Key","namespace":'
-                          '"com.landoop.telecom.telecomitalia.telecommunications","fields":[{"name":"SquareId",'
-                          '"type":"int","doc":" The id of the square that is part of the Milano GRID."}]}'}
         schema = {'schema': '{"type":"record","name":"reddit_post_key",'
                             '"namespace":"com.landoop.social.reddit.post.key",'
                             '"fields":[{"name":"testit_id","type":"string"}]}'
@@ -140,18 +120,10 @@ class TestLenses(unittest.TestCase):
         schema_id = str(self.conn.RegisterNewSchema("test_schema", schema)['id'])
         self.assertEqual(list(self.conn.GetSchemaById(schema_id).keys())[0], 'schema')
 
-
     def test_GetSchemaByVer(self):
-        # subj = 'telecom_italia_data-key'
-        # recv = {'subject': 'telecom_italia_data-key', 'version': 1, 'id': 8,
-        #         'schema': '{"type":"record","name":"Key","namespace":'
-        #                   '"com.landoop.telecom.telecomitalia.telecommunications",'
-        #                   '"fields":[{"name":"SquareId","type":"int",'
-        #                   '"doc":" The id of the square that is part of the Milano GRID."}]}'}
         subj = self.conn.GetAllSubjects()[0]
         if type(self.conn.GetSchemaByVer(subj, '1')) != type({}):
             raise AssertionError('Unexcepted raise exception, no version of subject has retrieve')
-        # self.assertEqual(conn.GetSchemaByVer(subj, '1'), recv)
 
     def test_RegisterNewSchema(self):
         schema = {'schema': '{"type":"record","name":"reddit_post_key",'
@@ -298,21 +270,6 @@ class TestLenses(unittest.TestCase):
         except Exception as e:
             raise AssertionError('Unexpected raise exception:', e)
 
-    # def test_SubscribeHandler(self):
-    #     self.fail()
-    #
-    # def test_Publish(self):
-    #     self.fail()
-    #
-    # def test_Commit(self):
-    #     self.fail()
-    #
-    # def test_Unscribe(self):
-    #     self.fail()
-    #
-    # def test_Subscribe(self):
-    #     self.fail()
-    #
     def test_GetACLs(self):
         self.assertEqual(self.conn.GetACLs(), [])
 
