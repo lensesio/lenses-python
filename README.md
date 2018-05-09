@@ -20,6 +20,12 @@ pip3 install lenses_python
 * Jupyter Notebooks
 * Machine Learning
 
+## Jupyter Example
+
+<p align="center">
+  <img src="https://pbs.twimg.com/media/DbeXsAZXcAAw8uy.jpg" width="200"/>
+</p>
+
 ## License
 
 The project is licensed under the Apache 2 license.
