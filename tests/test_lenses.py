@@ -137,7 +137,7 @@ class TestLenses(unittest.TestCase):
         self.assertEqual(self.conn.GetGlobalCompatibility(), recv)
 
     def test_GetCompatibility(self):
-        compatibility = {'compatibilityLevel': 'BACKWARD'}
+        compatibility = {'compatibility': 'BACKWARD'}
         try:
             subj = self.conn.GetAllSubjects()[0]
             self.conn.ChangeCompatibility(subj, compatibility)
