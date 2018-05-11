@@ -136,13 +136,14 @@ class TestLenses(unittest.TestCase):
         recv = {'compatibilityLevel': 'BACKWARD'}
         self.assertEqual(self.conn.GetGlobalCompatibility(), recv)
 
-    # def test_GetCompatibility(self):
-    #     # conn = lenses("http://localhost:3030", "admin", "admin")
-    #     try:
-    #         subj = self.conn.GetAllSubjects()[0]
-    #         self.assertEqual(list(self.conn.GetCompatibility(subj).keys())[0],'compatibilityLevel')
-    #     except Exception as e:
-    #         raise AssertionError('Unexcepted raise exception, no version of subject has retrieve')
+    def test_GetCompatibility(self):
+        compatibility = {'compatibilityLevel': 'BACKWARD'}
+        try:
+            subj = self.conn.GetAllSubjects()[0]
+            self.conn.ChangeCompatibility(subj, compatibility)
+            self.assertEqual(list(self.conn.GetCompatibility(subj).keys())[0],'compatibilityLevel')
+        except Exception as e:
+            raise AssertionError('Unexcepted raise exception, no version of subject has retrieve')
 
     def test_DeleteSubj(self):
         try:
