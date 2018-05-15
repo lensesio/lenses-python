@@ -400,6 +400,7 @@ class TestLenses(unittest.TestCase):
         self.publish_to_topic()
         Thread(target=self.subscribe_to_topic).start()
         time.sleep(5)
+        Thread(target=self.subscribe_to_topic)._stop()
         read_file = json.load(open("test_file"))
         self.assertAlmostEqual(read_file[0]["value"], 1)
 
