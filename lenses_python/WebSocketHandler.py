@@ -88,7 +88,7 @@ class SubscribeHandler:
         :param ws:
         :return:
         """
-        pass
+        ws.close()
 
     def on_open(self, ws):
         """
