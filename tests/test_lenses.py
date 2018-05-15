@@ -1,6 +1,8 @@
 import unittest
 from lenses_python.lenses import lenses
-
+from threading import Thread
+import time
+import json
 
 class TestLenses(unittest.TestCase):
     def setUp(self):
@@ -384,6 +386,26 @@ class TestLenses(unittest.TestCase):
             self.conn.DeleteQuotaClient('admin', config)
         except Exception as e:
             raise AssertionError('Unexpected raise exception:', e)
+
+    def publish_to_topic(self):
+        url = 'ws://localhost:3030'
+        self.conn.Publish(url, "admin", "test_topic", "None", "{'value':1}")
+
+    def subscribe_to_topic(self):
+        query = "SELECT * FROM `test_topic` WHERE _vtype='STRING' AND _ktype='STRING' AND _sample=2 AND _sampleWindow=200"
+        url = 'ws://localhost:3030'
+        self.conn.SubscribeHandler(url, "admin", query, write=True, filename="test_file")
+
+    def test_Websockethandler(self):
+        self.publish_to_topic()
+        Thread(target=self.subscribe_to_topic).start()
+        time.sleep(5)
+        read_file = json.load(open("test_file"))
+        self.assertAlmostEqual(read_file[0]["value"], 1)
+
+
+
+
 
 
 if __name__ == '__main__':
