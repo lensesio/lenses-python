@@ -19,3 +19,4 @@ before_script:
 
 script:
   - python3 ./tests/test_lenses.py
+  -  pkill -9 python3
