@@ -398,20 +398,14 @@ class TestLenses(unittest.TestCase):
 
     def test_Websockethandler(self):
         self.publish_to_topic()
-        thread = Thread(target=self.subscribe_to_topic)
-        thread.start()
+        Thread(target=self.subscribe_to_topic).start()
+        # thread.start()
         time.sleep(5)
-        # Thread(target=self.subscribe_to_topic)._stop()
+        Thread(target=self.subscribe_to_topic)._stop()
         read_file = open("test_file")
         self.assertAlmostEqual(json.load(read_file)[0]["value"], 1)
         read_file.close()
-        thread.join()
-
-
-
-
-
-
+        # thread.join()
 
 if __name__ == '__main__':
     unittest.main()
