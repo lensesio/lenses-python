@@ -19,7 +19,3 @@ before_script:
 
 script:
   - python3 ./tests/test_lenses.py
-
-after_script:
-  - killall -9 python3
-  - killall -9 python
