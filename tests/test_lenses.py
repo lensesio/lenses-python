@@ -1,6 +1,6 @@
 import unittest
 from lenses_python.lenses import lenses
-from threading import Thread
+from threading import *
 import time
 import json
 
@@ -398,9 +398,11 @@ class TestLenses(unittest.TestCase):
 
     def test_Websockethandler(self):
         self.publish_to_topic()
-        Thread(target=self.subscribe_to_topic).start()
+        thread = Thread(target=self.subscribe_to_topic)
+        thread.start()
         time.sleep(5)
-        Thread(target=self.subscribe_to_topic)._stop()
+        # Thread(target=self.subscribe_to_topic)._stop()
+        thread.join()
         read_file = open("test_file")
         self.assertAlmostEqual(json.load(read_file)[0]["value"], 1)
         read_file.close()
