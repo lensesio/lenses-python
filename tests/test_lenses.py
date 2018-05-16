@@ -143,7 +143,7 @@ class TestLenses(unittest.TestCase):
         try:
             subj = self.conn.GetAllSubjects()[0]
             self.conn.ChangeCompatibility(subj, compatibility)
-            self.assertEqual(list(self.conn.GetCompatibility(subj).keys())[0],'compatibilityLevel')
+            self.assertEqual(list(self.conn.GetCompatibility(subj).keys())[0], 'compatibilityLevel')
         except Exception as e:
             raise AssertionError('Unexcepted raise exception, no version of subject has retrieve')
 
@@ -403,9 +403,10 @@ class TestLenses(unittest.TestCase):
         time.sleep(5)
         Thread(target=self.subscribe_to_topic)._stop()
         read_file = open("test_file")
-        self.assertAlmostEqual(json.load(read_file)[0]["value"], 1)
+        value = json.load(read_file)[0]["value"]
         read_file.close()
-        # thread.join()
+        # self.assertAlmostEqual(json.load(read_file)[0]["value"], 1)
+        self.assertEqual(value, 1)
 
 if __name__ == '__main__':
     unittest.main()
