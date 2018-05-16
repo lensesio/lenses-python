@@ -403,10 +403,11 @@ class TestLenses(unittest.TestCase):
         time.sleep(5)
         Thread(target=self.subscribe_to_topic)._stop()
         read_file = open("test_file")
-        value = json.load(read_file)[0]["value"]
+        # value = json.load(read_file)[0]["value"]
+        self.assertEqual(json.load(read_file)[0]["value"], 1)
+        # self.assertAlmostEqual(value, 1)
         read_file.close()
-        # self.assertAlmostEqual(json.load(read_file)[0]["value"], 1)
-        self.assertEqual(value, 1)
+
 
 if __name__ == '__main__':
     unittest.main()
