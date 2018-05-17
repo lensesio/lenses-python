@@ -18,4 +18,4 @@ before_script:
   - sleep 300
 
 script:
-  - python3 ./tests/test_lenses.py
+  - python3 ./tests/test.sh
