@@ -18,4 +18,5 @@ before_script:
   - ./tests/wait-for-lenses-box.sh
 
 script:
-  - ./tests/test.sh
+  - python3 ./tests/test_lenses.py
+
