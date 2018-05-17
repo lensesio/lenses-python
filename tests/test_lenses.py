@@ -1,6 +1,6 @@
 import unittest
 from lenses_python.lenses import lenses
-from threading import *
+import multiprocessing
 import time
 import json
 
@@ -398,10 +398,10 @@ class TestLenses(unittest.TestCase):
 
     def test_Websockethandler(self):
         self.publish_to_topic()
-        Thread(target=self.subscribe_to_topic).start()
-        # thread.start()
+        p = multiprocessing.Process(target=self.subscribe_to_topic)
+        p.start()
         time.sleep(5)
-        Thread(target=self.subscribe_to_topic)._stop()
+        p.terminate()
         read_file = open("test_file")
         # value = json.load(read_file)[0]["value"]
         self.assertEqual(json.load(read_file)[0]["value"], 1)
