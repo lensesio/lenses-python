@@ -11,3 +11,6 @@ for ((i=0;i<24;i++)); do
     docker exec -it lenses-box curl "http://localhost:8083/connectors" && break
     sleep 5
 done
+
+# Sleep another 30 seconds to allow us create connectors, rebalance, etc.
+sleep 30
