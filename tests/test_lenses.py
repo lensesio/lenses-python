@@ -1,6 +1,8 @@
 import unittest
 from lenses_python.lenses import lenses
-
+import multiprocessing
+import time
+import json
 
 class TestLenses(unittest.TestCase):
     def setUp(self):
@@ -136,13 +138,14 @@ class TestLenses(unittest.TestCase):
         recv = {'compatibilityLevel': 'BACKWARD'}
         self.assertEqual(self.conn.GetGlobalCompatibility(), recv)
 
-    # def test_GetCompatibility(self):
-    #     # conn = lenses("http://localhost:3030", "admin", "admin")
-    #     try:
-    #         subj = self.conn.GetAllSubjects()[0]
-    #         self.assertEqual(list(self.conn.GetCompatibility(subj).keys())[0],'compatibilityLevel')
-    #     except Exception as e:
-    #         raise AssertionError('Unexcepted raise exception, no version of subject has retrieve')
+    def test_GetCompatibility(self):
+        compatibility = {'compatibility': 'BACKWARD'}
+        try:
+            subj = self.conn.GetAllSubjects()[0]
+            self.conn.ChangeCompatibility(subj, compatibility)
+            self.assertEqual(list(self.conn.GetCompatibility(subj).keys())[0], 'compatibilityLevel')
+        except Exception as e:
+            raise AssertionError('Unexcepted raise exception, no version of subject has retrieve')
 
     def test_DeleteSubj(self):
         try:
@@ -383,6 +386,27 @@ class TestLenses(unittest.TestCase):
             self.conn.DeleteQuotaClient('admin', config)
         except Exception as e:
             raise AssertionError('Unexpected raise exception:', e)
+
+    def publish_to_topic(self):
+        url = 'ws://localhost:3030'
+        self.conn.Publish(url, "admin", "test_topic", "None", "{'value':1}")
+
+    def subscribe_to_topic(self):
+        query = "SELECT * FROM `test_topic` WHERE _vtype='STRING' AND _ktype='STRING' AND _sample=2 AND _sampleWindow=200"
+        url = 'ws://localhost:3030'
+        self.conn.SubscribeHandler(url, "admin", query, write=True, filename="test_file")
+
+    def test_Websockethandler(self):
+        self.publish_to_topic()
+        p = multiprocessing.Process(target=self.subscribe_to_topic)
+        p.start()
+        time.sleep(5)
+        p.terminate()
+        read_file = open("test_file")
+        # value = json.load(read_file)[0]["value"]
+        self.assertEqual(json.load(read_file)[0]["value"], 1)
+        # self.assertAlmostEqual(value, 1)
+        read_file.close()
 
 
 if __name__ == '__main__':

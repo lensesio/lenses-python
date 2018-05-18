@@ -3,6 +3,7 @@ import _thread as thread
 import json
 from pprint import pprint as pp
 import time
+import ast
 
 from lenses_python.ConvertDateTime import ConvertDateTime
 
@@ -56,7 +57,8 @@ class SubscribeHandler:
             lst = message['content']
             if self.write:
                 if self.filename != "":
-                    self.data_lst = list(map(lambda x: json.loads(x["value"]), lst))
+                    # self.data_lst = list(map(lambda x: json.loads(x["value"]), lst))
+                    self.data_lst = list(map(lambda x: ast.literal_eval(x["value"]), lst))
                     # Check length of lists self.datetimelist and self.formatinglist and if both of them has length
                     # greater than zero then convert keys which contet to self.datetimelist to datetime objects
                     if len(self.datetimelist) > 0 and len(self.formatinglist) > 0:
@@ -86,7 +88,7 @@ class SubscribeHandler:
         :param ws:
         :return:
         """
-        pass
+        ws.close()
 
     def on_open(self, ws):
         """
