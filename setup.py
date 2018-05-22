@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='lenses_python',
-    version='2.0',
+    version='2.0.1',
     packages=['lenses_python'],
     url='https://github.com/Landoop/lenses-python',
     download_url='https://github.com/Landoop/lenses-python/archive/2.0.tar.gz',
