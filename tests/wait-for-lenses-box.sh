@@ -13,4 +13,4 @@ for ((i=0;i<24;i++)); do
 done
 
 # Sleep another 30 seconds to allow us create connectors, rebalance, etc.
-sleep 30
+sleep 60
