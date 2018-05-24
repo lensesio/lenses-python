@@ -140,5 +140,34 @@ class TopicHandler:
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
 
+    def DeleteTopicRecords(self, topic, partition, offset):
+        """
+        New endpoint for 2.1
+        The endpoint is the /api/topics/{topicName}/{partition}/{offset}
+
+        :param topic:
+        :param partition:
+        :param offset:
+        :return:
+        """
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
+               'x-kafka-lenses-token': self.token}
+        url = self.url+"/api/topics"
+        response = delete(url+"/"+topic+"/"+partition+"/"+offset, headers=headers)
+        if response.status_code != 200:
+            if response.status_code == 400:
+                raise Exception("Http status code {} The offset {} is negative".format(response.status_code, offset))
+            elif response.status_code == 404:
+                raise Exception("Http status code {}. The topic {} doesn't exist".format(response.status_code, topic))
+            elif response.status_code == 403:
+                raise Exception("Http status code {}. The user doesn't have the"
+                            " permission for this action ".format(response.status_code))
+            else:
+                raise Exception("Http status code {}. {}".format(response.status_code, response.text))
+        else:
+            return response.text
+
+
+
 
 
