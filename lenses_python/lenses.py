@@ -117,6 +117,17 @@ class lenses:
         """
         return TopicH(self.url, self.username, self.password, self.token).DeleteTopic(topicname)
 
+    def DeleteTopicRecords(self, topic, partition, offset):
+        """
+
+        :param topic:
+        :param partition:int
+        :param offset: int
+        :return:
+        """
+        return TopicH(self.url, self.username, self.password, self.token).DeleteTopicRecords(topic, str(partition),
+                                                                                             str(offset))
+
     # Processor Handler
 
     def CreateProcessor(self, name, sql, runners, clusterName, namespace="", pipeline=""):
