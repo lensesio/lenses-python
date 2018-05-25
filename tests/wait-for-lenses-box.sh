@@ -14,3 +14,6 @@ done
 
 # Sleep another 30 seconds to allow us create connectors, rebalance, etc.
 sleep 60
+
+# Check the docker logs just in case
+docker logs lenses-box | tail -n200
