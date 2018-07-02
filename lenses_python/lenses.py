@@ -42,9 +42,16 @@ class lenses:
             raise Exception("Could not connect to the API [{}]. Status code [{}]. Reason [{}]"
                             .format(login_url, response.status_code, response.reason))
         else:
-            self.token = response.json().get("token", None)
+            # self.token = response.json().get("token", None)
+            self.token = response.text
             if self.token == None:
                 raise Exception("Cannot recieve Token.")
+        AUTH = "api/auth"
+        auth_url = self.url + AUTH
+        new_headers = {"X-Kafka-Lenses-Token": self.token
+                       }
+        response = get(auth_url, headers=new_headers)
+        self.token = response.json().get("token", None)
         self.credentials = response.json()
 
     def GetCredentials(self):
