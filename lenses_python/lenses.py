@@ -46,7 +46,7 @@ class lenses:
             self.token = response.text
             if self.token == None:
                 raise Exception("Cannot recieve Token.")
-        AUTH = "api/auth"
+        AUTH = "/api/auth"
         auth_url = self.url + AUTH
         new_headers = {"X-Kafka-Lenses-Token": self.token
                        }
