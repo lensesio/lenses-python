@@ -42,8 +42,8 @@ class lenses:
         login_url = self.url+LOGIN
         payload = {'user': self.username,
                    'password': self.password}
-        default_headers = {'Content-Type': 'application/json',
-                           'Accept': 'application/json'}
+        default_headers = {'Content-Type': 'text/plain',
+                           'Accept': 'text/plain'}
         response = post(login_url, data=dumps(payload), headers=default_headers)
         if response.status_code != 200:
             raise Exception("Could not connect to the API [{}]. Status code [{}]. Reason [{}]"
