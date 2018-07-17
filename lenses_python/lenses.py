@@ -10,21 +10,28 @@ from lenses_python.WebSocketHandler import SubscribeHandler as SubSH
 from lenses_python.PublishHandler import PublishHandler as PuHandl
 from lenses_python.ACLHandler import ACLHandler
 from lenses_python.QuotaHandler import QuotaHandler
-
+from  lenses_python.KerberosTicket import KerberosTicket
 
 class lenses:
 
-    def __init__(self, url, username, password):
+    def __init__(self, url, username="", password="", kerberos_mode=0):
         """
 
         :param url:
         :param username:
         :param password:
+        :param kerberos_mode: if it's equal to 1 we have kerberos mode, in default the value is 0 so no kerberos_mode
         """
         self.url = url
         self.username = username
         self.password = password
-        self._Connect()
+        # Check if user use kerberos mode
+        if kerberos_mode == 0:
+            # If not get the token with basic authentication
+            self._Connect()
+        else:
+            # else take the token with kerberos connect way
+            self._KerberosConnect()
 
     def _Connect(self):
         """
@@ -35,17 +42,49 @@ class lenses:
         login_url = self.url+LOGIN
         payload = {'user': self.username,
                    'password': self.password}
-        default_headers = {'Content-Type': 'application/json',
-                           'Accept': 'application/json'}
+        default_headers = {'Content-Type': 'text/plain',
+                           'Accept': 'text/plain'}
         response = post(login_url, data=dumps(payload), headers=default_headers)
         if response.status_code != 200:
             raise Exception("Could not connect to the API [{}]. Status code [{}]. Reason [{}]"
                             .format(login_url, response.status_code, response.reason))
         else:
-            self.token = response.json().get("token", None)
+            # self.token = response.json().get("token", None)
+            self.token = response.text
             if self.token == None:
                 raise Exception("Cannot recieve Token.")
-        self.credentials = response.json()
+        AUTH = "/api/auth"
+        auth_url = self.url + AUTH
+        new_headers = {"X-Kafka-Lenses-Token": self.token
+                       }
+        response = get(auth_url, headers=new_headers)
+        if response.status_code != 200:
+            raise Exception("Could not connect to the API [{}]. Status code [{}]. Reason [{}]"
+                            .format(auth_url, response.status_code, response.reason))
+        else:
+            self.token = response.json().get("token", None)
+            self.credentials = response.json()
+
+    def _KerberosConnect(self):
+        """
+        Use this function to take Kerberos ticket and then make get request to take.
+        The input of KerberosTicket, the service, is the url, without protocol(https:// for example)
+        :return:
+        """
+        service = self.url.split('//')[-1]
+        ticket = KerberosTicket("HTTP@"+service).auth_header
+        AUTH = "/api/auth"
+        auth_url = self.url + AUTH
+        kerberos_headers = {
+                             "Authorization": ticket
+                            }
+        response = get(auth_url, headers=kerberos_headers)
+        if response.status_code != 200:
+            raise Exception("Could not connect to the API [{}]. Status code [{}]. Reason [{}]"
+                            .format(auth_url, response.status_code, response.reason))
+        else:
+            self.token = response.json().get("token", None)
+            self.credentials = response.json()
 
     def GetCredentials(self):
         return self.credentials

@@ -11,7 +11,7 @@ setup(
     author_email='info@landoop.com',
     description='lenses python client',
     python_requires='>=3',
-    install_requires=['requests', 'pandas==0.22.0', 'websocket-client==0.47.0','sseclient-py==1.7']
+    install_requires=['requests', 'pandas==0.22.0', 'websocket-client==0.47.0', 'sseclient-py==1.7', 'kerberos']
 
 
 )

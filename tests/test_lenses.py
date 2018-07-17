@@ -4,6 +4,7 @@ import multiprocessing
 import time
 import json
 
+
 class TestLenses(unittest.TestCase):
     def setUp(self):
         self.conn = lenses("http://localhost:3030", "admin", "admin")
@@ -52,7 +53,7 @@ class TestLenses(unittest.TestCase):
         config = {
             "cleanup.policy": "compact",
             "compression.type": "snappy"
-            }
+        }
         try:
             self.conn.CreateTopic("test_topic", 1, 1, config)
         except Exception as e:
@@ -63,6 +64,12 @@ class TestLenses(unittest.TestCase):
             self.conn.DeleteTopic("test_topic")
         except Exception as e:
             raise AssertionError('Unexpected raise exception:', e)
+
+    def test_DeleteTopicRecords(self):
+        topic = self.conn.TopicsNames()[0]
+        msg = "Records from topic '%s' and partition '0' up to offset '10'" % topic
+        response = self.conn.DeleteTopicRecords(topic, "0", "10")
+        self.assertEqual(msg, response.split(',')[0])
 
     def test_CreateProcessor(self):
         query = " SET autocreate=true; insert into body SELECT  body FROM  `reddit_posts` WHERE score> 10 and _" \
@@ -257,11 +264,11 @@ class TestLenses(unittest.TestCase):
 
     def test_SetConnectorConfig(self):
         config = {'connector.class': 'org.apache.kafka.connect.file.FileStreamSinkConnector',
-                            'task.max': 5,
-                            'topics': 'nyc_yellow_taxi_trip_data,reddit_posts,sea_vessel_position_reports,telecom_italia_data',
-                            'file': '/dev/null',
-                            'tasks.max': '4',
-                            'name': 'nullsink'}
+                  'task.max': 5,
+                  'topics': 'nyc_yellow_taxi_trip_data,reddit_posts,sea_vessel_position_reports,telecom_italia_data',
+                  'file': '/dev/null',
+                  'tasks.max': '4',
+                  'name': 'nullsink'}
         try:
             self.conn.SetConnectorConfig('dev', 'nullsink', config)
         except Exception as e:
@@ -411,7 +418,3 @@ class TestLenses(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
-
