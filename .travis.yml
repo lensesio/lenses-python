@@ -1,22 +1,28 @@
 sudo: required
 
 language: python
+matrix:
+  include:
+    - python: 3.5
+      env: TOXENV=py35
+    - python: 3.6
+      env: TOXENV=py36
 
-python:
-  - "3.5"
-  - "3.6"
+env:
+  global:
+    secure: icbxa4fqfg7g1wSWVV4RbUmjg6SlTKrwhFHc8u79X8jvgjX/8WC28NofzqBFi6ZVPWJWRwU3wnF8IJWo0V2FQzeYyEOJPojLpXm9++3ma2AcLt2rh/8vZ6/YgB0Z2UNVAmsRWqXA2/olKeyjcHOMmAY3ZqPlqdICeR8BifNOTO38M1Ozl40pvN4jzqK0AGbbe6E0Cy53j7iVDZa42sbTgIWg/z3+j89lfzD3KeJfUy2OBnPwyx+YfhROhjY0rGkQ1aq7tRUHqdCUz/ceqo2vbQ9hxCrPWeMFiXvp9+ZswjyezxHFuiWcr5qth0lFC0UMqAMKn97QpElvTqV3pXQe2KbiBBjzdSstV4zp/LcB9aIay4chcQr8HefgLuIqMYzHzCGh/DwIYTwpSv/AhrHR9stkvlo0gJzD+jwYSTTIxZv2exIDO7HT+JsOabc29rdSCY7J+Twg6/S5C/s3Shj5ihuqS3AeJlt1uCsUzBAQlpuTFq98qPtpEKhZXMdiWg3SfgXXSpIBBaC2rH6Q+pDK0BniiCWL3AhLlWV8BHxtmZEQ902yqcQ4+q+9azK5JZsk7rflKnCoafsDx/twRacLYTPWKECWEVdCPMHR8vXFJbm/NNPk60Y6zOLW2iEBqqHjrUiAwni5wH87vGZgQv5ellEs+/MM+xnx3DytFDOnBig=
+
 services:
   - docker
 before_install:
-  - docker pull landoop/kafka-lenses-dev:2.0
+  - docker pull landoop/kafka-lenses-dev:latest
 
 install:
-  - python3 setup.py install
-  - docker run -d -e ADV_HOST=127.0.0.1 -e EULA="https://dl.lenses.stream/d/?id=2d3c06ae-5b98-47e4-bb47-233b01f89621" --rm -p 3030:3030 -p 9092:9092 -p 2181:2181 -p 8081:8081 -p 9581:9581 -p 9582:9582 -p 9584:9584 -p 9585:9585 --name=lenses-box landoop/kafka-lenses-dev:2.0
+  - make install
 
 before_script:
-  - ./tests/wait-for-lenses-box.sh
+  - make LICENSE_KEY=$LICENSE_KEY docker
 
 script:
-  - python3 ./tests/test_lenses.py
+  - make test
 
