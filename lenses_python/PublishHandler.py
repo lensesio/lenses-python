@@ -93,6 +93,6 @@ class PublishHandler:
         ws = websocket.create_connection(self.url_req)
         ws.send(json.dumps(requestjson))
         response = json.loads(ws.recv())
-        if response['type'] == "ERROR"   or response['type'] == "INVALIDREQUEST":
+        if response['type'] == "ERROR" or response['type'] == "INVALIDREQUEST":
             raise Exception("Type:{}. Content:{}".format(response["type"], response["content"]))
         pp(response)
