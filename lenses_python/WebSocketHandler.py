@@ -70,8 +70,14 @@ class SubscribeHandler:
                 # If self.print_results is true print the content of messages, else not print
                 for i in lst:
                     pp(i)
-        elif message['type'] == 'ERROR':
+        elif message['type'] == 'ERROR' or message['type'] == 'INVALIDREQUEST':
+            # If message type is ERROR/INVALIDREQUEST , close the connection and raise exception
+            ws.close()
             raise Exception("Type:{}. Content:{}".format(message["type"], message["content"]))
+        elif message['type'] == 'HEARTBEAT' or message['type'] == 'SUCCESS':
+            # If message type is HEARTBEAT or SUCCESS print the message
+            pp(message)
+
 
     def on_error(self, ws, error):
         """

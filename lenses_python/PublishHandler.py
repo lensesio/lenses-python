@@ -35,7 +35,7 @@ class PublishHandler:
         ws = websocket.create_connection(self.url_req)
         ws.send(json.dumps(requestdict))
         response = json.loads(ws.recv())
-        if response['type'] == 'ERROR':
+        if response['type'] == 'ERROR' or response['type'] == 'INVALIDREQUEST':
             raise Exception("Type:{}. Content:{}".format(response["type"], response["content"]))
         pp(response)
 
@@ -56,7 +56,7 @@ class PublishHandler:
         ws = websocket.create_connection(self.url_req)
         ws.send(json.dumps(requestdict))
         response = json.loads(ws.recv())
-        if response['type'] == 'ERROR':
+        if response['type'] == 'ERROR' or response['type'] == 'INVALIDREQUEST':
             raise Exception("Type:{}. Content:{}".format(response["type"], response["content"]))
         pp(response)
 
@@ -74,7 +74,7 @@ class PublishHandler:
         ws = websocket.create_connection(self.url_req)
         ws.send(json.dumps(request))
         response = json.loads(ws.recv())
-        if response['type'] == 'ERROR':
+        if response['type'] == 'ERROR' or response['type'] == 'INVALIDREQUEST':
             raise Exception("Type:{}. Content:{}".format(response["type"], response["content"]))
         pp(response)
 
@@ -93,6 +93,6 @@ class PublishHandler:
         ws = websocket.create_connection(self.url_req)
         ws.send(json.dumps(requestjson))
         response = json.loads(ws.recv())
-        if response['type'] in ["ERROR", "INVALIDREQUEST"]:
+        if response['type'] == "ERROR" or response['type'] == "INVALIDREQUEST":
             raise Exception("Type:{}. Content:{}".format(response["type"], response["content"]))
         pp(response)
