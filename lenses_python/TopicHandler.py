@@ -72,8 +72,8 @@ class TopicHandler:
                 raise Exception("In file there isn't option config\n")
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                    'x-kafka-lenses-token': self.token}
-
-        url = self.url+"/api/topics/config/"+topicname
+        # url = self.url+"/api/topics/config/"+topicname
+        url = self.url+" /api/configs/topics/"+topicname
         response = put(url, headers=headers, json=data_params)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
