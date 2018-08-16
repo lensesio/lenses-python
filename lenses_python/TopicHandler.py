@@ -167,6 +167,32 @@ class TopicHandler:
         else:
             return response.text
 
+    def DefaultConfigs(self):
+        """
+        GET api/configs/default/topics
+        :return:
+        """
+        url = self.url+"/api/configs/default/topics"
+        response = get(url,headers=self.default_headers)
+        if response.status_code != 200:
+            raise Exception("Http status code {}.{}".format(response.status_code, response.text))
+        pp(response.json())
+
+    def AvailableConfigKeys(self):
+        """
+        GET /api/configs/default/topics/keys
+
+        :return:
+        """
+        url = self.url+"/api/configs/default/topics/keys"
+        response = get(url, headers=self.default_headers)
+        if response.status_code != 200:
+            raise Exception("Http status code {}.{}".format(response.status_code, response.text))
+        pp(response.json())
+
+
+
+
 
 
 
