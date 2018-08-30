@@ -167,6 +167,20 @@ class lenses:
         return TopicH(self.url, self.username, self.password, self.token).DeleteTopicRecords(topic, str(partition),
                                                                                              str(offset))
 
+    def DefaulConfigs(self):
+        """
+
+        :return:
+        """
+        return TopicH(self.url, self.username, self.password, self.token).DefaultConfigs()
+
+    def AvailableConfigKeys(self):
+        """
+
+        :return:
+        """
+        return TopicH(self.url, self.username, self.password, self.token).AvailableConfigKeys()
+
     # Processor Handler
 
     def CreateProcessor(self, name, sql, runners, clusterName, namespace="", pipeline=""):
