@@ -21,7 +21,6 @@ DIST_DIR = ./dist
 TOX_DIR = ./.tox
 CLEAN_DIRS = ./$(PROJECT) $(ENV) $(shell [ -d $(TOX_DIR) ] && echo $(TOX_DIR) || :)
 REQUIREMENTS = -r requirements-dev.txt
-WAIT_LENSES = $(shell ./tests/wait-for-lenses-box.sh)
 
 all: install
 
@@ -54,4 +53,4 @@ test: .wait-lenses
 
 .wait-lenses:
 	@echo "WAITING LENSES..."
-	@echo $(WAIT_LENSES)
+	./tests/wait-for-lenses-box.sh
