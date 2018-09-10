@@ -11,6 +11,7 @@ from lenses_python.PublishHandler import PublishHandler as PuHandl
 from lenses_python.ACLHandler import ACLHandler
 from lenses_python.QuotaHandler import QuotaHandler
 from  lenses_python.KerberosTicket import KerberosTicket
+from lenses_python.Policy import Policy
 
 class lenses:
 
@@ -401,6 +402,33 @@ class lenses:
 
     def DeleteQuotaClient(self, clientid, config):
         QuotaHandler(self.token, self.url).DeleteQuotaClient(clientid, config)
+
+    # Policy, handler
+
+    def view_policy(self):
+        """
+        View all versions for a policy
+
+        :return:
+        """
+        return Policy(self.token).view_policy()
+
+    def update_policy(self, policy_id, policy):
+        """
+
+        :param policy_id:
+        :param policy:
+        :return:
+        """
+        return Policy(self.token).update_policy(policy_id, policy)
+
+    def delete_policy(self, policy_id):
+        """
+
+        :param policy_id:
+        :return:
+        """
+        return Policy(self.token).delete_policy(policy_id)
 
 
 
