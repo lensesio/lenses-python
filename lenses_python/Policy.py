@@ -28,7 +28,7 @@ class Policy:
         :return:
         """
         url = self.url+"/"+self.url_extend+policy_id
-        response = put(url, data=policy, headeres=self.default_headers)
+        response = put(url, json=policy, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
         return response.json()
