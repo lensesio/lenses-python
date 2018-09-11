@@ -411,7 +411,7 @@ class lenses:
 
         :return:
         """
-        return Policy(self.token).view_policy()
+        return Policy(self.token, self.url).view_policy()
 
     def update_policy(self, policy_id, policy):
         """
@@ -420,7 +420,7 @@ class lenses:
         :param policy:
         :return:
         """
-        return Policy(self.token).update_policy(policy_id, policy)
+        return Policy(self.token, self.url).update_policy(policy_id, policy)
 
     def delete_policy(self, policy_id):
         """
@@ -428,7 +428,7 @@ class lenses:
         :param policy_id:
         :return:
         """
-        return Policy(self.token).delete_policy(policy_id)
+        return Policy(self.token, self.url).delete_policy(policy_id)
 
 
 
