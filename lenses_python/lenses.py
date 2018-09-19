@@ -104,14 +104,16 @@ class lenses:
         """
         return SqlH(self.url, self.username, self.password, self.token, query, datetimelist, formatinglist).ExecuteSqlQuery(extract_pandas)
 
-    def browsing_data(self, url, query):
+    def browsing_data(self, query, extract_pandas=0):
         """
 
         :param url:
         :param query:
         :return:
         """
-        BrowsingData(self.token, url, query).browsing_data()
+        # BrowsingData(self.token, url, query).browsing_data()
+        return SqlH(url=self.url, username=self.username, password=self.password, token=self.token,
+                    query=query).browsing_data(extract_pandas=extract_pandas)
 
     # Topics Handler
 
