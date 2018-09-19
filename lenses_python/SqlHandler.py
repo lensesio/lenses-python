@@ -2,6 +2,9 @@ from requests import *
 import pandas as pd
 from json import loads
 import sseclient
+from urllib.parse import urlencode
+import websocket
+
 
 from lenses_python.ConvertDateTime import ConvertDateTime
 
@@ -107,7 +110,10 @@ class SqlHandler:
         :param data: list of dictionaries
         :return: pandas dataframe
         """
-        data = list(map(lambda x: loads(x["value"]), data))
+        if type(data[0]["value"]) != type(dict()):
+            data = list(map(lambda x: loads(x["value"]), data))
+        else:
+            data = list(map(lambda x: x["value"], data))
         if len(self.datetimelist) > 0 and len(self.formatinglist) > 0:
             # If these two lists has length greater than zero , then call class ConvertDateTime which
             # which convert specific keys ,which have datetime string to datetime object
@@ -116,6 +122,44 @@ class SqlHandler:
         # Convert data to pandas dataframe
         data = pd.DataFrame(data)
         return data
+
+    def browsing_data(self, extract_pandas=0):
+        """
+
+        :return:
+        """
+        params = {
+                   "token": self.token,
+                   "sql": self.query,
+                   "stats": 2
+                 }
+        params = urlencode(params)
+        url = self.url.replace("https", "wss")+"/api/sql/execute?"+params
+        ws = websocket.create_connection(url)
+        data_list = []
+        stats_list =[]
+        temp_type = ""
+        while temp_type != "END":
+            temp_data = loads(ws.recv()) # Convert string to dict
+            temp_type = temp_data["type"]
+            if temp_type == "RECORD":
+                data_list.append(temp_data["data"])
+            elif temp_type == "STATS":
+                stats_list.append(temp_data["data"])
+        if extract_pandas == 0:
+            return {"records": data_list,
+                          "stats":stats_list
+                }
+        else:
+            return self._ConvertToDF(data_list)
+
+
+
+
+
+
+
+
 
     # def _ConvertToDF(self, data):
     #     """
