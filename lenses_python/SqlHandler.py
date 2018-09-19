@@ -7,7 +7,7 @@ from lenses_python.ConvertDateTime import ConvertDateTime
 
 class SqlHandler:
 
-    def __init__(self, url, username, password, token, query, datetimelist, formatinglist):
+    def __init__(self, url, username, password, token, query="", datetimelist="", formatinglist=""):
         """
 
         :param url:
