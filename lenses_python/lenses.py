@@ -12,7 +12,6 @@ from lenses_python.ACLHandler import ACLHandler
 from lenses_python.QuotaHandler import QuotaHandler
 from  lenses_python.KerberosTicket import KerberosTicket
 from lenses_python.Policy import Policy
-from lenses_python.BrowsingData import BrowsingData
 
 class lenses:
 
@@ -104,16 +103,18 @@ class lenses:
         """
         return SqlH(self.url, self.username, self.password, self.token, query, datetimelist, formatinglist).ExecuteSqlQuery(extract_pandas)
 
-    def browsing_data(self, query, extract_pandas=0):
+    def browsing_data(self, query, extract_pandas=0, datetimelist=[], formatinglist=[]):
         """
 
-        :param url:
         :param query:
+        :param extract_pandas:
+        :param datetimelist:
+        :param formatinglist:
         :return:
         """
-        # BrowsingData(self.token, url, query).browsing_data()
         return SqlH(url=self.url, username=self.username, password=self.password, token=self.token,
-                    query=query).browsing_data(extract_pandas=extract_pandas)
+                    query=query, datetimelist=datetimelist,
+                    formatinglist=formatinglist).browsing_data(extract_pandas=extract_pandas)
 
     # Topics Handler
 
