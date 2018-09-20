@@ -10,7 +10,7 @@ from lenses_python.ConvertDateTime import ConvertDateTime
 
 class SqlHandler:
 
-    def __init__(self, url, username, password, token, query="", datetimelist="", formatinglist=""):
+    def __init__(self, url, username, password, token, query="", datetimelist=[], formatinglist=[]):
         """
 
         :param url:
@@ -152,50 +152,3 @@ class SqlHandler:
                 }
         else:
             return self._ConvertToDF(data_list)
-
-
-
-
-
-
-
-
-
-    # def _ConvertToDF(self, data):
-    #     """
-    #     Get data from sql handler and extract from generate dict the messages and then the dict-value from each one
-    #     :param data: dictionary
-    #     :return: pandas dataframe
-    #     """
-    #     # Data has two keys messages/data and offsets
-    #     if data.get("messages", None) is not None:
-    #         data = data["messages"]
-    #         key = "messages"
-    #     elif data.get("data", None) is not None:
-    #         data = data["data"]
-    #         key = "data"
-    #     else:
-    #         raise Exception("There isn't key messages or data to exctract values for create pandas dataframe.\n")
-    #     # Get key value , which is a stringfy dict, loads convert it to dict
-    #     if key != "data":
-    #         data = list(map(lambda x: loads(x["value"]), data))
-    #     else:
-    #         data = list(map(lambda x: loads(x["value"]), data["messages"]))
-    #         temp_list = []
-    #
-    #     if len(self.datetimelist) > 0 and len(self.formatinglist) > 0:
-    #         # If these two lists has length greater than zero , then call class ConvertDateTime which
-    #         # which convert specific keys ,which have datetime string to datetime object
-    #         # this convert can be only if user request data as pandas dataframe
-    #         data = ConvertDateTime(data, self.datetimelist, self.formatinglist).Convert()
-    #     # Convert data to dataframe
-    #     data = pd.DataFrame(data)
-    #     return data
-
-
-
-
-
-
-
-
