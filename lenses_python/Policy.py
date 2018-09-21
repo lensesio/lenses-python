@@ -27,24 +27,24 @@ class Policy:
                      }
         :return:
         """
-        url = self.url+"/"+self.url_extend+policy_id
+        url = self.url+"/"+self.url_extend+"/"+policy_id
         response = put(url, json=policy, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
-        return response.json()
+        return response.text
 
     def delete_policy(self, policy_id):
         """
         Delete policy
 
-        :param policy_id: The unique identifier for the policy Example: 0.Number
+        :param policy_id: The unique identifier for the policy Example: 0.String
         :return:
         """
-        url = self.url+"/"+self.url_extend+policy_id
-        response = put(url, headeres=self.default_headers)
+        url = self.url+"/"+self.url_extend+"/"+policy_id
+        response = put(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
-        return response.json()
+        return response.text
 
     def view_policy(self):
         """
