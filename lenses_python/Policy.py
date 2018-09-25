@@ -1,4 +1,4 @@
-from requests import *
+from requests import get
 
 class Policy:
     def __init__(self, token, url):
@@ -18,10 +18,10 @@ class Policy:
 
         :return:
         """
-        url = self.url+self.url_extend
+        url = f"{self.url}{self.url_extend}"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
-            raise Exception("Http status code {}.{}".format(response.status_code, response.text))
+            response.raise_for_status()
         return response.json()
 
 
