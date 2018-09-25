@@ -101,20 +101,8 @@ class lenses:
         :param formatinglist: List of formation of elements of datetimelist keys
         :return:The result of the given query
         """
-        return SqlH(self.url, self.username, self.password, self.token, query, datetimelist, formatinglist).ExecuteSqlQuery(extract_pandas)
-
-    def browsing_data(self, query, extract_pandas=0, datetimelist=[], formatinglist=[]):
-        """
-
-        :param query:
-        :param extract_pandas:
-        :param datetimelist:
-        :param formatinglist:
-        :return:
-        """
-        return SqlH(url=self.url, username=self.username, password=self.password, token=self.token,
-                    query=query, datetimelist=datetimelist,
-                    formatinglist=formatinglist).browsing_data(extract_pandas=extract_pandas)
+        return SqlH(self.url, self.username, self.password, self.token,
+                    query, datetimelist, formatinglist).browsing_data(extract_pandas=extract_pandas)
 
     # Topics Handler
 
@@ -425,24 +413,3 @@ class lenses:
         :return:
         """
         return Policy(self.token, self.url).view_policy()
-
-    def update_policy(self, policy_id, policy):
-        """
-
-        :param policy_id:
-        :param policy:
-        :return:
-        """
-        return Policy(self.token, self.url).update_policy(policy_id, policy)
-
-    def delete_policy(self, policy_id):
-        """
-
-        :param policy_id:
-        :return:
-        """
-        return Policy(self.token, self.url).delete_policy(policy_id)
-
-
-
-
