@@ -79,7 +79,7 @@ class SqlHandler:
                    "stats": 2
                  }
         params = urlencode(params)
-        url = self.url.replace("https", "wss")+"/api/sql/execute?"+params
+        url = self.url.replace("https", "wss")+"/api/ws/v1/sql/execute?"+params
         ws = websocket.create_connection(url)
         data_list = []
         stats_list =[]
@@ -95,7 +95,7 @@ class SqlHandler:
             elif temp_type == "END":
                 break  # Exit from while loop
         ws.close()
-        if is_extract_pandas:
+        if not is_extract_pandas:
             return {"records": data_list,
                     "stats": stats_list
                    }
