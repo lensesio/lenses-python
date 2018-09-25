@@ -67,10 +67,11 @@ class SqlHandler:
         data = pd.DataFrame(data)
         return data
 
-    def browsing_data(self, extract_pandas=0):
+    def browsing_data(self, is_extract_pandas=False):
         """
 
-        :return:
+        :param is_extract_pandas: Boolean
+        :return: In case is_extract if false return a dictionary , otherwise return Pandas dataframe
         """
         params = {
                    "token": self.token,
@@ -83,17 +84,20 @@ class SqlHandler:
         data_list = []
         stats_list =[]
         temp_type = ""
-        while temp_type != "END":
+        while temp_type.upper != "END":
             temp_data = loads(ws.recv())  # Convert string to dict
             temp_type = temp_data["type"]
-            if temp_type == "RECORD":
+            if temp_type.upper == "RECORD":
                 data_list.append(temp_data["data"])
-            elif temp_type == "STATS":
+            elif temp_type.upper == "STATS":
                 stats_list.append(temp_data["data"])
         ws.close()
-        if extract_pandas == 0:
+        if is_extract_pandas:
             return {"records": data_list,
-                          "stats":stats_list
-                }
+                    "stats": stats_list
+                   }
         else:
-            return self._ConvertToDF(data_list)
+            if len(data_list) > 0:
+                return self._ConvertToDF(data_list)
+            else:
+                raise Exception("Empty data list")
