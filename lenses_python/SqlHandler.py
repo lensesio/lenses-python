@@ -1,7 +1,6 @@
 from requests import *
 import pandas as pd
 from json import loads
-import sseclient
 from urllib.parse import urlencode
 import websocket
 
@@ -48,61 +47,6 @@ class SqlHandler:
                  raise Exception('An error occurred while trying to validate sql query. Received response with '
                                         '\status code [{}] and text [{}]'.format(response.status_code, response.text))
 
-
-
-    def _with_requests(self, url):
-        """
-        Use GET request to get the data
-        :param url:
-        :return:
-        """
-        return get(url, params=self.params, headers=self.default_headers_2, stream=True)
-
-    def ExecuteSqlQuery(self, extract_pandas):
-        """
-        For SSE protocol use https://pypi.python.org/pypi/sseclient-py
-        ticket LEN-134
-        :param extract_pandas:
-        :return:if extract_pandas is empty return a list of dictionaries , otherwise return a pandas dataframe
-        """
-
-        EXECUTE_SQL_QUERY = "/api/sql/data"
-        url = self.url+EXECUTE_SQL_QUERY
-        response = self._with_requests(url)
-        client = sseclient.SSEClient(response)
-        messages = []
-        offset = []
-        data = {}
-        for event in client.events():
-            msg = event.data
-            if msg[0] == "0":
-                # Empty messages are just heartbeat
-                pass
-            else:
-                if msg[0] == "2":
-                    # 2 is offset details
-                    break
-                    # offset.append(msg[1:])
-                elif msg[0] == "3":
-                    # 3 is an error entry
-                    raise Exception("{}".format(msg[1:]))
-                elif msg[0] == "4":
-                    offset.append(msg[1:])
-                else:
-                    if msg[0] == "1":
-                        # 1 is a entry
-                        messages.append(loads(msg[1:]))
-        data["messages"] = messages
-        data["offset"] = offset
-        if extract_pandas == 0:
-            # In this case return a dictionary with two keys , one is the messages and the other one is the offset
-            return data
-        else:
-            # In this case we parse to ConvertToDF the messages and the we get the value of every message
-            # next we return a pandas data frame of them
-            return self._ConvertToDF(data["messages"])
-
-
     def _ConvertToDF(self, data):
         """
         Get data from sql handler and extract from generate dict the messages and then the dict-value from each one
@@ -140,12 +84,13 @@ class SqlHandler:
         stats_list =[]
         temp_type = ""
         while temp_type != "END":
-            temp_data = loads(ws.recv()) # Convert string to dict
+            temp_data = loads(ws.recv())  # Convert string to dict
             temp_type = temp_data["type"]
             if temp_type == "RECORD":
                 data_list.append(temp_data["data"])
             elif temp_type == "STATS":
                 stats_list.append(temp_data["data"])
+        ws.close()
         if extract_pandas == 0:
             return {"records": data_list,
                           "stats":stats_list
