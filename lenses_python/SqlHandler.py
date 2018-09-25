@@ -83,14 +83,17 @@ class SqlHandler:
         ws = websocket.create_connection(url)
         data_list = []
         stats_list =[]
-        temp_type = ""
-        while temp_type.upper != "END":
+        while True:
             temp_data = loads(ws.recv())  # Convert string to dict
-            temp_type = temp_data["type"]
-            if temp_type.upper == "RECORD":
+            temp_type = temp_data.get("type", None)  # If type key doesnt exitst get value None
+            if temp_type is None:
+                raise KeyError("There isn't key 'type'")  # If there isn't key type in dict raise keyerror exception
+            if temp_type == "RECORD":
                 data_list.append(temp_data["data"])
-            elif temp_type.upper == "STATS":
+            elif temp_type == "STATS":
                 stats_list.append(temp_data["data"])
+            elif temp_type == "END":
+                break  # Exit from while loop
         ws.close()
         if is_extract_pandas:
             return {"records": data_list,
