@@ -4,8 +4,8 @@ from json import loads
 from urllib.parse import urlencode
 import websocket
 
-
 from lenses_python.ConvertDateTime import ConvertDateTime
+from lenses_python.constants import VALIDATE_SQL_QUERY, SQL_END_POINT
 
 class SqlHandler:
 
@@ -39,8 +39,6 @@ class SqlHandler:
 
         :return:
         """
-        VALIDATE_SQL_QUERY='/api/sql/validation'
-
         url = self.url+VALIDATE_SQL_QUERY
         response = get(url, params=self.params, headers=self.default_headers)
         if response.status_code != 200:
@@ -54,7 +52,7 @@ class SqlHandler:
         :param data: list of dictionaries
         :return: pandas dataframe
         """
-        if type(data[0]["value"]) != type(dict()):
+        if not isinstance(data[0]["value"], dict):  # Check if is dict , if not do
             data = list(map(lambda x: loads(x["value"]), data))
         else:
             data = list(map(lambda x: x["value"], data))
@@ -67,22 +65,23 @@ class SqlHandler:
         data = pd.DataFrame(data)
         return data
 
-    def browsing_data(self, is_extract_pandas=False):
+    def browsing_data(self, stats=0,  is_extract_pandas=False):
         """
 
+        :param stats: int
         :param is_extract_pandas: Boolean
         :return: In case is_extract if false return a dictionary , otherwise return Pandas dataframe
         """
         params = {
                    "token": self.token,
                    "sql": self.query,
-                   "stats": 2
+                   "stats": stats
                  }
         params = urlencode(params)
-        url = self.url.replace("https", "wss")+"/api/ws/v1/sql/execute?"+params
+        url = self.url.replace("https", "wss")+SQL_END_POINT+params
         ws = websocket.create_connection(url)
         data_list = []
-        stats_list =[]
+        stats_list = []
         while True:
             temp_data = loads(ws.recv())  # Convert string to dict
             temp_type = temp_data.get("type", None)  # If type key doesnt exitst get value None
