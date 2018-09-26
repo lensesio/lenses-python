@@ -92,17 +92,18 @@ class lenses:
 
     # Sql Handler
 
-    def SqlHandler(self, query, is_extract_pandas=False, datetimelist=[], formatinglist=[]):
+    def SqlHandler(self, query, stats=0, is_extract_pandas=False, datetimelist=[], formatinglist=[]):
         """
 
-        :param query:
+        :param query: string
+        :param stats: int
         :param is_extract_pandas: if is False return dict else return pandas dataframes
         :param datetimelist: List of keys which content datetime string
         :param formatinglist: List of formation of elements of datetimelist keys
         :return:The result of the given query
         """
         return SqlH(self.url, self.username, self.password, self.token,
-                    query, datetimelist, formatinglist).browsing_data(is_extract_pandas=is_extract_pandas)
+                    query, datetimelist, formatinglist).browsing_data(stats=stats, is_extract_pandas=is_extract_pandas)
 
     # Topics Handler
 
