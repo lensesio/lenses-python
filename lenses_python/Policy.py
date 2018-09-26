@@ -1,4 +1,5 @@
 from requests import get
+from lenses_python.constants import POLICY_END_POINT
 
 class Policy:
     def __init__(self, token, url):
@@ -8,7 +9,7 @@ class Policy:
         """
         self.token = token
         self.url = url
-        self.url_extend = "/api/protection/policy"
+        self.url_extend = POLICY_END_POINT
         self.default_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
                                 'x-kafka-lenses-token': self.token}
 
