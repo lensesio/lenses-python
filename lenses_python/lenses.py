@@ -1,50 +1,133 @@
-from requests import *
-from json import *
-
-from lenses_python.SqlHandler import SqlHandler as SqlH
-from lenses_python.TopicHandler import TopicHandler as TopicH
-from lenses_python.ProcessorHandler import ProcessorHandler as PrcH
-from lenses_python.SchemasHandler import SchemasHandler as SchemaH
-from lenses_python.ConnectorHandler import ConnectorHandler as ConnH
-from lenses_python.WebSocketHandler import SubscribeHandler as SubSH
-from lenses_python.PublishHandler import PublishHandler as PuHandl
-from lenses_python.ACLHandler import ACLHandler
-from lenses_python.QuotaHandler import QuotaHandler
-from  lenses_python.KerberosTicket import KerberosTicket
+from requests import post, get
+from json import dumps
 
 class lenses:
 
     def __init__(self, url, username="", password="", kerberos_mode=0):
         """
-
         :param url:
         :param username:
         :param password:
         :param kerberos_mode: if it's equal to 1 we have kerberos mode, in default the value is 0 so no kerberos_mode
         """
+
         self.url = url
         self.username = username
         self.password = password
+        self.len_mods()
+
         # Check if user use kerberos mode
         if kerberos_mode == 0:
             # If not get the token with basic authentication
             self._Connect()
+            self.default_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
+                                    'x-kafka-lenses-token': self.token}
         else:
             # else take the token with kerberos connect way
             self._KerberosConnect()
+
+    # CHECK THE LENSES PYMODS
+    def len_mods(self):
+        _check="[\033[5;32m * \033[0;0m]"
+        print(_check + " Checking lenses pylib modules.")
+
+        try:
+            from lenses_python.SqlHandler import SqlHandler as SqlH
+            from lenses_python.TopicHandler import TopicHandler as TopicH
+            from lenses_python.ProcessorHandler import ProcessorHandler as PrcH
+            from lenses_python.SchemasHandler import SchemasHandler as SchemaH
+            from lenses_python.ConnectorHandler import ConnectorHandler as ConnH
+            from lenses_python.WebSocketHandler import SubscribeHandler as SubSH
+            from lenses_python.PublishHandler import PublishHandler as PuHandl
+            from lenses_python.ACLHandler import ACLHandler
+            from lenses_python.QuotaHandler import QuotaHandler
+            from lenses_python.KerberosTicket import KerberosTicket
+
+        except ImportError:
+            raise
+            exit(1)
+
+        print(_check + " No issue detected.\n")
+        del _check
+        #global SqlH, TopicH, PrcH, SchemaH, ConnH, SubSH, PuHandl, ACLHandler, QuotaHandler, KerberosTicket
+        del SqlH, TopicH, PrcH, SchemaH, ConnH, SubSH, PuHandl, ACLHandler, QuotaHandler, KerberosTicket
+
+    def kopts(self, action, *opts, **kopts):
+
+        optional = ['config', 'filename', 'partitions', 'replication']
+
+        # ManageTopics
+        optlist = {"ManageTopics":{'create':['topicname', 'replication', 'partitions', 'config', 'filename']}}
+        optlist["ManageTopics"]['get'], optlist["ManageTopics"]['list'] = [], []
+        optlist["ManageTopics"]['info'], optlist["ManageTopics"]['delete'] = ['topicname'], ['topicname']
+        optlist["ManageTopics"]['update'] = ['topicname', 'config', 'filename']
+        optlist["ManageTopics"]['delrec'] = ['topicname', 'partition', 'offset']
+        optlist["ManageTopics"]['config'] = ['topicname', 'config', 'filename']
+
+        # ManageProcessor
+        optlist["ManageProcessor"] = {'create':['name', 'sql', 'runners', 'clustername', 'namespace', 'pipeline']}
+        optlist["ManageProcessor"]['updrun'] = ['processorname', 'runesnumber']
+
+        # ManageSR
+        optlist["ManageSR"] = {'getbyver':['subject', 'verid']}
+        optlist["ManageSR"]['regnew'] = ['subject', 'schema_json', 'filename']
+        optlist["ManageSR"]['delver'] = ['subject', 'verid']
+        optlist["ManageSR"]['chngcomp'] = ['subject', 'compability', 'filename']
+        optlist["ManageSR"]['updglobcomp'] = ['compability', 'filename']
+
+        # ManageConnector
+        optlist["ManageConnector"] = {'create':['cluster', 'config', 'filename']}
+        optlist["ManageConnector"]['info'] = ['cluster', 'connector']
+        optlist["ManageConnector"]['getconfig'] = ['cluster', 'connector']
+        optlist["ManageConnector"]['status'] = ['cluster', 'connector']
+        optlist["ManageConnector"]['gettask'] = ['cluster', 'connector']
+        optlist["ManageConnector"]['taskstatus'] = ['cluster', 'connector']
+        optlist["ManageConnector"]['taskrestart'] = ['cluster', 'connector', 'task_id']
+        optlist["ManageConnector"]['pause'] = ['cluster', 'connector']
+        optlist["ManageConnector"]['resume'] = ['cluster', 'connector']
+        optlist["ManageConnector"]['restart'] = ['cluster', 'connector']
+        optlist["ManageConnector"]['setconfig'] = ['cluster', 'connector', 'config', 'filename']
+        optlist["ManageConnector"]['delete'] = ['cluster', 'connector']
+
+        # ManageWS
+        optlist["ManageWS"] = {'subschandler':['clientId', 'url_ws', 'query', 'write', 'filename', 'print_results', 'datetimelist', 'formatinglist']}
+        optlist["ManageWS"]['publish'] = ['subject', 'compability', 'filename']
+        optlist["ManageWS"]['commit'] = ['subject', 'compability', 'filename']
+        optlist["ManageWS"]['unsubscribe'] = ['compability', 'filename']
+        optlist["ManageWS"]['subscribe'] = ['compability', 'filename']
+
+        # ManageACL
+        optlist["ManageACL"] = {'setacl':['resourceType', 'resourceName', 'principal', 'permissionType', 'host', 'operation']}
+
+        # ManageQuotas
+        optlist["ManageQuotas"] = {'getquotas':[]}
+        optlist["ManageQuotas"]['setqallusers'] = ['config']
+        optlist["ManageQuotas"]['setquallcli'] = ['user', 'config']
+        optlist["ManageQuotas"]['setqucli'] = ['user', 'clientid', 'config']
+        optlist["ManageQuotas"]['setqu'] = ['user', 'config']
+        optlist["ManageQuotas"]['setqallcli'] = ['config']
+        optlist["ManageQuotas"]['setqcli'] = ['clientid', 'config']
+        optlist["ManageQuotas"]['dellqallu'] = ['config']
+        optlist["ManageQuotas"]['delquallcli'] = ['user', 'config']
+        optlist["ManageQuotas"]['delqucli'] = ['user', 'clientid', 'config']
+        optlist["ManageQuotas"]['delqu'] = ['user', 'config']
+        optlist["ManageQuotas"]['delqallcli'] = ['config']
+        optlist["ManageQuotas"]['delqcli'] = ['clientid', 'config']
 
     def _Connect(self):
         """
 
         :return:Token
         """
-        LOGIN = "/api/login"
-        login_url = self.url+LOGIN
-        payload = {'user': self.username,
+        login_url = self.url + "/api/login"
+
+        bodystring = {'user': self.username,
                    'password': self.password}
+
         default_headers = {'Content-Type': 'text/plain',
                            'Accept': 'text/plain'}
-        response = post(login_url, data=dumps(payload), headers=default_headers)
+
+        response = post(login_url, data=dumps(bodystring), headers=default_headers)
         if response.status_code != 200:
             raise Exception("Could not connect to the API [{}]. Status code [{}]. Reason [{}]"
                             .format(login_url, response.status_code, response.reason))
@@ -53,17 +136,18 @@ class lenses:
             self.token = response.text
             if self.token == None:
                 raise Exception("Cannot recieve Token.")
-        AUTH = "/api/auth"
-        auth_url = self.url + AUTH
-        new_headers = {"X-Kafka-Lenses-Token": self.token
-                       }
-        response = get(auth_url, headers=new_headers)
-        if response.status_code != 200:
-            raise Exception("Could not connect to the API [{}]. Status code [{}]. Reason [{}]"
-                            .format(auth_url, response.status_code, response.reason))
-        else:
-            self.token = response.json().get("token", None)
-            self.credentials = response.json()
+
+        # auth_url = self.url + "/api/auth"
+        # new_headers = {"X-Kafka-Lenses-Token": self.token
+        #                }
+        #
+        # response = get(auth_url, headers=new_headers)
+        # if response.status_code != 200:
+        #     raise Exception("Could not connect to the API [{}]. Status code [{}]. Reason [{}]"
+        #                     .format(auth_url, response.status_code, response.reason))
+        # else:
+        #     self.token = response.json().get("token", None)
+        #     self.credentials = response.json()
 
     def _KerberosConnect(self):
         """
@@ -86,11 +170,7 @@ class lenses:
             self.token = response.json().get("token", None)
             self.credentials = response.json()
 
-    def GetCredentials(self):
-        return self.credentials
-
     # Sql Handler
-
     def SqlHandler(self, query, extract_pandas=0, datetimelist=[], formatinglist=[]):
         """
 
@@ -103,291 +183,95 @@ class lenses:
         return SqlH(self.url, self.username, self.password, self.token, query, datetimelist, formatinglist).ExecuteSqlQuery(extract_pandas)
 
     # Topics Handler
+    def ManageTopics(self, action, *opts, **kopts):
+        from lenses_python.TopicHandler import TopicHandler as TopicH
+        action_dict = {'get':'GetAllTopics', 'list':'LstOfTopicsNames', 'info':'TopicInfo', 'delete':'DeleteTopic', \
+        'config':'UpdateTopicConfig', 'create':'CreateTopic', 'delrec':'DeleteTopicRecords' }
 
-    def GetAllTopics(self):
-        """
+        self.opts = {_opt:kopts.get(_opt, '') for _opt in kopts}
+        _exec_action = getattr(TopicH(self), action_dict[action])(**self.opts)
 
-        :return:All topics with their info
-        """
-        return TopicH(self.url, self.username, self.password, self.token).GetAllTopics()
-
-    def TopicInfo(self, topicname):
-        """
-
-        :param topicname: Then name of topic
-        :return: Info for specific topic , as dictionary
-        """
-        return TopicH(self.url, self.username, self.password, self.token).TopicInfo(topicname)
-
-    def TopicsNames(self):
-        """
-
-        :return: A list with all topic names
-        """
-        return TopicH(self.url, self.username, self.password, self.token).LstOfTopicsNames()
-
-    def UpdateTopicConfig(self, topicname, config="", filename=""):
-        """
-
-        :param topicname:
-        :param config:
-        :param filename:
-        :return:
-        """
-        return TopicH(self.url, self.username, self.password, self.token).UpdateTopicConfig(topicname, config, filename)
-
-    def CreateTopic(self, topicName, replication, partitions, config="", filename=""):
-        """
-
-        :param topicName:
-        :param replication:
-        :param partitions:
-        :param config:
-        :param filename:
-        :return:
-        """
-        return TopicH(self.url, self.username, self.password, self.token).CreateTopic(topicName, replication,
-                                                                                      partitions, config, filename)
-    def DeleteTopic(self, topicname):
-        """
-
-        :param topicname:
-        :return:
-        """
-        return TopicH(self.url, self.username, self.password, self.token).DeleteTopic(topicname)
-
-    def DeleteTopicRecords(self, topic, partition, offset):
-        """
-
-        :param topic:
-        :param partition:int
-        :param offset: int
-        :return:
-        """
-        return TopicH(self.url, self.username, self.password, self.token).DeleteTopicRecords(topic, str(partition),
-                                                                                             str(offset))
+        return _exec_action
 
     # Processor Handler
+    def ManageProcessor(self, action, *opts, **kopts):
+        from lenses_python.ProcessorHandler import ProcessorHandler as PrcH
+        action_dict = {'create':'CreateProcessor', 'delete':'DeleteProcessor', 'resume':'ResumeProcessor', \
+        'pause':'PauseProcessor', 'updrun':'UpdateProcessorRunners' }
 
-    def CreateProcessor(self, name, sql, runners, clusterName, namespace="", pipeline=""):
-        """
+        self.opts = {_opt:kopts.get(_opt, '') for _opt in kopts}
+        _exec_action = getattr(PrcH(self), action_dict[action])(**self.opts)
 
-        :param sql:
-        :param runners:
-        :param clusterName:
-        :param namespace:applies for Kubernetes mode
-        :param pipeline:applies for Kubernetes mode
-        :return:
-        """
-        return PrcH(self.url, self.username, self.password, self.token).CreateProcessor(name, sql,
-                                                                                        runners, clusterName,
-                                                                                        namespace, pipeline)
+        return _exec_action
 
-    def DeleteProcessor(self, processorname):
-        """
-
-        :param processorname:
-        :return:
-        """
-        return PrcH(self.url, self.username, self.password, self.token).DeleteProcessor(processorname)
-
-    def ResumeProcessor(self, processorname):
-        """
-
-        :param processorname:
-        :return:
-        """
-        return PrcH(self.url, self.username, self.password, self.token).ResumeProcessor(processorname)
-
-    def PauseProcessor(self, processorname):
-        """
-
-        :param processorname:
-        :return:
-        """
-        return PrcH(self.url, self.username, self.password, self.token).PauseProcessor(processorname)
-
-    def UpdateProcessorRunners(self, processorName, numberOfRunners):
-        """
-
-        :param processorName:
-        :param numberOfRunners:
-        :return:
-        """
-        return PrcH(self.url, self.username, self.password, self.token).UpdateProcessorRunners(processorName,
-                                                                                               numberOfRunners)
     # Schemas Handler
+    def ManageSR(self, action, *opts, **kopts):
+        from lenses_python.SchemasHandler import SchemasHandler as SchemaH
+        action_dict = {'listsubj':'ListAllSubjects', 'getglob':'GetGlobalCompatibility', 'subjver':'ListVersionsSubj', \
+        'getsrid':'GetSchemaById', 'getcomp':'GetCompatibility', 'delete':'DeleteSubj', 'getbyver':'GetSchemaByVer', \
+        'regnew':'RegisterNewSchema', 'delver':'DeleteSchemaByVersion', 'chngcomp':'ChangeCompatibility', \
+        'updglobcomp': 'UpdateGlobalCompatibility'}
 
-    def GetAllSubjects(self):
-        """
+        self.opts = {_opt:kopts.get(_opt, '') for _opt in kopts}
+        _exec_action = getattr(SchemaH(self), action_dict[action])(self.opts)
 
-        :return:
-        """
-        return SchemaH(self.url, self.username, self.password, self.token).ListAllSubjects()
-
-    def ListVersionsSubj(self, subject):
-        return SchemaH(self.url, self.username, self.password, self.token).ListVersionsSubj(subject)
-
-    def GetSchemaById(self, subjid):
-        return SchemaH(self.url, self.username, self.password, self.token).GetSchemaById(subjid)
-
-    def GetSchemaByVer(self, subject, verid):
-        return SchemaH(self.url, self.username, self.password, self.token).GetSchemaByVer(subject, verid)
-
-    def RegisterNewSchema(self, subject, schema_json="", filename=""):
-        return SchemaH(self.url, self.username, self.password, self.token).RegisterNewSchema(subject, schema_json, filename)
-
-    def GetGlobalCompatibility(self):
-        return SchemaH(self.url, self.username, self.password, self.token).GetGlobalCompatibility()
-
-    def GetCompatibility(self, subject):
-        return SchemaH(self.url, self.username, self.password, self.token).GetCompatibility(subject)
-
-    def DeleteSubj(self, subject):
-        return SchemaH(self.url, self.username, self.password, self.token).DeleteSubj(subject)
-
-    def DeleteSchemaByVersion(self, subject, version):
-        return SchemaH(self.url, self.username, self.password, self.token).DeleteSchemaByVersion(subject, version)
-
-    def ChangeCompatibility(self, subject, compability="", filename=""):
-        return SchemaH(self.url, self.username, self.password, self.token).ChangeCompatibility(subject, compability, filename)
-
-    def UpdateGlobalCompatibility(self, compatibility="", filename=""):
-        return SchemaH(self.url, self.username, self.password, self.token).UpdateGlobalCompatibility(compatibility, filename)
+        return _exec_action
 
     # Connector Handler
+    def ManageConnector(self, action, *opts, **kopts):
+        from lenses_python.ConnectorHandler import ConnectorHandler as ConnH
+        action_dict = {'listall':'ListAllConnectors', 'getplugins':'GetConnectorPlugins', 'info':'GetInfoConnector', \
+        'getconfig':'GetConnectorConfig', 'status':'GetConnectorStatus', 'gettask':'GetConnectorTasks', \
+        'pause':'PauseConnector', 'resume':'ResumeConnector', 'delete':'DeleteConnector', 'restart':'RestartConnector', \
+        'taskstatus':'GetStatusTask', 'taskrestart':'RestartConnectorTask', 'create':'CreateConnector', \
+        'setconfig': 'SetConnectorConfig'}
 
-    def ListAllConnectors(self, cluster):
-        return ConnH(self.url, self.username, self.password, self.token).ListAllConnectors(cluster)
+        self.opts = {_opt:kopts.get(_opt, '') for _opt in kopts}
+        _exec_action = getattr(ConnH(self), action_dict[action])(self.opts)
 
-    def GetInfoConnector(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).GetInfoConnector(cluster,connector)
-
-    def GetConnectorConfig(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).GetConnectorConfig(cluster,connector)
-
-    def GetConnectorStatus(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).GetConnectorStatus(cluster, connector)
-
-    def GetConnectorTasks(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).GetConnectorTasks(cluster, connector)
-
-    def GetStatusTask(self, cluster, connector, task_id):
-        return ConnH(self.url, self.username, self.password, self.token).GetStatusTask(cluster, connector, task_id)
-
-    def RestartConnectorTask(self, cluster, connector, task_id):
-        return ConnH(self.url, self.username, self.password, self.token).RestartConnectorTask(cluster, connector,
-                                                                                              task_id)
-
-    def GetConnectorPlugins(self, cluster):
-        return ConnH(self.url, self.username, self.password, self.token).GetConnectorPlugins(cluster)
-
-    def PauseConnector(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).PauseConnector(cluster,connector)
-
-    def ResumeConnector(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).ResumeConnector(cluster, connector)
-
-    def RestartConnector(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).RestartConnector(cluster, connector)
-
-    def CreateConnector(self, cluster, config="", filename=""):
-        """
-
-        :param cluster:
-        :param config:Is a Python dictionary with specific format,see in class ConnectorHandler
-        :param filename: In case we want to use file to parse config parameter we create a file with section as we wish
-        but option name must be config
-        :return:
-        """
-        return ConnH(self.url, self.username, self.password, self.token).CreateConnector(cluster, config, filename)
-
-    def SetConnectorConfig(self, cluster, connector, config="", filename=""):
-        return ConnH(self.url, self.username, self.password, self.token).SetConnectorConfig(cluster, connector, config,
-                                                                                            filename)
-
-    def DeleteConnector(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).DeleteConnector(cluster, connector)
+        return _exec_action
 
     # WebSocketHandler
-    def SubscribeHandler(self, url_ws, clientId, query, write=False, filename="", print_results=True, datetimelist=[],
-                         formatinglist=[]):
-        """
+    def ManageWE(self, action, *opts, **kopts):
+        action_dict = {'subschandler':'SubscribeHandler', 'publish':'Publish', 'commit':'Commit', \
+        'unsubscribe':'Unscribe', 'subscribe':'Subscribe'}
+        from lenses_python.WebSocketHandler import SubscribeHandler as SubSH
+        from lenses_python.PublishHandler import PublishHandler as PuHandl
 
-        :param url_ws:
-        :param clientId:
-        :param query:
-        :param write: If is true create a log file, where values loaded
-        :param filename: Where logs save
-        :param print_results: If is true print the results
-        :param datetimelist: List of keys which content datetime string
-        :param formatinglist: List of formation of elements of datetimelist keys
-        :return:
-        """
-        return SubSH(self.username, self.password, clientId, url_ws, query, write, filename, print_results,
-                     datetimelist, formatinglist)
+        self.opts = {_opt:kopts.get(_opt, '') for _opt in kopts}
+        for x in ['print_results', 'write']:
+            if kopts[x] == 'y':
+                self.opts[x]=True
+            else:
+                self.opts[x]=False
 
-    def Publish(self, url_ws, clientId, topic, key, value):
-        return PuHandl(self.username, self.password, clientId, url_ws).Publish(topic, key, value)
+        if action == 'subschandler':
+            _exec_action = SubSH(self, self.opts)
+        else:
+            _exec_action = getattr(PuHandl(self, self.opts['clientId'], self.opts['url_ws']), action_dict[action])(self.opts)
 
-    def Commit(self, url_ws, clientId, topic, partition, offset):
-        return PuHandl(self.username, self.password, clientId, url_ws).Commit(topic, partition, offset)
-
-    def Unscribe(self, url_ws, clientId, topic):
-        return PuHandl(self.username, self.password, clientId, url_ws).Unscribe(topic)
-
-    def Subscribe(self, url_ws, clientId, query):
-        return PuHandl(self.username, self.password, clientId, url_ws).Subcribe(query)
+        return _exec_action
 
     # ACL Handler
+    def ManageACL(self, action, *opts, **kopts):
+        from lenses_python.ACLHandler import ACLHandler
+        action_dict = {'getacl':'GetACL', 'setacl':'SetAcl'}
 
-    def GetACLs(self):
-        return ACLHandler(self.token, self.url).GetACL()
+        self.opts = {_opt:kopts.get(_opt, '') for _opt in kopts}
+        _exec_action = getattr(ACLHandler(self), action_dict[action])(self.opts)
 
-    def SetACL(self, resourceType, resourceName, principal, permissionType, host, operation):
-        ACLHandler(self.token, self.url).SetAcl(resourceType, resourceName, principal, permissionType, host, operation)
+        return _exec_action
 
     # Quotas Handler
+    def ManageQuotas(self, action, *opts, **kopts):
+        from lenses_python.ACLHandler import QuotaHandler
 
-    def GetQuotas(self):
-        return QuotaHandler(self.token, self.url).GetQuotas()
+        action_dict = {'getquotas':'GetQuotas', 'setqallusers':'SetQuotasAllUsers', 'setquallcli':'SetQuotaUserAllClients', \
+        'setqucli':'SetQuotaUserClient', 'setqu':'SetQuotaUser', 'setqallcli':'SetQuotaAllClient', 'setqcli':'SetQuotaClient', \
+        'dellqallu':'DeleteQutaAllUsers', 'delquallcli':'DeleteQuotaUserAllClients', 'delqucli':'DeleteQuotaUserClient', \
+        'delqu':'DeleteQuotaUser', 'delqallcli':'DeleteQuotaAllClients', 'delqcli':'DeleteQuotaClient'}
 
-    def SetQuotasAllUsers(self, config):
-        QuotaHandler(self.token, self.url).SetQuotasAllUsers(config)
+        self.opts = {_opt:kopts.get(_opt, '') for _opt in kopts}
+        _exec_action = getattr(ACLHandler(self), action_dict[action])(self.opts)
 
-    def SetQuotaUserAllClients(self, user, config):
-        QuotaHandler(self.token, self.url).SetQuotaUserAllClients(user, config)
-
-    def SetQuotaUserClient(self, user, clientid, config):
-        QuotaHandler(self.token, self.url).SetQuotaUserClient(user, clientid, config)
-
-    def SetQuotaUser(self, user, config):
-        QuotaHandler(self.token, self.url).SetQuotaUser(user, config)
-
-    def SetQuotaAllClient(self, config):
-        QuotaHandler(self.token, self.url).SetQuotaAllClient(config)
-
-    def SetQuotaClient(self, clientid, config):
-        QuotaHandler(self.token, self.url).SetQuotaClient(clientid, config)
-
-    def DeleteQutaAllUsers(self, config):
-        QuotaHandler(self.token, self.url).DeleteQutaAllUsers(config)
-
-    def DeleteQuotaUserAllClients(self, user, config):
-        QuotaHandler(self.token, self.url).DeleteQuotaUserAllClients(user, config)
-
-    def DeleteQuotaUserClient(self, user, clientid, config):
-        QuotaHandler(self.token, self.url).DeleteQuotaUserClient(user, clientid, config)
-
-    def DeleteQuotaUser(self, user, config):
-        QuotaHandler(self.token, self.url).DeleteQuotaUser(user, config)
-
-    def DeleteQuotaAllClients(self, config):
-        QuotaHandler(self.token, self.url).DeleteQuotaAllClients(config)
-
-    def DeleteQuotaClient(self, clientid, config):
-        QuotaHandler(self.token, self.url).DeleteQuotaClient(clientid, config)
-
-
-
-
+        return _exec_action

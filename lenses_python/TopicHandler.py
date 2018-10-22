@@ -1,59 +1,49 @@
-from requests import *
+from requests import get, post, delete
+from json import dumps
 from pprint import pprint as pp
 from lenses_python.ReadConfigFile import ReadConfigFile
 
 class TopicHandler:
 
-    def __init__(self, url, username, password, token):
-        self.url = url
-        self.username = username
-        self.password = password
-        self.token = token
-        self.default_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
-                                'x-kafka-lenses-token': self.token}
+    def __init__(self, parent):
+        self.url = parent.url
+        self.token = parent.token
+        self.default_headers = parent.default_headers
 
-    def GetAllTopics(self):
-        url = self.url+"/api/topics"
-        response = get(url, headers=self.default_headers)
+    def GetAllTopics(self, **kopts):
+        response = get(self.url + "/api/topics", headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
         return response.json()
 
-    def LstOfTopicsNames(self):
-        """
+    def LstOfTopicsNames(self, **kopts):
+        topics = self.GetAllTopics()
+        listoftopics = [topic['topicName'] for topic in topics]
+        return listoftopics
 
-        :return:
+    def TopicInfo(self, **kopts):
         """
-        alltopics = self.GetAllTopics()
-        lstoftopicsnames = [i['topicName'] for i in alltopics]
-        return lstoftopicsnames
-
-    def TopicInfo(self, topicname):
-        """
-
         :param topicname:
-        :return:
         """
-        url = self.url+"/api/topics"
-        response = get(url+"/"+topicname, headers=self.default_headers)
+        response = get(self.url + "/api/topics" + "/" + kopts['topicname'], headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
         else:
             return response.json()
 
-    def UpdateTopicConfig(self, topicname, data_params, filename):
+    def UpdateTopicConfig(self, **kopts):
         """
-
         :param topicname:
-        :param data_params: Must be in dict format, for example, {
-                                                                   "configs": [{
-                                                                               "key": "cleanup.policy",
-                                                                                "value": "compact"
-                                                                              }]
-                                                                 }
+        :param data_params: Must be in dict format, for example,
+        {
+           "configs": [{
+                       "key": "cleanup.policy",
+                        "value": "compact"
+                      }]
+         }
         :param filename:
-        :return:
         """
+        topicname, data_params, filename = kopts['topicname'], kopts['config'], kopts['filename']
         if topicname == "" and data_params == "" and filename != "":
             # Check if filename is not empty
             temp_dict = ReadConfigFile(filename).GetJSONs()
@@ -70,35 +60,39 @@ class TopicHandler:
                 data_params = temp_dict["config"]
             else:
                 raise Exception("In file there isn't option config\n")
+
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                    'x-kafka-lenses-token': self.token}
 
-        url = self.url+"/api/topics/config/"+topicname
-        response = put(url, headers=headers, json=data_params)
+        response = put(self.url + "/api/topics/config/" + topicname, headers=headers, json=data_params)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
 
-    def CreateTopic(self, topicName, replication, partitions, config, filename):
+    def CreateTopic(self, **kopts):
         """
-        Example of request {
-                              "topicName": "topicA",
-                              "replication": 1,
-                              "partitions": 1,
-                              "configs": {
-                              "cleanup.policy": "compact",
-                              "compression.type": "snappy"
-                                           }
-                          }
+        Example of request: {
+            "topicName": "topicA",
+            "replication": 1,
+            "partitions": 1,
+            "configs": {
+                "cleanup.policy": "compact",
+                "compression.type": "snappy"
+                }
+            }
         :param topicName:Name of topic
         :param replication:
         :param partitions:
-        :param config: is dict ,for example {
-        "cleanup.policy": "compact",
-        "compression.type": "snappy"
-         }
+        :param config: is dict ,for example: {
+            "cleanup.policy": "compact",
+            "compression.type": "snappy"
+            }
         :param filaname:
         :return:
         """
+
+        topicName, config, filename = kopts['topicname'], kopts['config'], kopts['filename']
+        par_rep = {x:kopts[x] if kopts[x] is not '' else 1 for x in ['partitions', 'replication']}
+
         if topicName == "" and replication == "" and partitions == "" and config == "" and filename != "":
             # Check if filename is not empty
             temp_dict = ReadConfigFile(filename).GetJSONs()
@@ -119,28 +113,31 @@ class TopicHandler:
                 config = temp_dict["config"]
             else:
                 raise Exception("Failed to read configuaration file\n")
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
+
+        headers = {'Content-Type': 'application/json', 'Accept': '*/*',
                    'x-kafka-lenses-token': self.token}
-        url = self.url+"/api/topics"
+
         params = dict(topicName=topicName,
-                      replication=int(replication),
-                      partitions=int(partitions),
+                      replication=int(par_rep['replication']),
+                      partitions=int(par_rep['partitions']),
                       configs=config
                       )
-        response = post(url, headers=headers, json=params)
+
+        response = post(self.url + "/api/topics", headers=headers, json=dumps(params))
+
         if response.status_code != 201:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
 
-    def DeleteTopic(self, topicname):
+    def DeleteTopic(self, **kopts):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                    'x-kafka-lenses-token': self.token}
 
-        url = self.url+"/api/topics"
-        response = delete(url+"/"+topicname, headers=headers)
+        response = delete(self.url + "/api/topics" + "/" + kopts['topicname'], headers=headers)
+
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
 
-    def DeleteTopicRecords(self, topic, partition, offset):
+    def DeleteTopicRecords(self, **kopts):
         """
         New endpoint for 2.1
         The endpoint is the /api/topics/{topicName}/{partition}/{offset}
@@ -152,8 +149,10 @@ class TopicHandler:
         """
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                'x-kafka-lenses-token': self.token}
-        url = self.url+"/api/topics"
-        response = delete(url+"/"+topic+"/"+partition+"/"+offset, headers=headers)
+
+        topic, partition, offset = kopts['topicname'], kopts['partitions'], kopts['offset']
+
+        response = delete(self.url + "/api/topics" + "/" + topic + "/" + partition + "/" + offset, headers=headers)
         if response.status_code != 200:
             if response.status_code == 400:
                 raise Exception("Http status code {} The offset {} is negative".format(response.status_code, offset))
@@ -166,8 +165,3 @@ class TopicHandler:
                 raise Exception("Http status code {}. {}".format(response.status_code, response.text))
         else:
             return response.text
-
-
-
-
-
