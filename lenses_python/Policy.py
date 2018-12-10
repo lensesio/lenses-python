@@ -19,7 +19,6 @@ class Policy:
 
         :return:
         """
-        # url = f"{self.url}{self.url_extend}"
         url = self.url+self.url_extend
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
