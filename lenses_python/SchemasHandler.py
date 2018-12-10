@@ -1,5 +1,6 @@
 from requests import *
 from lenses_python.ReadConfigFile import ReadConfigFile
+from lenses_python.constants import SCHEMAS_END_POINT, SCHEMAS_CONFIG_END_POINT, SCHEMAS_IDS_END_POINT
 
 class SchemasHandler:
 
@@ -8,6 +9,9 @@ class SchemasHandler:
         self.username = username
         self.password = password
         self.token = token
+        self.schemas_end_point = SCHEMAS_END_POINT  # "/api/proxy-sr/subjects"
+        self.schemas_config_end_point = SCHEMAS_CONFIG_END_POINT
+        self.schemas_ids_end_point = SCHEMAS_IDS_END_POINT
         self.default_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
                                 'x-kafka-lenses-token': self.token}
 
@@ -18,7 +22,8 @@ class SchemasHandler:
 
         :return:
         """
-        url = self.url+"/api/proxy-sr/subjects"
+        # url = self.url+"/api/proxy-sr/subjects"
+        url = self.url+self.schemas_end_point
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code,response.text))
@@ -32,7 +37,8 @@ class SchemasHandler:
         :param subject:
         :return:
         """
-        url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions"
+        # url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions"
+        url = self.url+self.schemas_end_point+subject+"/versions"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code,response.text))
@@ -46,7 +52,8 @@ class SchemasHandler:
         :param subject:
         :return:
         """
-        url = self.url+"/api/proxy-sr/subjects/"+subject
+        # url = self.url+"/api/proxy-sr/subjects/"+subject
+        url = self.url+self.schemas_end_point+subject
         response = delete(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code,response.text))
@@ -58,7 +65,8 @@ class SchemasHandler:
         :param subjid:
         :return:
         """
-        url = self.url+"/api/proxy-sr/schemas/ids/"+subjid
+        # url = self.url+"/api/proxy-sr/schemas/ids/"+subjid
+        url = self.url+self.schemas_ids_end_point+subjid
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code,response.text))
@@ -73,7 +81,8 @@ class SchemasHandler:
         :param verid:
         :return:
         """
-        url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions/"+verid
+        # url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions/"+verid
+        url = self.url+self.schemas_end_point+subject+"/versions/"+verid
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -105,7 +114,8 @@ class SchemasHandler:
                 schema_json = temp_dict["schema"]
             else:
                 raise Exception("In file there isn't section schema\n")
-        url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions"
+        # url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions"
+        url = self.url+self.schemas_end_point+subject+"/versions"
         response = post(url, headers=self.default_headers, json=schema_json)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -119,7 +129,8 @@ class SchemasHandler:
         :param version:string of int
         :return: if succeed return 1
         """
-        url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions/"+version
+        # url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions/"+version
+        url = self.url+self.schemas_end_point+subject+"/versions/"+version
         response = delete(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -141,7 +152,8 @@ class SchemasHandler:
                 compatibility = temp_dict["compatibility"]
             else:
                 raise Exception("In file there isn't section compatibility\n")
-        url = self.url+"/api/proxy-sr/config"
+        # url = self.url+"/api/proxy-sr/config"
+        url = self.url+self.schemas_config_end_point
         response = put(url, headers=self.default_headers, json=compatibility)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -153,7 +165,8 @@ class SchemasHandler:
         GET /api/proxy-sr/config
         :return:
         """
-        url = self.url+"/api/proxy-sr/config"
+        # url = self.url+"/api/proxy-sr/config"
+        url = self.url+self.schemas_config_end_point
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -184,7 +197,8 @@ class SchemasHandler:
                 compatibility = temp_dict["compatibility"]
             else:
                 raise Exception("In file there isn't section compatibility\n")
-        url = self.url+"/api/proxy-sr/config/"+subject
+        # url = self.url+"/api/proxy-sr/config/"+subject
+        url = self.url+self.schemas_config_end_point+subject
         response = put(url, headers=self.default_headers, json=compatibility)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -197,7 +211,8 @@ class SchemasHandler:
         :param subject:
         :return:
         """
-        url = self.url+"/api/proxy-sr/config/"+subject
+        # url = self.url+"/api/proxy-sr/config/"+subject
+        url = self.url+self.schemas_config_end_point+subject
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))

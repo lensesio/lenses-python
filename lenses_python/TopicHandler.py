@@ -1,6 +1,7 @@
 from requests import *
 from pprint import pprint as pp
 from lenses_python.ReadConfigFile import ReadConfigFile
+from lenses_python.constants import TOPIC_CONFIG_END_POINT, TOPIC_END_POINT
 
 class TopicHandler:
 
@@ -9,11 +10,14 @@ class TopicHandler:
         self.username = username
         self.password = password
         self.token = token
+        self.topic_end_point = TOPIC_END_POINT
+        self.topic_config_end_point = TOPIC_CONFIG_END_POINT
         self.default_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
                                 'x-kafka-lenses-token': self.token}
 
     def GetAllTopics(self):
-        url = self.url+"/api/topics"
+        # url = self.url+"/api/topics"
+        url = self.url+self.topic_end_point
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -34,7 +38,8 @@ class TopicHandler:
         :param topicname:
         :return:
         """
-        url = self.url+"/api/topics"
+        # url = self.url+"/api/topics"
+        url = self.url+self.topic_end_point
         response = get(url+"/"+topicname, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -72,8 +77,8 @@ class TopicHandler:
                 raise Exception("In file there isn't option config\n")
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                    'x-kafka-lenses-token': self.token}
-        # url = self.url+"/api/topics/config/"+topicname
-        url = self.url+" /api/configs/topics/"+topicname
+        # url = self.url+" /api/configs/topics/"+topicname
+        url = self.url+"/api/topics/"+topicname+"/config"
         response = put(url, headers=headers, json=data_params)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -121,7 +126,8 @@ class TopicHandler:
                 raise Exception("Failed to read configuaration file\n")
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                    'x-kafka-lenses-token': self.token}
-        url = self.url+"/api/topics"
+        # url = self.url+"/api/topics"
+        url = self.url+self.topic_end_point
         params = dict(topicName=topicName,
                       replication=int(replication),
                       partitions=int(partitions),
@@ -135,7 +141,8 @@ class TopicHandler:
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                    'x-kafka-lenses-token': self.token}
 
-        url = self.url+"/api/topics"
+        # url = self.url+"/api/topics"
+        url = self.url+self.topic_end_point
         response = delete(url+"/"+topicname, headers=headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -152,7 +159,8 @@ class TopicHandler:
         """
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                'x-kafka-lenses-token': self.token}
-        url = self.url+"/api/topics"
+        # url = self.url+"/api/topics"
+        url = self.url+self.topic_end_point
         response = delete(url+"/"+topic+"/"+partition+"/"+offset, headers=headers)
         if response.status_code != 200:
             if response.status_code == 400:
@@ -172,8 +180,9 @@ class TopicHandler:
         GET api/configs/default/topics
         :return:
         """
-        url = self.url+"/api/configs/default/topics"
-        response = get(url,headers=self.default_headers)
+        # url = self.url+"/api/configs/default/topics"
+        url = self.url+self.topic_config_end_point
+        response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
         pp(response.json())
@@ -184,7 +193,8 @@ class TopicHandler:
 
         :return:
         """
-        url = self.url+"/api/configs/default/topics/keys"
+        # url = self.url+"/api/configs/default/topics/keys"
+        url = self.url+self.topic_config_end_point+"/keys"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))

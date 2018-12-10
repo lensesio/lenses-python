@@ -1,11 +1,15 @@
 from requests import *
 import json
+from lenses_python.constants import QUOTAS_END_POINT, QUOTAS__USERS_END_POINT, QUOTAS_CLIENTS_END_POINT
 
 class QuotaHandler:
 
     def __init__(self, token, url):
         self.token = token
         self.url = url
+        self.quotas_end_point = QUOTAS_END_POINT
+        self.quotas_users_end_point = QUOTAS__USERS_END_POINT
+        self.quotas_clients_end_point = QUOTAS_CLIENTS_END_POINT
         self.default_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
                                 'x-kafka-lenses-token': self.token}
 
@@ -14,8 +18,9 @@ class QuotaHandler:
         Get Quotas
         :return:
         """
-        url_extend = "/api/quotas"
-        url = self.url+url_extend
+        # url_extend = "/api/quotas"
+        # url = self.url+url_extend
+        url = self.url+self.quotas_end_point
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -31,8 +36,9 @@ class QuotaHandler:
                       }
         :return:
         """
-        url_extend = "/api/quotas/users"
-        url = self.url+url_extend
+        # url_extend = "/api/quotas/users"
+        # url = self.url+url_extend
+        url = self.url+self.quotas_users_end_point
         response = put(url, headers=self.default_headers, json=config)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -51,10 +57,11 @@ class QuotaHandler:
                        The quota contrain
         :return:
         """
-        url_extend = "/api/quotas/users/"+user+"/clients"
+        # url_extend = "/api/quotas/users/"+user+"/clients"
+        url_extend = self.quotas_users_end_point+"/"+user+"/clients"
         url = self.url + url_extend
         response = put(url, headers=self.default_headers, json=config)
-        if response.status_code !=200:
+        if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
 
     def SetQuotaUserClient(self, user, clientid, config):
@@ -72,7 +79,8 @@ class QuotaHandler:
                      }
         :return:
         """
-        url_extend = "/api/quotas/users/"+user+"/clients/"+clientid
+        # url_extend = "/api/quotas/users/"+user+"/clients/"+clientid
+        url_extend = self.quotas_users_end_point+"/"+user+"/clients/"+clientid
         url = self.url+url_extend
         response = put(url, headers=self.default_headers, json=config)
         if response.status_code != 200:
@@ -91,7 +99,8 @@ class QuotaHandler:
                        }
         :return:
         """
-        url_extend = "/api/quotas/users/"+user
+        # url_extend = "/api/quotas/users/"+user
+        url_extend = self.quotas_users_end_point+"/"+user
         url = self.url+url_extend
         response = put(url, headers=self.default_headers, json=config)
         if response.status_code != 200:
@@ -109,8 +118,9 @@ class QuotaHandler:
                       }
         :return:
         """
-        url_extend = "/api/quotas/clients"
-        url = self.url+url_extend
+        # url_extend = "/api/quotas/clients"
+        # url = self.url+url_extend
+        url = self.url+self.quotas_clients_end_point
         response = put(url, headers=self.default_headers, json=config)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -128,7 +138,8 @@ class QuotaHandler:
                        }
         :return:
         """
-        url_extend = "/api/quotas/clients/"+clientid
+        # url_extend = "/api/quotas/clients/"+clientid
+        url_extend = self.quotas_clients_end_point+"/"+clientid
         url = self.url+url_extend
         response = put(url, headers=self.default_headers, json=config)
         if response.status_code != 200:
@@ -140,8 +151,9 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        url_extend = "/api/quotas/users"
-        url = self.url+url_extend
+        # url_extend = "/api/quotas/users"
+        # url = self.url+url_extend
+        url = self.url+self.quotas_users_end_point
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -155,7 +167,8 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        url_extend = "/api/quotas/users/"+user+"/clients"
+        # url_extend = "/api/quotas/users/"+user+"/clients"
+        url_extend = self.quotas_users_end_point+user+"/clients"
         url = self.url+url_extend
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
         if response.status_code != 200:
@@ -169,7 +182,8 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        url_extend = "/api/quotas/users/"+user+"/clients/"+clientid
+        # url_extend = "/api/quotas/users/"+user+"/clients/"+clientid
+        url_extend = self.quotas_users_end_point+"/"+user+"/clients/"+clientid
         url = self.url+url_extend
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
         if response.status_code != 200:
@@ -182,7 +196,8 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        url_extend = "/api/quotas/users/"+user
+        # url_extend = "/api/quotas/users/"+user
+        url_extend = self.quotas_users_end_point+"/"+user
         url = self.url+url_extend
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
         if response.status_code != 200:
@@ -194,8 +209,9 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        url_extend = "/api/quotas/clients"
-        url = self.url+url_extend
+        # url_extend = "/api/quotas/clients"
+        # url = self.url+url_extend
+        url = self.url+self.quotas_clients_end_point
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
@@ -209,7 +225,8 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        url_extand = "/api/quotas/clients/"+clientid
+        # url_extand = "/api/quotas/clients/"+clientid
+        url_extand = self.quotas_clients_end_point+"/"+clientid
         url = self.url+url_extand
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
         if response.status_code != 200:
