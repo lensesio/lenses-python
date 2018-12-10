@@ -78,7 +78,10 @@ class SqlHandler:
                    "stats": stats
                  }
         params = urlencode(params)
-        url = self.url.replace("https", "wss")+SQL_END_POINT+params
+        if 'https' in self.url:
+            url = self.url.replace("https", "wss")+SQL_END_POINT+params
+        else:
+            url = self.url.replace("http", "ws") + SQL_END_POINT + params
         ws = websocket.create_connection(url)
         data_list = []
         stats_list = []
