@@ -11,6 +11,7 @@ from lenses_python.PublishHandler import PublishHandler as PuHandl
 from lenses_python.ACLHandler import ACLHandler
 from lenses_python.QuotaHandler import QuotaHandler
 from  lenses_python.KerberosTicket import KerberosTicket
+from lenses_python.Policy import Policy
 
 class lenses:
 
@@ -91,16 +92,18 @@ class lenses:
 
     # Sql Handler
 
-    def SqlHandler(self, query, extract_pandas=0, datetimelist=[], formatinglist=[]):
+    def SqlHandler(self, query, stats=0, is_extract_pandas=False, datetimelist=[], formatinglist=[]):
         """
 
-        :param query:
-        :param extract_pandas: if is 0 return dict else return pandas dataframes
+        :param query: string
+        :param stats: int
+        :param is_extract_pandas: if is False return dict else return pandas dataframes
         :param datetimelist: List of keys which content datetime string
         :param formatinglist: List of formation of elements of datetimelist keys
         :return:The result of the given query
         """
-        return SqlH(self.url, self.username, self.password, self.token, query, datetimelist, formatinglist).ExecuteSqlQuery(extract_pandas)
+        return SqlH(self.url, self.username, self.password, self.token,
+                    query, datetimelist, formatinglist).browsing_data(stats=stats, is_extract_pandas=is_extract_pandas)
 
     # Topics Handler
 
@@ -166,6 +169,20 @@ class lenses:
         """
         return TopicH(self.url, self.username, self.password, self.token).DeleteTopicRecords(topic, str(partition),
                                                                                              str(offset))
+
+    def DefaulConfigs(self):
+        """
+
+        :return:
+        """
+        return TopicH(self.url, self.username, self.password, self.token).DefaultConfigs()
+
+    def AvailableConfigKeys(self):
+        """
+
+        :return:
+        """
+        return TopicH(self.url, self.username, self.password, self.token).AvailableConfigKeys()
 
     # Processor Handler
 
@@ -388,6 +405,12 @@ class lenses:
     def DeleteQuotaClient(self, clientid, config):
         QuotaHandler(self.token, self.url).DeleteQuotaClient(clientid, config)
 
+    # Policy, handler
 
+    def view_policy(self):
+        """
+        View all versions for a policy
 
-
+        :return:
+        """
+        return Policy(self.token, self.url).view_policy()
