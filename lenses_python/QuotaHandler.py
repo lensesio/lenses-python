@@ -18,8 +18,6 @@ class QuotaHandler:
         Get Quotas
         :return:
         """
-        # url_extend = "/api/quotas"
-        # url = self.url+url_extend
         url = self.url+self.quotas_end_point
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -36,8 +34,6 @@ class QuotaHandler:
                       }
         :return:
         """
-        # url_extend = "/api/quotas/users"
-        # url = self.url+url_extend
         url = self.url+self.quotas_users_end_point
         response = put(url, headers=self.default_headers, json=config)
         if response.status_code != 200:
@@ -57,7 +53,6 @@ class QuotaHandler:
                        The quota contrain
         :return:
         """
-        # url_extend = "/api/quotas/users/"+user+"/clients"
         url_extend = self.quotas_users_end_point+"/"+user+"/clients"
         url = self.url + url_extend
         response = put(url, headers=self.default_headers, json=config)
@@ -79,7 +74,6 @@ class QuotaHandler:
                      }
         :return:
         """
-        # url_extend = "/api/quotas/users/"+user+"/clients/"+clientid
         url_extend = self.quotas_users_end_point+"/"+user+"/clients/"+clientid
         url = self.url+url_extend
         response = put(url, headers=self.default_headers, json=config)
@@ -99,7 +93,6 @@ class QuotaHandler:
                        }
         :return:
         """
-        # url_extend = "/api/quotas/users/"+user
         url_extend = self.quotas_users_end_point+"/"+user
         url = self.url+url_extend
         response = put(url, headers=self.default_headers, json=config)
@@ -118,8 +111,6 @@ class QuotaHandler:
                       }
         :return:
         """
-        # url_extend = "/api/quotas/clients"
-        # url = self.url+url_extend
         url = self.url+self.quotas_clients_end_point
         response = put(url, headers=self.default_headers, json=config)
         if response.status_code != 200:
@@ -138,7 +129,6 @@ class QuotaHandler:
                        }
         :return:
         """
-        # url_extend = "/api/quotas/clients/"+clientid
         url_extend = self.quotas_clients_end_point+"/"+clientid
         url = self.url+url_extend
         response = put(url, headers=self.default_headers, json=config)
@@ -151,8 +141,6 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        # url_extend = "/api/quotas/users"
-        # url = self.url+url_extend
         url = self.url+self.quotas_users_end_point
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
         if response.status_code != 200:
@@ -167,7 +155,6 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        # url_extend = "/api/quotas/users/"+user+"/clients"
         url_extend = self.quotas_users_end_point+user+"/clients"
         url = self.url+url_extend
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
@@ -182,7 +169,6 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        # url_extend = "/api/quotas/users/"+user+"/clients/"+clientid
         url_extend = self.quotas_users_end_point+"/"+user+"/clients/"+clientid
         url = self.url+url_extend
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
@@ -209,8 +195,6 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        # url_extend = "/api/quotas/clients"
-        # url = self.url+url_extend
         url = self.url+self.quotas_clients_end_point
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
         if response.status_code != 200:
@@ -225,7 +209,6 @@ class QuotaHandler:
         :param config: A list we the parameters which want to delete
         :return:
         """
-        # url_extand = "/api/quotas/clients/"+clientid
         url_extand = self.quotas_clients_end_point+"/"+clientid
         url = self.url+url_extand
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
