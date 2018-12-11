@@ -22,7 +22,6 @@ class SchemasHandler:
 
         :return:
         """
-        # url = self.url+"/api/proxy-sr/subjects"
         url = self.url+self.schemas_end_point
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -37,7 +36,6 @@ class SchemasHandler:
         :param subject:
         :return:
         """
-        # url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions"
         url = self.url+self.schemas_end_point+subject+"/versions"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -52,7 +50,6 @@ class SchemasHandler:
         :param subject:
         :return:
         """
-        # url = self.url+"/api/proxy-sr/subjects/"+subject
         url = self.url+self.schemas_end_point+subject
         response = delete(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -65,7 +62,6 @@ class SchemasHandler:
         :param subjid:
         :return:
         """
-        # url = self.url+"/api/proxy-sr/schemas/ids/"+subjid
         url = self.url+self.schemas_ids_end_point+subjid
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -81,7 +77,6 @@ class SchemasHandler:
         :param verid:
         :return:
         """
-        # url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions/"+verid
         url = self.url+self.schemas_end_point+subject+"/versions/"+verid
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -114,7 +109,6 @@ class SchemasHandler:
                 schema_json = temp_dict["schema"]
             else:
                 raise Exception("In file there isn't section schema\n")
-        # url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions"
         url = self.url+self.schemas_end_point+subject+"/versions"
         response = post(url, headers=self.default_headers, json=schema_json)
         if response.status_code != 200:
@@ -129,7 +123,6 @@ class SchemasHandler:
         :param version:string of int
         :return: if succeed return 1
         """
-        # url = self.url+"/api/proxy-sr/subjects/"+subject+"/versions/"+version
         url = self.url+self.schemas_end_point+subject+"/versions/"+version
         response = delete(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -152,7 +145,6 @@ class SchemasHandler:
                 compatibility = temp_dict["compatibility"]
             else:
                 raise Exception("In file there isn't section compatibility\n")
-        # url = self.url+"/api/proxy-sr/config"
         url = self.url+self.schemas_config_end_point
         response = put(url, headers=self.default_headers, json=compatibility)
         if response.status_code != 200:
@@ -165,7 +157,6 @@ class SchemasHandler:
         GET /api/proxy-sr/config
         :return:
         """
-        # url = self.url+"/api/proxy-sr/config"
         url = self.url+self.schemas_config_end_point
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -197,7 +188,6 @@ class SchemasHandler:
                 compatibility = temp_dict["compatibility"]
             else:
                 raise Exception("In file there isn't section compatibility\n")
-        # url = self.url+"/api/proxy-sr/config/"+subject
         url = self.url+self.schemas_config_end_point+subject
         response = put(url, headers=self.default_headers, json=compatibility)
         if response.status_code != 200:
@@ -211,7 +201,6 @@ class SchemasHandler:
         :param subject:
         :return:
         """
-        # url = self.url+"/api/proxy-sr/config/"+subject
         url = self.url+self.schemas_config_end_point+subject
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:

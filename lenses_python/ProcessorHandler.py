@@ -26,8 +26,6 @@ class ProcessorHandler:
         :param pipeline:string, applies for Kubernetes mode
         :return:LSQL id,string, applies for Kubernetes mode
         """
-
-        # url = self.url+"/api/streams"
         url = self.url+self.processor_end_point
         if namespace != "" and pipeline != "":
             # in case we want to applt for Kubernetes mode
@@ -63,7 +61,6 @@ class ProcessorHandler:
         :param processorName:LSQL Stream id
         :return:
         """
-        url = self.url+"/api/streams/"+processorName+"/pause"
         url = self.url+self.processor_end_point+"/"+processorName+"/pause"
         response = put(url,  headers=self.default_headers)
 
@@ -77,7 +74,6 @@ class ProcessorHandler:
         :param processorName: LSQL Stream id
         :return:
         """
-        # url = self.url+"/api/streams/"+processorName+"/resume"
         url = self.url+self.processor_end_point+"/"+processorName+"/resume"
         response = put(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -91,7 +87,6 @@ class ProcessorHandler:
         :param numberOfRunners:string
         :return:
         """
-        # url = self.url+"/api/streams/"+processorName+"/scale/"+numberOfRunners
         url = self.url+self.processor_end_point+"/"+processorName+"/scale/"+numberOfRunners
         response = put(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -104,7 +99,6 @@ class ProcessorHandler:
         :param processorName:LSQL Stream id
         :return:
         """
-        # url = self.url+"/api/streams/"+processorName
         url = self.url+self.processor_end_point+"/"+processorName
         response = delete(url, headers=self.default_headers)
         if response.status_code != 200:

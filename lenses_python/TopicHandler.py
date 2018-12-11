@@ -38,7 +38,6 @@ class TopicHandler:
         :param topicname:
         :return:
         """
-        # url = self.url+"/api/topics"
         url = self.url+self.topic_end_point
         response = get(url+"/"+topicname, headers=self.default_headers)
         if response.status_code != 200:
@@ -125,7 +124,6 @@ class TopicHandler:
                 raise Exception("Failed to read configuaration file\n")
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                    'x-kafka-lenses-token': self.token}
-        # url = self.url+"/api/topics"
         url = self.url+self.topic_end_point
         params = dict(topicName=topicName,
                       replication=int(replication),
@@ -140,7 +138,6 @@ class TopicHandler:
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                    'x-kafka-lenses-token': self.token}
 
-        # url = self.url+"/api/topics"
         url = self.url+self.topic_end_point
         response = delete(url+"/"+topicname, headers=headers)
         if response.status_code != 200:
@@ -158,7 +155,6 @@ class TopicHandler:
         """
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
                'x-kafka-lenses-token': self.token}
-        # url = self.url+"/api/topics"
         url = self.url+self.topic_end_point
         response = delete(url+"/"+topic+"/"+partition+"/"+offset, headers=headers)
         if response.status_code != 200:
@@ -179,7 +175,6 @@ class TopicHandler:
         GET api/configs/default/topics
         :return:
         """
-        # url = self.url+"/api/configs/default/topics"
         url = self.url+self.topic_config_end_point
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -192,7 +187,6 @@ class TopicHandler:
 
         :return:
         """
-        # url = self.url+"/api/configs/default/topics/keys"
         url = self.url+self.topic_config_end_point+"/keys"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
