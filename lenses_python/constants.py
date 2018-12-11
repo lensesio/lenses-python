@@ -29,7 +29,7 @@ QUOTAS_CLIENTS_END_POINT = "/api/quotas/clients"
 # SchemasHandler
 
 SCHEMAS_END_POINT = "/api/proxy-sr/subjects"
-SCHEMAS_IDS_END_POINT = "/api/proxy-sr/schemas/ids/"
+SCHEMAS_IDS_END_POINT = "/api/proxy-sr/schemas/ids"
 SCHEMAS_CONFIG_END_POINT = "/api/proxy-sr/config"
 
 # TopicHandler
@@ -40,7 +40,3 @@ TOPIC_CONFIG_END_POINT = "/api/configs/default/topics"
 #SQLHANDLER
 VALIDATE_SQL_QUERY = '/api/sql/validation'
 SQL_END_POINT = "/api/ws/v1/sql/execute?"
-
-
-
-
