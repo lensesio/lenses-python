@@ -20,7 +20,6 @@ class ConnectorHandler:
         :param cluster:
         :return:
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors"
         url = self.url+self.url_extend+cluster+"/connectors"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -47,7 +46,6 @@ class ConnectorHandler:
                                            'connect.ftp.address': 'x'},
                                          'name': 'FTP'}
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector
         url = self.url+self.url_extend+cluster+"/connectors/"+connector
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -72,7 +70,6 @@ class ConnectorHandler:
                                     'connect.ftp.address': 'x'}
 
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector+"/config"
         url = self.url+self.url_extend+cluster+"/connectors/"+connector+"/config"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -87,7 +84,6 @@ class ConnectorHandler:
         :param connector:
         :return:
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector+"/status"
         url = self.url+self.url_extend+cluster+"/connectors/"+connector+"/status"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -102,7 +98,6 @@ class ConnectorHandler:
         :param connector:
         :return:
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector+"/tasks"
         url = self.url+self.url_extend+cluster+"/connectors/"+connector+"/tasks"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -120,7 +115,6 @@ class ConnectorHandler:
         the task_id is '0'
         :return:
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector+"/tasks/"+task_id+"/status"
         url = self.url+self.url_extend+cluster+"/connectors/"+connector+"/tasks/"+task_id+"/status"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -137,7 +131,6 @@ class ConnectorHandler:
         :param task_id:
         :return:
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector+"/tasks/"+task_id+"/restart"
         url = self.url+self.url_extend+cluster+"/connectors/"+connector+"/tasks/"+task_id+"/restart"
         response = post(url, headers=self.default_headers)
         if response.status_code not in [200, 204]:
@@ -150,7 +143,6 @@ class ConnectorHandler:
         :param cluster:
         :return:
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connector-plugins"
         url = self.url+self.url_extend+cluster+"/connector-plugins"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
@@ -166,7 +158,6 @@ class ConnectorHandler:
         :param connector:
         :return:
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector+"/pause"
         url = self.url+self.url_extend+cluster+"/connectors/"+connector+"/pause"
         response = put(url, headers=self.default_headers)
         if response.status_code not in [200, 202]:
@@ -181,7 +172,6 @@ class ConnectorHandler:
         :param connector:
         :return:
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector+"/resume"
         url = self.url+self.url_extend+cluster+"/connectors/"+connector+"/resume"
         response = put(url, headers=self.default_headers)
         if response.status_code not in [200, 202]:
@@ -196,7 +186,6 @@ class ConnectorHandler:
         :param connector:
         :return:
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector+"/restart"
         url = self.url+self.url_extend+cluster+"/connectors/"+connector+"/restart"
         response = post(url, headers=self.default_headers)
         if response.status_code not in [200, 202, 204]:
@@ -231,7 +220,6 @@ class ConnectorHandler:
                 config = temp_dict["config"]
             else:
                 raise Exception("In file there isn't section config\n")
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors"
         url = self.url+self.url_extend+cluster+"/connectors"
         response = post(url, headers=self.default_headers, json=config)
         if response.status_code not in [200, 201]:
@@ -271,7 +259,6 @@ class ConnectorHandler:
                 config = temp_dict["config"]
             else:
                 raise Exception("In file there isn't section config\n")
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector+"/config"
         url = self.url+self.url_extend+cluster+"/connectors/"+connector+"/config"
         response = put(url, headers=self.default_headers, json=config)
         if response.status_code != 200:
@@ -286,7 +273,6 @@ class ConnectorHandler:
         :param connector:
         :return:
         """
-        # url = self.url+"/api/proxy-connect/"+cluster+"/connectors/"+connector
         url = self.url+self.url_extend+cluster+"/connectors/"+connector
         response = delete(url, headers=self.default_headers)
         if response.status_code not in [200, 204]:
