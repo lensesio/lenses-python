@@ -1,4 +1,4 @@
-from requests import *
+from requests import get, delete, post, put
 import json
 from lenses_python.constants import QUOTAS_END_POINT, QUOTAS__USERS_END_POINT, QUOTAS_CLIENTS_END_POINT
 
@@ -214,13 +214,3 @@ class QuotaHandler:
         response = delete(url, headers=self.default_headers, data=json.dumps(config))
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
-
-
-
-
-
-
-
-
-
-

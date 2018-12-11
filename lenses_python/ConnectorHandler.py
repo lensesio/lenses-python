@@ -1,4 +1,4 @@
-from requests import *
+from requests import get, delete, post, put
 from lenses_python.ReadConfigFile import ReadConfigFile
 from lenses_python.constants import CONNECTOR_END_POINT
 
@@ -277,11 +277,3 @@ class ConnectorHandler:
         response = delete(url, headers=self.default_headers)
         if response.status_code not in [200, 204]:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
-
-
-
-
-
-
-
-

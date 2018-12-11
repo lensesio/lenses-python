@@ -1,5 +1,5 @@
-from requests import *
-from json import *
+from requests import get, delete, post, put
+from json import dumps
 
 from lenses_python.SqlHandler import SqlHandler as SqlH
 from lenses_python.TopicHandler import TopicHandler as TopicH

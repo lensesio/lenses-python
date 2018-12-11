@@ -1,4 +1,4 @@
-from requests import *
+from requests import get, delete, post, put
 from pprint import pprint as pp
 from lenses_python.ReadConfigFile import ReadConfigFile
 from lenses_python.constants import TOPIC_CONFIG_END_POINT, TOPIC_END_POINT
@@ -192,11 +192,3 @@ class TopicHandler:
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
         pp(response.json())
-
-
-
-
-
-
-
-

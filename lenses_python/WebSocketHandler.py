@@ -146,6 +146,3 @@ class SubscribeHandler:
         if response['type'] == "ERROR":
             raise Exception("Type:{}. Content:{}".format(response["type"], response["content"]))
         self.token = response['content']
-
-
-
