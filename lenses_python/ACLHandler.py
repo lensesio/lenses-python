@@ -6,7 +6,6 @@ class ACLHandler:
     def __init__(self, token, url):
         self.token = token
         self.url = url
-        # self.url_extend = "/api/acl"
         self.url_extend = ACL_END_POINT
         self.default_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
                                 'x-kafka-lenses-token': self.token}
