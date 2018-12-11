@@ -1,4 +1,4 @@
-from requests import *
+from requests import get, delete, post, put
 from lenses_python.constants import PROCESSOR_END_POINT
 
 
@@ -109,5 +109,3 @@ class ProcessorHandler:
         response = delete(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
-
-

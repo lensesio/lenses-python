@@ -1,4 +1,4 @@
-from requests import *
+from requests import get, delete, post, put
 from lenses_python.ReadConfigFile import ReadConfigFile
 from lenses_python.constants import SCHEMAS_END_POINT, SCHEMAS_CONFIG_END_POINT, SCHEMAS_IDS_END_POINT
 
@@ -217,8 +217,3 @@ class SchemasHandler:
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
         return response.json()
-
-
-
-
-

@@ -1,4 +1,4 @@
-from requests import *
+from requests import get, delete, post, put
 import pandas as pd
 from json import loads
 from urllib.parse import urlencode
