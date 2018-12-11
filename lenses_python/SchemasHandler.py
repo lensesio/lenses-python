@@ -63,7 +63,6 @@ class SchemasHandler:
         :return:
         """
         url = self.url + self.schemas_ids_end_point + '/' + subjid
-        print(url)
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code,response.text))
