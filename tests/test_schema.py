@@ -14,6 +14,9 @@ class TestSchema:
     def test_get_all_subjects(self, lenses_conn):
         assert lenses_conn.GetAllSubjects()
 
+    def test_register_new_schema(self, lenses_conn):
+        assert 'id' in lenses_conn.RegisterNewSchema("test", SCHEMA_CONFIG).keys()
+
     def test_list_versions_subj(self, lenses_conn):
         subj = lenses_conn.GetAllSubjects()[0]
         assert lenses_conn.ListVersionsSubj(subj)
@@ -25,9 +28,6 @@ class TestSchema:
     def test_get_schema_by_ver(self, lenses_conn):
         subj = lenses_conn.GetAllSubjects()[0]
         assert isinstance(lenses_conn.GetSchemaByVer(subj, '1'), dict)
-
-    def test_register_new_schema(self, lenses_conn):
-        assert 'id' in lenses_conn.RegisterNewSchema("test", SCHEMA_CONFIG).keys()
 
     def test_get_global_compatibility(self, lenses_conn):
         config = {'compatibilityLevel': 'BACKWARD'}

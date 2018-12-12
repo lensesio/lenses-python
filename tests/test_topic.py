@@ -9,7 +9,7 @@ from lenses_python.lenses import lenses
 class TestTopic:
 
     def test_get_all_topics(self, lenses_conn):
-        assert '_kafka_lenses_lsql_storage' in lenses_conn.GetAllTopics()[0]['topicName']
+        assert lenses_conn.GetAllTopics()[0]['topicName']
 
     def test_topic_info(self, lenses_conn):
         topic_name = '_kafka_lenses_lsql_storage'
