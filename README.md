@@ -1,8 +1,8 @@
 # Python - Lenses for Apache Kafka
 
-This is a python library that implements the [Lenses](http://www.landoop.com/kafka-lenses) REST and WS APIs.
+Python library for managing [Lenses](http://www.landoop.com/kafka-lenses) REST and WS APIs.
 
-[![build status](https://img.shields.io/travis/Landoop/lenses-python/dev.svg?style=flat-square)](https://travis-ci.org/Landoop/lenses-python)
+[![build status](https://travis-ci.org/Landoop/lenses-python.svg?branch=v2.2)](https://travis-ci.org/Landoop/lenses-python)
 
 # Documentation
 
@@ -10,9 +10,7 @@ See [Lenses Python documentation](https://lenses.stream/dev/python-lib/).
 
 # Installation
 
-```bash
-pip3 install lenses_python
-```
+    pip3 install lenses_python
 
 # Use Cases and Examples
 
