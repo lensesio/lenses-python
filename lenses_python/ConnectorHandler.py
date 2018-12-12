@@ -2,6 +2,7 @@ from requests import get, delete, post, put
 from lenses_python.ReadConfigFile import ReadConfigFile
 from lenses_python.constants import CONNECTOR_END_POINT
 
+
 class ConnectorHandler:
 
     def __init__(self, url, username, password, token):
@@ -11,7 +12,7 @@ class ConnectorHandler:
         self.token = token
         self.url_extend = CONNECTOR_END_POINT  # /api/proxy-connect/
         self.default_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
-                            'x-kafka-lenses-token': self.token}
+                                'x-kafka-lenses-token': self.token}
 
     def ListAllConnectors(self, cluster):
         """

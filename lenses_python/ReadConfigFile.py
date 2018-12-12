@@ -1,6 +1,7 @@
 import configparser
 import json
 
+
 class ReadConfigFile:
 
     def __init__(self, filename):
@@ -37,6 +38,3 @@ class ReadConfigFile:
         if len(json_dict) == 0:
             raise Exception("File {} doesn't have any data.\n".format(self.filename))
         return json_dict
-
-
-

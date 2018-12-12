@@ -1,4 +1,4 @@
-from requests import get, delete, post, put
+from requests import get
 import pandas as pd
 from json import loads
 from urllib.parse import urlencode
@@ -6,6 +6,7 @@ import websocket
 
 from lenses_python.ConvertDateTime import ConvertDateTime
 from lenses_python.constants import VALIDATE_SQL_QUERY, SQL_END_POINT
+
 
 class SqlHandler:
 
@@ -31,7 +32,7 @@ class SqlHandler:
         self.default_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
                                 'x-kafka-lenses-token': self.token}
         self.default_headers_2 = {'Content-Type': 'text/event-stream', 'Accept': 'text/event-stream',
-                                'x-kafka-lenses-token': self.token}
+                                  'x-kafka-lenses-token': self.token}
         self._ValidateSqlQuery()
 
     def _ValidateSqlQuery(self):
@@ -42,12 +43,14 @@ class SqlHandler:
         url = self.url+VALIDATE_SQL_QUERY
         response = get(url, params=self.params, headers=self.default_headers)
         if response.status_code != 200:
-                 raise Exception('An error occurred while trying to validate sql query. Received response with '
-                                        '\status code [{}] and text [{}]'.format(response.status_code, response.text))
+            raise Exception('An error occurred while trying to validate sql query. \
+                             Received response with \
+                             status code [{}] and text [{}]'.format(response.status_code, response.text))
 
     def _ConvertToDF(self, data):
         """
-        Get data from sql handler and extract from generate dict the messages and then the dict-value from each one
+        Get data from sql handler and extract from generate dict the messages
+        and then the dict-value from each one
 
         :param data: list of dictionaries
         :return: pandas dataframe
@@ -100,7 +103,7 @@ class SqlHandler:
         if not is_extract_pandas:
             return {"records": data_list,
                     "stats": stats_list
-                   }
+                    }
         else:
             if len(data_list) > 0:
                 return self._ConvertToDF(data_list)

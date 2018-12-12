@@ -3,6 +3,7 @@ import json
 from pprint import pprint as pp
 from lenses_python.constants import WEBSOCKET_END_POINT
 
+
 class PublishHandler:
 
     def __init__(self, username, password, clientId, url):

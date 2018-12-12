@@ -1,6 +1,7 @@
-from requests import get, delete, post, put
+from requests import get, delete, put
 import json
 from lenses_python.constants import QUOTAS_END_POINT, QUOTAS__USERS_END_POINT, QUOTAS_CLIENTS_END_POINT
+
 
 class QuotaHandler:
 

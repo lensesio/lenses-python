@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class ConvertDateTime:
 
     def __init__(self, data, datetimelist, formatinglist):
@@ -31,7 +32,3 @@ class ConvertDateTime:
             for i in self.data:
                 i[k] = datetime.strptime(i[k], f)
         return self.data
-
-
-
-
