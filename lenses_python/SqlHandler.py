@@ -43,9 +43,9 @@ class SqlHandler:
         url = self.url+VALIDATE_SQL_QUERY
         response = get(url, params=self.params, headers=self.default_headers)
         if response.status_code != 200:
-            raise Exception('An error occurred while trying to validate sql query. \
-                             Received response with \
-                             status code [{}] and text [{}]'.format(response.status_code, response.text))
+            raise Exception('An error occurred while trying to validate sql query. '
+                            'Received response with '
+                            ' status code [{}] and text [{}]'.format(response.status_code, response.text))
 
     def _ConvertToDF(self, data):
         """
