@@ -39,10 +39,10 @@ class TestSqlHandler:
 
         result_st = lenses_conn.SqlHandler(query_st)
 
-        _status=True
+        status=True
         for rec in result_st['records']:
             if rec['value']['name'] == 'greetings':
-                _status=False
+                status=False
                 break
 
-        assert _status == True
+        assert status == True

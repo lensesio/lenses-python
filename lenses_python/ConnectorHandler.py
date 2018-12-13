@@ -11,8 +11,10 @@ class ConnectorHandler:
         self.password = password
         self.token = token
         self.url_extend = CONNECTOR_END_POINT  # /api/proxy-connect/
-        self.default_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
-                                'x-kafka-lenses-token': self.token}
+        self.default_headers = {
+                                'Content-Type': 'application/json', 'Accept': 'application/json',
+                                'x-kafka-lenses-token': self.token
+                                }
 
     def ListAllConnectors(self, cluster):
         """

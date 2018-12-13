@@ -45,8 +45,10 @@ class ProcessorHandler:
                 clusterName=clusterName
             )
 
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
-                   'x-kafka-lenses-token': self.token}
+        headers = {
+                    'Content-Type': 'application/json', 'Accept': 'text/plain',
+                    'x-kafka-lenses-token': self.token
+                    }
         response = post(url, headers=headers, json=params)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))
