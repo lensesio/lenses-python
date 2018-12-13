@@ -2,6 +2,7 @@ from requests import get, delete, post, put
 from lenses_python.ReadConfigFile import ReadConfigFile
 from lenses_python.constants import SCHEMAS_END_POINT, SCHEMAS_CONFIG_END_POINT, SCHEMAS_IDS_END_POINT
 
+
 class SchemasHandler:
 
     def __init__(self, url, username, password, token):
@@ -25,7 +26,7 @@ class SchemasHandler:
         url = self.url+self.schemas_end_point
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
-            raise Exception("Http status code {}.{}".format(response.status_code,response.text))
+            raise Exception("Http status code {}.{}".format(response.status_code, response.text))
         else:
             return response.json()
 
@@ -39,7 +40,7 @@ class SchemasHandler:
         url = self.url + self.schemas_end_point + '/' + subject + "/versions"
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
-            raise Exception("Http status code {}.{}".format(response.status_code,response.text))
+            raise Exception("Http status code {}.{}".format(response.status_code, response.text))
         else:
             return response.json()
 
@@ -53,7 +54,7 @@ class SchemasHandler:
         url = self.url + self.schemas_end_point + '/' + subject
         response = delete(url, headers=self.default_headers)
         if response.status_code != 200:
-            raise Exception("Http status code {}.{}".format(response.status_code,response.text))
+            raise Exception("Http status code {}.{}".format(response.status_code, response.text))
 
     def GetSchemaById(self, subjid):
         """
@@ -65,7 +66,7 @@ class SchemasHandler:
         url = self.url + self.schemas_ids_end_point + '/' + subjid
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
-            raise Exception("Http status code {}.{}".format(response.status_code,response.text))
+            raise Exception("Http status code {}.{}".format(response.status_code, response.text))
         return response.json()
 
     def GetSchemaByVer(self, subject, verid):
@@ -77,7 +78,7 @@ class SchemasHandler:
         :param verid:
         :return:
         """
-        url = self.url + self.schemas_end_point + '/' +subject + "/versions/"+verid
+        url = self.url + self.schemas_end_point + '/' + subject + "/versions/" + verid
         response = get(url, headers=self.default_headers)
         if response.status_code != 200:
             raise Exception("Http status code {}.{}".format(response.status_code, response.text))

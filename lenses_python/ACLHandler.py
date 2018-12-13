@@ -1,5 +1,6 @@
-from requests import get, delete, post, put
+from requests import get, put
 from lenses_python.constants import ACL_END_POINT
+
 
 class ACLHandler:
 

@@ -1,4 +1,4 @@
-from requests import get, delete, post, put
+from requests import get, post
 from json import dumps
 
 from lenses_python.SqlHandler import SqlHandler as SqlH
@@ -10,8 +10,9 @@ from lenses_python.WebSocketHandler import SubscribeHandler as SubSH
 from lenses_python.PublishHandler import PublishHandler as PuHandl
 from lenses_python.ACLHandler import ACLHandler
 from lenses_python.QuotaHandler import QuotaHandler
-from  lenses_python.KerberosTicket import KerberosTicket
+from lenses_python.KerberosTicket import KerberosTicket
 from lenses_python.Policy import Policy
+
 
 class lenses:
 
@@ -52,7 +53,7 @@ class lenses:
         else:
             # self.token = response.json().get("token", None)
             self.token = response.text
-            if self.token == None:
+            if self.token is None:
                 raise Exception("Cannot recieve Token.")
         AUTH = "/api/auth"
         auth_url = self.url + AUTH
@@ -151,6 +152,7 @@ class lenses:
         """
         return TopicH(self.url, self.username, self.password, self.token).CreateTopic(topicName, replication,
                                                                                       partitions, config, filename)
+
     def DeleteTopic(self, topicname):
         """
 
@@ -278,10 +280,10 @@ class lenses:
         return ConnH(self.url, self.username, self.password, self.token).ListAllConnectors(cluster)
 
     def GetInfoConnector(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).GetInfoConnector(cluster,connector)
+        return ConnH(self.url, self.username, self.password, self.token).GetInfoConnector(cluster, connector)
 
     def GetConnectorConfig(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).GetConnectorConfig(cluster,connector)
+        return ConnH(self.url, self.username, self.password, self.token).GetConnectorConfig(cluster, connector)
 
     def GetConnectorStatus(self, cluster, connector):
         return ConnH(self.url, self.username, self.password, self.token).GetConnectorStatus(cluster, connector)
@@ -300,7 +302,7 @@ class lenses:
         return ConnH(self.url, self.username, self.password, self.token).GetConnectorPlugins(cluster)
 
     def PauseConnector(self, cluster, connector):
-        return ConnH(self.url, self.username, self.password, self.token).PauseConnector(cluster,connector)
+        return ConnH(self.url, self.username, self.password, self.token).PauseConnector(cluster, connector)
 
     def ResumeConnector(self, cluster, connector):
         return ConnH(self.url, self.username, self.password, self.token).ResumeConnector(cluster, connector)

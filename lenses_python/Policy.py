@@ -1,6 +1,7 @@
 from requests import get
 from lenses_python.constants import POLICY_END_POINT
 
+
 class Policy:
     def __init__(self, token, url):
         """
@@ -24,11 +25,3 @@ class Policy:
         if response.status_code != 200:
             response.raise_for_status()
         return response.json()
-
-
-
-
-
-
-
-

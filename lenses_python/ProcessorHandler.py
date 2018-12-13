@@ -1,4 +1,4 @@
-from requests import get, delete, post, put
+from requests import delete, post, put
 from lenses_python.constants import PROCESSOR_END_POINT
 
 
@@ -45,12 +45,13 @@ class ProcessorHandler:
                 clusterName=clusterName
             )
 
-
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
-                    'x-kafka-lenses-token': self.token}
+        headers = {
+                    'Content-Type': 'application/json', 'Accept': 'text/plain',
+                    'x-kafka-lenses-token': self.token
+                    }
         response = post(url, headers=headers, json=params)
         if response.status_code != 200:
-            raise Exception("Http status code {}.{}".format(response.status_code,response.text))
+            raise Exception("Http status code {}.{}".format(response.status_code, response.text))
         return response.text
 
     def PauseProcessor(self, processorName):

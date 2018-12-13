@@ -37,6 +37,6 @@ SCHEMAS_CONFIG_END_POINT = "/api/proxy-sr/config"
 TOPIC_END_POINT = "/api/topics"
 TOPIC_CONFIG_END_POINT = "/api/configs/default/topics"
 
-#SQLHANDLER
+# SQLHANDLER
 VALIDATE_SQL_QUERY = '/api/sql/validation'
 SQL_END_POINT = "/api/ws/v1/sql/execute?"

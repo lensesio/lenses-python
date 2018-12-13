@@ -8,6 +8,7 @@ import ast
 from lenses_python.ConvertDateTime import ConvertDateTime
 from lenses_python.constants import WEBSOCKET_END_POINT
 
+
 class SubscribeHandler:
 
     def __init__(self, username, password, clientId, url, query, write, filename, print_results, datetimelist, formatinglist):
@@ -45,7 +46,6 @@ class SubscribeHandler:
         with open(self.filename, "w+") as f:
             json.dump(self.data_lst, f)
 
-
     def on_message(self, ws, message):
         """
 
@@ -79,7 +79,6 @@ class SubscribeHandler:
             # If message type is HEARTBEAT or SUCCESS print the message
             pp(message)
 
-
     def on_error(self, ws, error):
         """
 
@@ -103,11 +102,12 @@ class SubscribeHandler:
         :param ws:
         :return:
         """
-        request = {  "type" : "SUBSCRIBE",
+        request = {"type" : "SUBSCRIBE",
                    "content" : '{"sqls" : ["'+self.query+'"]}',
                    "correlationId" : 1,
                    "authToken" : self.token
                    }
+
         def run(*args):
             temp = 0
             while True:
@@ -128,7 +128,6 @@ class SubscribeHandler:
                                     on_close=self.on_close)
         ws.on_open = self.on_open
         ws.run_forever()
-
 
     def _Login(self):
         """

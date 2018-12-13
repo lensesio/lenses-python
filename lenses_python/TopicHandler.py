@@ -3,6 +3,7 @@ from pprint import pprint as pp
 from lenses_python.ReadConfigFile import ReadConfigFile
 from lenses_python.constants import TOPIC_CONFIG_END_POINT, TOPIC_END_POINT
 
+
 class TopicHandler:
 
     def __init__(self, url, username, password, token):
@@ -154,7 +155,7 @@ class TopicHandler:
         :return:
         """
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
-               'x-kafka-lenses-token': self.token}
+                   'x-kafka-lenses-token': self.token}
         url = self.url+self.topic_end_point
         response = delete(url+"/"+topic+"/"+partition+"/"+offset, headers=headers)
         if response.status_code != 200:
@@ -164,7 +165,7 @@ class TopicHandler:
                 raise Exception("Http status code {}. The topic {} doesn't exist".format(response.status_code, topic))
             elif response.status_code == 403:
                 raise Exception("Http status code {}. The user doesn't have the"
-                            " permission for this action ".format(response.status_code))
+                                " permission for this action ".format(response.status_code))
             else:
                 raise Exception("Http status code {}. {}".format(response.status_code, response.text))
         else:
