@@ -8,11 +8,19 @@ from lenses_python.lenses import lenses
 
 class TestTopic:
 
+    def test_create_topic(self, lenses_conn):
+        config = {
+            "cleanup.policy": "compact",
+            "compression.type": "snappy"
+        }
+        lenses_conn.CreateTopic("test_topic", 1, 1, config)
+
     def test_get_all_topics(self, lenses_conn):
+        time.sleep(10)
         assert lenses_conn.GetAllTopics()[0]['topicName']
 
     def test_topic_info(self, lenses_conn):
-        topic_name = '_kafka_lenses_lsql_storage'
+        topic_name = 'test_topic'
         assert topic_name in lenses_conn.TopicInfo(topic_name)['topicName']
 
     def test_topic_names(self, lenses_conn):
@@ -20,14 +28,7 @@ class TestTopic:
 
     def test_update_topic_config(self, lenses_conn):
         config = {"configs": [{"key": "cleanup.policy", "value": "compact"}]}
-        lenses_conn.UpdateTopicConfig('_kafka_lenses_lsql_storage', config)
-
-    def test_create_topic(self, lenses_conn):
-        config = {
-            "cleanup.policy": "compact",
-            "compression.type": "snappy"
-        }
-        lenses_conn.CreateTopic("test_topic", 1, 1, config)
+        lenses_conn.UpdateTopicConfig('test_topic', config)
 
     def test_delete_topic(self, lenses_conn):
         lenses_conn.DeleteTopic("test_topic")
@@ -65,3 +66,6 @@ class TestTopic:
         )
         url = 'ws://localhost:3030'
         conn.SubscribeHandler(url, "admin", query, write=True, filename='test_file')
+
+    def test_clean_topic(self, lenses_conn):
+        lenses_conn.DeleteTopic("test_topic_ws")

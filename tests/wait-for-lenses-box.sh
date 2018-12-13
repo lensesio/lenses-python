@@ -18,16 +18,3 @@ sleep 30
 # Check the docker logs just in case
 echo "=========== Docker Logs ==========="
 docker logs lenses-box | tail -n200
-
-# # Additional checks that are by default disabled.
-# echo "=========== List Connectors ==========="
-# docker exec -it lenses-box lenses-cli --user admin --pass admin --host http://localhost:3030 connectors
-# # Check all Logs
-# echo "=========== Logs ==========="
-# cat <<EOF | docker exec -i lenses-box bash
-# #!/usr/bin/env bash
-# for file in \$(find /var/log -type f); do
-#   echo "=========== \$file ==========="
-#   cat \$file
-# done
-# EOF
