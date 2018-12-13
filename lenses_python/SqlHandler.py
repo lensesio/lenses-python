@@ -102,8 +102,7 @@ class SqlHandler:
         ws.close()
         if not is_extract_pandas:
             return {"records": data_list,
-                    "stats": stats_list
-                    }
+                    "stats": stats_list}
         else:
             if len(data_list) > 0:
                 return self._ConvertToDF(data_list)
