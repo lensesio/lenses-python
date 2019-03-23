@@ -6,7 +6,7 @@ Python library for managing [Lenses](http://www.landoop.com/kafka-lenses) REST a
 
 # Documentation
 
-See [Lenses Python documentation](https://lenses.stream/dev/python-lib/).
+See [Lenses Python documentation](https://docs.lenses.io/dev/python-lib/).
 
 # Installation
 
