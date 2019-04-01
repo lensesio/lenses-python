@@ -16,5 +16,5 @@ setup(
     long_descripion=long_description,
     long_description_content_type="text/markdown",
     python_requires='>=3',
-    install_requires=['requests', 'pandas==0.23.3', 'websocket-client==0.47.0', 'sseclient-py==1.7', 'kerberos']
+    install_requires=['requests', 'pandas==0.24.2', 'websocket-client==0.56.0', 'sseclient-py==1.7', 'kerberos']
 )
