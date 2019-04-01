@@ -20,6 +20,9 @@ before_install:
   - docker pull landoop/kafka-lenses-dev:latest
 
 install:
+  - wget https://archive.landoop.com/lenses/2.3/lenses-2.3.0-linux64.tar.gz
+  - tar xf lenses-2.3.0-linux64.tar.gz
+  - rm -f lenses-2.3.0-linux64.tar.gz
   - make install
   - make LICENSE_KEY=$LICENSE_KEY docker
 
