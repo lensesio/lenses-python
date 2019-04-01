@@ -73,7 +73,7 @@ source virtenv/bin/activate
 make docker
 ```
 
-Run tests:
+#### Run tests
 
 ```
 make LICENSE_KEY=<YOUR-LICENSE-KEY> docker
