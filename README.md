@@ -31,20 +31,47 @@ You can install by using pipp
 
 #### Requirements
 
+**Will be handled automatically**
+
 | Automatically installed |
 | ------ |
 | tox |
 | pytest |
 | flake8 |
 
+**Must be installed manually**
+
 | Must be Present |
 | ------ |
 | Docker |
-| Lenses Box |
+| Virtualenv |
+
+**Storage Requirements**
+
+| Type | Storage |
+| ------ | ------ |
+| Lenses Box | 0.75 G |
+| Virtual 3.5 Env | 140 M |
+| Virtual 3.6 Env | 139 M |
+| Virtual 3.7 Env | 139 M |
+
+**Memory Requirements**
+
+Integration tests will run Lenses-Box, which requires ~4G of memory.
+
+#### Create and Activate Virtualenv
 
 
+```
+virtualenv --python=python3 virtenv
+source virtenv/bin/activate
+```
 
-**Integration tests will run Lenses-Box, which requires ~4G of memory.**
+#### Start Lenses Box
+
+```
+make docker
+```
 
 Run tests:
 
