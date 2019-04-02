@@ -5,17 +5,16 @@ with open("README.md", "r") as fh:
 
 setup(
     name='lenses_python',
-    version='2.2',
+    version='2.3',
     packages=['lenses_python'],
     url='https://github.com/Landoop/lenses-python',
     download_url='https://github.com/Landoop/lenses-python/archive/2.2.tar.gz',
     license='Apache License 2.0',
     author='Filippas Serepas',
-    author_email='info@landoop.com',
-    description='lenses python client',
+    author_email='info@lenses.io',
+    description='Lenses Python Client',
     long_descripion=long_description,
     long_description_content_type="text/markdown",
     python_requires='>=3',
-    install_requires=['requests', 'pandas==0.23.3', 'websocket-client==0.47.0', 'sseclient-py==1.7', 'kerberos']
-
+    install_requires=['requests', 'pandas==0.24.2', 'websocket-client==0.56.0', 'sseclient-py==1.7', 'kerberos']
 )
