@@ -21,7 +21,6 @@ DIST_DIR = ./dist
 TOX_DIR = ./.tox
 CLEAN_DIRS = ./$(PROJECT) $(ENV) $(shell [ -d $(TOX_DIR) ] && echo $(TOX_DIR) || :)
 REQUIREMENTS = -r requirements-dev.txt
-LENSES_BOX_STATUS := $(shell docker inspect -f '{{.State.Running}}' lenses-box)
 
 all: install
 
@@ -32,10 +31,14 @@ distclean: clean
 	rm -rf $(ENV)/ ./build/ $(DIST_DIR)/ ./*egg* $(TOX_DIR)/
 
 docker:
-	@if [[ "${LENSES_BOX_STATUS}" == "true" ]]; then \
-		echo "Lenses box is already running!"; \
-		echo "Shutting down lenses-box"; \
-		docker stop lenses-box && sleep 10; \
+	@if docker ps -a | grep -q lenses-box; then \
+		if docker inspect -f '{{.State.Running}}' lenses-box | grep -iq "true"; then \
+			echo "Lenses box is already running!"; \
+			echo "Shutting down lenses-box"; \
+			docker stop lenses-box && sleep 10; \
+		else \
+			docker rm lenses-box; \
+		fi; \
 	fi
 
 	@docker run \
