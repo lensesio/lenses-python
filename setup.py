@@ -8,7 +8,7 @@ setup(
     version='2.3',
     packages=['lenses_python'],
     url='https://github.com/Landoop/lenses-python',
-    download_url='https://github.com/Landoop/lenses-python/archive/2.2.tar.gz',
+    download_url='https://github.com/Landoop/lenses-python/archive/2.3.tar.gz',
     license='Apache License 2.0',
     author='Filippas Serepas',
     author_email='info@lenses.io',
