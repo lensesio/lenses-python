@@ -8,6 +8,7 @@ import ast
 from lenses_python.ConvertDateTime import ConvertDateTime
 from lenses_python.constants import WEBSOCKET_END_POINT
 
+
 class SubscribeHandler:
 
     def __init__(self, username, password, clientId, url, query, write, filename, print_results, datetimelist, formatinglist):
@@ -48,7 +49,6 @@ class SubscribeHandler:
 
     def on_message(self, ws, message):
         """
-
         :param ws:
         :param message:
         :return:
@@ -103,11 +103,13 @@ class SubscribeHandler:
         :param ws:
         :return:
         """
-        request = {  "type" : "SUBSCRIBE",
-                   "content" : '{"sqls" : ["'+self.query+'"]}',
-                   "correlationId" : 1,
-                   "authToken" : self.token
-                   }
+        request = {
+            "type": "SUBSCRIBE",
+            "content": '{"sqls" : ["'+self.query+'"]}',
+            "correlationId": 1,
+            "authToken": self.token
+        }
+
         def run(*args):
             temp = 0
             while True:
@@ -138,7 +140,6 @@ class SubscribeHandler:
         """
         loginrequest = {"type": "LOGIN", "content": '{"user": "'+self.username+'", "password": "'+self.password+'"}',
                         "correlationId": 2, "authToken": ""}
-        # self.url_req = self.url+"/api/kafka/ws/"+self.clientId
         self.url_req = self.url+WEBSOCKET_END_POINT+self.clientId
         ws = websocket.create_connection(self.url_req)
         ws.send(json.dumps(loginrequest))

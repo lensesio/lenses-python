@@ -82,7 +82,7 @@ make test
 
 This command will start a Lenses docker box and when it's ready the integration tests will run.
 
-*Note*: You can find a dev license key [here](https://www.landoop.com/downloads/)
+*Note*: You can find a dev license key [here](https://www.lenses.io/downloads/)
 
 ## License
 

@@ -39,4 +39,4 @@ TOPIC_CONFIG_END_POINT = "/api/configs/default/topics"
 
 #SQLHANDLER
 VALIDATE_SQL_QUERY = '/api/sql/validation'
-SQL_END_POINT = "/api/ws/v1/sql/execute?"
+SQL_END_POINT = "/api/ws/v2/sql/execute?"
