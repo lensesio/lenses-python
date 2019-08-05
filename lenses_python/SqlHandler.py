@@ -1,11 +1,13 @@
+import json
+
 from requests import get, delete, post, put
 import pandas as pd
 from json import loads
-from urllib.parse import urlencode
 import websocket
 
 from lenses_python.ConvertDateTime import ConvertDateTime
 from lenses_python.constants import VALIDATE_SQL_QUERY, SQL_END_POINT
+
 
 class SqlHandler:
 
@@ -68,21 +70,23 @@ class SqlHandler:
     def browsing_data(self, stats=0,  is_extract_pandas=False):
         """
 
+        :param is_live:
         :param stats: int
         :param is_extract_pandas: Boolean
         :return: In case is_extract if false return a dictionary , otherwise return Pandas dataframe
         """
-        params = {
-                   "token": self.token,
-                   "sql": self.query,
-                   "stats": stats
-                 }
-        params = urlencode(params)
         if 'https' in self.url:
-            url = self.url.replace("https", "wss")+SQL_END_POINT+params
+            url = self.url.replace("https", "wss")+SQL_END_POINT
         else:
-            url = self.url.replace("http", "ws") + SQL_END_POINT + params
+            url = self.url.replace("http", "ws") + SQL_END_POINT
         ws = websocket.create_connection(url)
+        message = {
+            "token": self.token,
+            "sql": self.query,
+            "stats": stats
+        }
+        ws.send(json.dumps(message))
+
         data_list = []
         stats_list = []
         while True:
@@ -98,9 +102,10 @@ class SqlHandler:
                 break  # Exit from while loop
         ws.close()
         if not is_extract_pandas:
-            return {"records": data_list,
-                    "stats": stats_list
-                   }
+            return {
+                "records": data_list,
+                "stats": stats_list
+            }
         else:
             if len(data_list) > 0:
                 return self._ConvertToDF(data_list)
