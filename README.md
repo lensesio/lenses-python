@@ -11,9 +11,9 @@ See [Lenses Python documentation](https://docs.lenses.io/dev/python-lib/).
 ### Authentication
 
 There are three different ways that can be used for authentication.
-- Basic (username & password)
-- service (service account: username:token)
-- kerberos
+- **basic** (username & password)
+- **service** (service account: username:token)
+- **kerberos** (krb_service: service)
 
 #### Basic Auth
 
@@ -31,6 +31,7 @@ For basic authentication, issue:
 where `lenses_endpoint`, `user`, `psk` are python variables set by you with the endpoint, username and password
 
 #### Kerberos Auth
+
 **Note**: Kerberos support is only supported for linux platform and is not enabled by default.
 To enable Kerberos support follow kerberos dependency step in the `Install` section at the end
 
@@ -47,6 +48,7 @@ For Kerberos authentcation, issue:
     ) 
 
 #### Get User Info after authentication
+
 To get the authenticated user info, issue:
 
     userInfo = lenses_lib.UserInfo()
@@ -60,6 +62,7 @@ To get the authenticated user info, issue:
      'user': '***'}
 
 ### Get Topics List
+
 To get a list with all kafka topics, issue
 
     topicsList = lenses_lib.LstOfTopicsNames()
@@ -71,6 +74,7 @@ To get a list with all kafka topics, issue
     ]
 
 ### Get Topics Description
+
 To get detailed description for all kafka topics, issue
 
     kafkaTopics = lenses_lib.GetAllTopics()
@@ -86,6 +90,7 @@ To get detailed description for all kafka topics, issue
       ...
 
 ### Detailed info for a Topic
+
 To get a detailed description for a particular topic, issue
 
     topicInfo = lenses_lib.TopicInfo('connect-configs')
@@ -197,6 +202,8 @@ To delete a Kafka ACL, issue:
     'OK'
 
 #### Managing Connect Distributed
+
+Below we include examples for the methods used to manage kafka connect
 
 ##### Create a Connector
 
@@ -372,6 +379,8 @@ Note: `dev` is the connect cluster's name.
 
 #### SQL Engine
 
+Examples for the methods used for running sql commands for the SQL Engine
+
 #### Create a Topic via SQL Engine
 
     query = (
@@ -440,6 +449,8 @@ Note: `dev` is the connect cluster's name.
 
 #### SQL Processors
 
+Examples with methods used to manage SQL Processors
+
 ##### Create a Processor
 
     query = (
@@ -483,6 +494,7 @@ Next use the `PauseProcessor` method to pause the processor
 #### Data Flows
 
 You can view the data flow in your cluster by using the `GetFlows` method
+**Note**: With `GetFlows()` you can view the IDs of all consumers/producers along with any relations to others consumers/producers. Example: { source -> kafka -> sink }
 
     result = lenses_lib.GetFlows()
     
@@ -511,6 +523,8 @@ You can view the data flow in your cluster by using the `GetFlows` method
 
 #### Data Policy
 
+Examples with methos used to manage data policies in Lenses
+
 ##### Set a Policy
 
     result = lenses_lib.SetPolicy("test_policy","All","HIGH","test_category",["test_field"])
@@ -538,6 +552,8 @@ You can view the data flow in your cluster by using the `GetFlows` method
     lenses_lib.DelPolicy("test_policy")
 
 #### Kafka Quotas
+
+Examples with methods used to manage Kafka quotas
 
 ##### Get All Quotas
 
@@ -600,6 +616,8 @@ You can view the data flow in your cluster by using the `GetFlows` method
     lenses_lib.DeleteQuotaClient('admin', config)
 
 #### Lenses Admin
+
+Examples with methods provided for managing the Lenses Admin interface
 
 ##### Create a Group
 
@@ -858,6 +876,8 @@ Note adding a new token, automatically expires the old one
     ]
 
 #### Registry
+
+Examples with methods used to manage schemas.
 
 ##### Get all Schemas
 
