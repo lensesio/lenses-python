@@ -49,6 +49,8 @@ coverage.xml
 *,cover
 .hypothesis/
 test_file
+license.json
+subscribe.py
 
 # PyBuilder
 target/

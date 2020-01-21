@@ -1,7 +1,7 @@
 .PHONY: clean distclean
 
 # Project settings
-PROJECT = lenses_python
+PROJECT = lensesio
 
 # Virtual environment settings
 ENV ?= venv
@@ -44,11 +44,12 @@ docker:
 	@docker run \
 	-e EULA="https://dl.lenses.stream/d/?id=$(LICENSE_KEY)" \
 	--rm -d \
+	-e ENABLE_SSL=1 \
 	--env-file _resources/acls-dev.env \
-	-v "${PWD}"/lenses:/opt/lenses \
 	-p 3030:3030 -p 9093:9093 -p 9092:9092 -p 2181:2181 -p 8081:8081 -p 9581:9581 -p 9582:9582 -p 9584:9584 -p 9585:9585 \
+	-v "${PWD}"/license.json:/run/lenses/license.conf \
 	--name=lenses-box \
-	landoop/kafka-lenses-dev:2.2.9
+	lensesio/box:latest
 
 install: requirements-dev.txt setup.py
 	[ ! -d "$(ENV)/" ] && python3 -m venv $(ENV)/ || :

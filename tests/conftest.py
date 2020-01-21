@@ -1,7 +1,7 @@
 import pytest
-from lenses_python.lenses import lenses
+from lensesio.lenses import main
 
 
 @pytest.fixture(autouse=True)
 def lenses_conn():
-    return lenses("http://localhost:3030", "admin", "admin")
+    return main("basic", "http://localhost:3030", "admin", "admin")

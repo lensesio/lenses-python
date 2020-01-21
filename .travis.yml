@@ -3,14 +3,14 @@ sudo: required
 language: python
 matrix:
   include:
-    - python: 3.5
-      env: TOXENV=py35
-    - python: 3.6
-      env: TOXENV=py36
     - python: 3.7
       dist: xenial
       sudo: true
       env: TOXENV=py37
+    - python: 3.8
+      dist: xenial
+      sudo: true
+      env: TOXENV=py38
 
 env:
   global:
@@ -19,7 +19,7 @@ env:
 services:
   - docker
 before_install:
-  - docker pull landoop/kafka-lenses-dev:latest
+  - docker pull lensesio/box:latest
 
 install:
   - wget https://archive.landoop.com/lenses/2.3/lenses-2.3.0-linux64.tar.gz
