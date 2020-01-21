@@ -1,0 +1,20 @@
+version: '3'
+services:
+  kerberos:
+    image: local/kerberos-testing:latest
+    container_name: krb
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    healthcheck:
+        test: ["CMD-SHELL", "if [[ -e /local/krb5.keytab && -e /local/krb5.conf]]", "then exit 0", "else exit 1", "fi"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    environment:
+      - DOMAIN=localhost.localdomain
+      - HOST_FQDN=localhost.localdomain
+    network_mode: host
+    volumes:
+      - ./local:/local
+      - ./config.sh:/opt/config.sh
