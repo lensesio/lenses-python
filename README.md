@@ -28,10 +28,10 @@ For basic authentication, issue:
         password=psk
     )
 
-where lenses_endpoint, user, psk are python variables set by you with the endpoint, username and password
+where `lenses_endpoint`, `user`, `psk` are python variables set by you with the endpoint, username and password
 
 #### Kerberos Auth
-Note: Kerberos support is only supported for linux platform and is not enabled by default.
+**Note**: Kerberos support is only supported for linux platform and is not enabled by default.
 To enable Kerberos support follow kerberos dependency step in the `Install` section at the end
 
         pip3 install dist/lensesio-3.0.0-py3-none-any.whl[kerberos]
@@ -479,6 +479,35 @@ Next use the `PauseProcessor` method to pause the processor
 
     processor_id = lenses_lib.GetProcessorID('test_processor')
     result = lenses_lib.DeleteProcessor(processor_id[0])
+
+#### Data Flows
+
+You can view the data flow in your cluster by using the `GetFlows` method
+
+    result = lenses_lib.GetFlows()
+    
+    print(result)
+    {'dev:logs-broker': {'descendants': ['TOPIC-logs_broker'],
+        'description': '\nName:logs-broker\nInstance:/var/log/broker.log',
+        'label': 'dev:logs-broker',
+        'parents': [],
+        'type': 'SOURCE',
+        'relations': {}},
+     'dev:nullsink': {'descendants': [],
+        'description': '\nName:nullsink\nInstance:/dev/null',
+        'label': 'dev:nullsink',
+        'parents': ['TOPIC-nyc_yellow_taxi_trip_data',
+            'TOPIC-sea_vessel_position_reports',
+            'TOPIC-telecom_italia_data'],
+        'type': 'SINK',
+        'relations': {}},
+     'lsql_585e96e284804792be0875af0559da9e': {'descendants': ['TOPIC-fast_vessel_processor'],
+        'description': 'SET autocreate=true;\n\nINSERT INTO fast_vessel_processor\n    SELECT MMSI, Speed, Longitude AS Long, Latitude AS Lat, `Timestamp`\n    FROM sea_vessel_position_reports\n    WHERE Speed > 10;',
+        'label': 'filter_fast_vessels',
+        'parents': ['TOPIC-sea_vessel_position_reports'],
+        'type': 'PROCESSOR',
+        'relations': {}}}
+
 
 #### Data Policy
 
