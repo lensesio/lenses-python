@@ -19,7 +19,7 @@ There are three different ways that can be used for authentication.
 
 For basic authentication, issue:
 
-    from lensesio.lenses import main as main
+    from lensesio.lenses import main
 
     lenses_lib = main(
         auth_type="basic",
