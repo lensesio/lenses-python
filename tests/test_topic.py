@@ -32,7 +32,7 @@ class TestTopic:
         result = lenses_conn.UpdateTopicConfig('test_topic', config)
         assert result == 'Topic [test_topic] updated config with [SetTopicConfiguration(List(TopicConfigKeyValue(cleanup.policy,compact)))]'
 
-    def publish_to_topic(self):
+    def publish_to_topic(self, lenses_conn):
         lenses_conn.Publish("test_topic", "test_key", "{'value':1}")
 
     def test_delete_topic_records(self, lenses_conn):
