@@ -26,3 +26,5 @@ jobs:
         run: make docker
       - name: Run Tox
         run: make test
+      - name: Clean dockers
+        run: make docker_clean

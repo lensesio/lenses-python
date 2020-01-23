@@ -39,7 +39,7 @@ rflake:
 	flake8 lensesio/
 
 docker: decrypt_license
-	# @docker-compose -f _resources/lenses-kerberos/kerberos.yaml build
+	@docker-compose -f _resources/lenses-kerberos/kerberos.yaml build
 	@docker-compose -f _resources/lenses-kerberos/kerberos.yaml down
 	@rm -rf _resources/lenses-kerberos/local
 	@mkdir -vp _resources/lenses-kerberos/local
@@ -58,6 +58,12 @@ docker: decrypt_license
 	fi
 
 	@docker-compose -f _resources/lenses-kerberos/lenses-box.yaml up -d
+
+docker_clean:
+	@docker-compose -f _resources/lenses-kerberos/kerberos.yaml down
+	@docker-compose -f _resources/lenses-kerberos/lenses-box.yaml down
+	@rm -rf _resources/lenses-kerberos/local
+
 
 install: requirements-dev.txt setup.py
 	[ ! -d "$(ENV)/" ] && python3 -m venv $(ENV)/ || :
