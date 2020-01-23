@@ -25,7 +25,7 @@ REQUIREMENTS = -r requirements-dev.txt
 all: install
 
 clean:
-	find $(CLEAN_DIRS) \( -name "*.pyc" -o -name __pycache__ -o -type d -empty \) -exec rm -rf {} + 2> /dev/null
+	python3 setup.py clean
 
 distclean: clean
 	rm -rf $(ENV)/ ./build/ $(DIST_DIR)/ ./*egg* $(TOX_DIR)/

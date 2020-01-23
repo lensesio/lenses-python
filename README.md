@@ -160,7 +160,7 @@ Publishing data to a topic is as easy as
 
 #### Delete records from a Topic
 
-Records can be deleted by providing a range of offsets (init-offset, end-offset)
+Records can be deleted by providing a range of offsets
 
         result = lenses_lib.DeleteTopicRecords('test_topic', "0", "10")
         
