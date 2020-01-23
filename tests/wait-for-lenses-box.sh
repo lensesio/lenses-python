@@ -2,13 +2,13 @@
 
 # Wait up to 300 seconds for Lenses to start
 for ((i=0;i<60;i++)); do
-    docker exec -it lenses-box lenses-cli --user admin --pass admin --host http://localhost:3030 connectors --cluster-name dev 2>&1 >/dev/null && break
+    docker exec -i lenses-box lenses-cli --user admin --pass admin --host http://localhost:3030 connectors --cluster-name dev 2>&1 >/dev/null && break
     sleep 5
 done
 
 # Also wait up to 240 seconds more for Connect to start (it is slower than Lenses)
 for ((i=0;i<48;i++)); do
-    docker exec -it lenses-box curl "http://localhost:8083/connectors" && break
+    docker exec -i lenses-box curl "http://localhost:8083/connectors" && break
     sleep 5
 done
 

@@ -28,7 +28,7 @@ clean:
 	python3 setup.py clean
 
 decrypt_license:
-	@if [[ ! -e _resources/lenses-kerberos/license.json  ]]; then \
+	@if [ ! -e _resources/lenses-kerberos/license.json  ]; then \
 		echo "Decrypting license..."; \
 		gpg --quiet --batch --yes --decrypt --passphrase="${DECRYPT_PSK}" \
 			--output _resources/lenses-kerberos/license.json license.json.gpg; \
@@ -45,12 +45,12 @@ docker: decrypt_license
 	@mkdir -vp _resources/lenses-kerberos/local
 	@docker-compose -f _resources/lenses-kerberos/kerberos.yaml up -d
 
-	@if [[ ! -e _resources/lenses-kerberos/license.json ]]; then \
+	@if [ ! -e _resources/lenses-kerberos/license.json ]; then \
 		echo "Licese is missing."; \
 		exit 1; \
 	fi
+	@echo waiting 20 seconds before starting lenses
 	@sleep 20
-
 	@if docker ps -a | grep -q lenses-box; then \
 		echo "Lenses box is already running!"; \
 		echo "Shutting down lenses-box"; \
