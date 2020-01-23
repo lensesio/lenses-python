@@ -27,8 +27,12 @@ all: install
 clean:
 	python3 setup.py clean
 
-distclean: clean
-	rm -rf $(ENV)/ ./build/ $(DIST_DIR)/ ./*egg* $(TOX_DIR)/
+#distclean: clean
+#	rm -rf $(ENV)/ ./build/ $(DIST_DIR)/ ./*egg* $(TOX_DIR)/
+
+rflake:
+	PATH="${ENV}":"${PATH}"
+	flake8 lensesio/
 
 docker:
 	@if docker ps -a | grep -q lenses-box; then \

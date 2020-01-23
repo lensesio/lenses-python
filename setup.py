@@ -28,6 +28,8 @@ class Clean(Command):
             'lensesio/kafka/__pycache__',
             'lensesio/core/__pycache__',
             'lensesio/registry/__pycache__',
+            '.tox',
+            '.venv'
             ]:
             try:
                 if path.exists(d):
