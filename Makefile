@@ -1,4 +1,4 @@
-.PHONY: clean distclean
+.PHONY: clean
 
 # Project settings
 PROJECT = lensesio
@@ -74,7 +74,8 @@ pep8: install
 	$(FLAKE8) --statistics ./$(PROJECT)/ setup.py
 
 test: .wait-lenses
-	$(TOX)
+	tox
+	# $(TOX)
 
 .wait-lenses:
 	@echo "WAITING LENSES..."
