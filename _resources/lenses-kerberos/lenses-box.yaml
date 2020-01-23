@@ -1,0 +1,34 @@
+version: '3'
+services:
+  lenses-box:
+    image: lensesio/box:3.0.5
+    container_name: lenses-box
+    env_file:
+      - ./acls-dev.env
+    environment:
+      DEBUG_SCRIPT: 0
+
+      CONNECT_HEAP_OPTS: "-Xmx128M -Xms64M"
+      BROKER_HEAP_OPTS: "-Xmx256M -Xms128M"
+      ZOOKEEPER_HEAP_OPTS: "-Xmx128M -Xms64M"
+      SCHEMA_REGISTRY_HEAP_OPTS: "-Xmx128M -Xms64M"
+      KAFKA_REST_HEAP_OPTS: "-Xmx128M -Xms64M"
+      LENSES_HEAP_OPTS: "-Xmx320M -Xms128M"
+
+      CONNECTORS: influxdb
+
+      LENSES_SECURITY_MODE: KERBEROS
+      LENSES_SECURITY_KERBEROS_KEYTAB: /etc/krb5.keytab
+      LENSES_SECURITY_KERBEROS_SERVICE_PRINCIPAL: HTTP/localhost.localdomain
+      LENSES_SECURITY_MAPPINGS: |
+          [
+            {"username": "devops@localhost", "groups": ["adminGroup"]}
+          ]
+
+    network_mode: host
+    ports:
+      - 3030:3030
+    volumes:
+      - ./local/krb5.conf:/etc/krb5.conf
+      - ./local/krb5.keytab:/etc/krb5.keytab
+      - ./license.json:/run/lenses/license.conf

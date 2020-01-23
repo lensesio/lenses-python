@@ -28,33 +28,36 @@ clean:
 	python3 setup.py clean
 
 decrypt_license:
-	gpg --quiet --batch --yes --decrypt --passphrase="DECRYPT_PSK" \
-		--output ./license.json license.json.gpg
+	@if [[ ! -e _resources/lenses-kerberos/license.json  ]]; then \
+		echo "Decrypting license..."; \
+		gpg --quiet --batch --yes --decrypt --passphrase="${DECRYPT_PSK}" \
+			--output _resources/lenses-kerberos/license.json license.json.gpg; \
+	fi
 
 rflake:
 	PATH="${ENV}":"${PATH}"
 	flake8 lensesio/
 
-docker:
+docker: decrypt_license
+	# @docker-compose -f _resources/lenses-kerberos/kerberos.yaml build
+	@docker-compose -f _resources/lenses-kerberos/kerberos.yaml down
+	@rm -rf _resources/lenses-kerberos/local
+	@mkdir -vp _resources/lenses-kerberos/local
+	@docker-compose -f _resources/lenses-kerberos/kerberos.yaml up -d
+
+	@if [[ ! -e _resources/lenses-kerberos/license.json ]]; then \
+		echo "Licese is missing."; \
+		exit 1; \
+	fi
+	@sleep 20
+
 	@if docker ps -a | grep -q lenses-box; then \
-		if docker inspect -f '{{.State.Running}}' lenses-box | grep -iq "true"; then \
-			echo "Lenses box is already running!"; \
-			echo "Shutting down lenses-box"; \
-			docker stop lenses-box && sleep 10; \
-		else \
-			docker rm lenses-box; \
-		fi; \
+		echo "Lenses box is already running!"; \
+		echo "Shutting down lenses-box"; \
+		docker-compose -f _resources/lenses-kerberos/lenses-box.yaml down && sleep 10; \
 	fi
 
-	@docker run \
-	-e EULA="https://dl.lenses.stream/d/?id=$(LICENSE_KEY)" \
-	--rm -d \
-	-e ENABLE_SSL=1 \
-	--env-file _resources/acls-dev.env \
-	-p 3030:3030 -p 9093:9093 -p 9092:9092 -p 2181:2181 -p 8081:8081 -p 9581:9581 -p 9582:9582 -p 9584:9584 -p 9585:9585 \
-	-v "${PWD}"/license.json:/run/lenses/license.conf \
-	--name=lenses-box \
-	lensesio/box:latest
+	@docker-compose -f _resources/lenses-kerberos/lenses-box.yaml up -d
 
 install: requirements-dev.txt setup.py
 	[ ! -d "$(ENV)/" ] && python3 -m venv $(ENV)/ || :

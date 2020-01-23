@@ -51,6 +51,7 @@ coverage.xml
 test_file
 license.json
 subscribe.py
+license_encryption_psk
 
 # PyBuilder
 target/
