@@ -27,8 +27,9 @@ all: install
 clean:
 	python3 setup.py clean
 
-#distclean: clean
-#	rm -rf $(ENV)/ ./build/ $(DIST_DIR)/ ./*egg* $(TOX_DIR)/
+decrypt_license:
+	gpg --quiet --batch --yes --decrypt --passphrase="DECRYPT_PSK" \
+		--output ./license.json license.json.gpg
 
 rflake:
 	PATH="${ENV}":"${PATH}"
