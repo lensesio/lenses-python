@@ -33,7 +33,7 @@ class TestTopic:
         assert result == 'Topic [test_topic] updated config with [SetTopicConfiguration(List(TopicConfigKeyValue(cleanup.policy,compact)))]'
 
     def publish_to_topic(self):
-        conn.Publish("test_topic", "test_key", "{'value':1}")
+        lenses_conn.Publish("test_topic", "test_key", "{'value':1}")
 
     def test_delete_topic_records(self, lenses_conn):
         msg = "Records from topic '%s' and partition '0' up to offset '10'" % 'test_topic'
