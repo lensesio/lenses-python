@@ -12,7 +12,7 @@ class lensesEndpoints():
     def aclEndpoints(self):
         # KafkaACL
         self.lensesAclEndpoint = "/api/acl"
-    
+
     def connectEndpoints(self):
         # DataConnector
         self.lensesConnectEndpoint = "/api/proxy-connect"
@@ -61,7 +61,7 @@ class lensesEndpoints():
         self.lensesSQLValidationEndpoint = '/api/v1/sql/presentation'
         self.lensesSQLEndpoint = "/api/ws/v2/sql/execute?"
 
+
 class getEndpoints():
     def __init__(self, _method):
         getattr(lensesEndpoints, _method)(self)
-    

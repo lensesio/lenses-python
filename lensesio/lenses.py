@@ -5,7 +5,6 @@ from lensesio.core.admin import AdminPanel
 from lensesio.core.basic_auth import Basic
 from lensesio.kafka.topics import KafkaTopic
 from lensesio.registry.schemas import SchemaRegistry
-from lensesio.core.endpoints import lensesEndpoints
 from lensesio.data.sql import SQLExec
 from lensesio.kafka.quotas import KafkaQuotas
 from lensesio.data.policy import Policy
@@ -18,13 +17,14 @@ from lensesio.data.topology import Topology
 from lensesio.flows.flows import LensesFlows
 from sys import exit
 import platform
-import json
 
 
-class main(Basic, KafkaTopic, SchemaRegistry, SQLExec, 
+class main(
+            Basic, KafkaTopic, SchemaRegistry, SQLExec,
             KafkaQuotas, Policy, DataProcessor, DataConnector,
-            KafkaACL, DataSubscribe, LensesFlows,
-            DataConsumers, Topology, AdminPanel,):
+            KafkaACL, DataSubscribe, LensesFlows, lenses_exception,
+            DataConsumers, Topology, AdminPanel,
+        ):
     def __init__(
             self,
             auth_type="basic",
@@ -36,15 +36,24 @@ class main(Basic, KafkaTopic, SchemaRegistry, SQLExec,
         try:
             if auth_type not in ['basic', 'service', 'krb5']:
                 print('''
-                Parameters: 
-                    Mandatory: 
+                Parameters:
+                    Mandatory:
                         auth_type=basic/krb5/service
                         url=lenses endpoint
                     Optional:
-                        username (if auth_type is basic)
-                        password (if username was defined)
-                        service_account (if auth_type is basic)
-                        krb_service (if auth_type is krb5 and platform is either one of linux, darwin)
+                        username (
+                            if auth_type is basic
+                        )
+                        password (
+                            if username was defined
+                        )
+                        service_account (
+                            if auth_type is basic
+                        )
+                        krb_service (
+                            if auth_type is krb5 and platform
+                            is either one of linux, darwin
+                        )
                 ''')
                 exit(1)
         except NameError:
@@ -67,7 +76,8 @@ class main(Basic, KafkaTopic, SchemaRegistry, SQLExec,
                 self.krb5.__init__(self, url=url, service=krb_service)
                 self.krb5.KrbAuth(self)
             else:
-                print("Error: gssapi kerberos integration is not supported for %s" % platform.system())
+                msg = "Error: gssapi kerberos integration is not supported for "
+                print(msg + platform.system())
                 exit(1)
 
         if self.ConnectionValidation() == 1:
