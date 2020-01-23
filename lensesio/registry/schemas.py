@@ -1,26 +1,31 @@
 from lensesio.core.endpoints import getEndpoints
 from lensesio.core.exec_action import exec_request
 
+
 class SchemaRegistry:
 
     def __init__(self):
         getEndpoints.__init__(self, "schemaEndpoints")
 
-        self.schemas_end_point = self.url + self.lensesSchemasEndpoint 
+        self.schemas_end_point = self.url + self.lensesSchemasEndpoint
         self.schemas_config_end_point = self.url + self.lensesSchemasConfigEndpoint
         self.schemas_ids_end_point = self.url + self.lensesSchemasIDsEndpoint
-        self.registry_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
-                                'x-kafka-lenses-token': self.token}
+        self.registry_headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-kafka-lenses-token': self.token}
 
     def GetAllSubjects(self):
         """
-            Returns: 
+            Returns:
                 List with all subjects
         """
-        self.getAllSubjects = exec_request(__METHOD="get",
+        self.getAllSubjects = exec_request(
+            __METHOD="get",
             __EXPECTED="json",
             __URL=self.schemas_end_point,
-            __HEADERS=self.registry_headers)
+            __HEADERS=self.registry_headers
+        )
 
         return self.getAllSubjects
 
@@ -28,15 +33,16 @@ class SchemaRegistry:
         __RQE = self.url
         __RQE = __RQE + "/api/proxy-sr/subjects/"
         __RQE = __RQE + subject + "/versions/"
-        print(__RQE)
-        self.registerNewSchema = exec_request(__METHOD="post",
+        self.registerNewSchema = exec_request(
+            __METHOD="post",
             __EXPECTED="json",
             __URL=__RQE,
             __HEADERS=self.registry_headers,
-            __DATA=schema_json)
-        
+            __DATA=schema_json
+        )
+
         return self.registerNewSchema
-        
+
     def ListVersionsSubj(self, subject):
         """
             Parameters:
@@ -47,10 +53,12 @@ class SchemaRegistry:
         """
         __RQE = self.schemas_end_point
         __RQE = __RQE + '/' + subject + "/versions"
-        self.listVersionsSubj = exec_request(__METHOD="get",
+        self.listVersionsSubj = exec_request(
+            __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers)
+            __HEADERS=self.registry_headers
+        )
 
         return self.listVersionsSubj
 
@@ -59,7 +67,8 @@ class SchemaRegistry:
             Parameters:
                 - subject name (String)
                 - subject's schema (Json)
-                    - Example: {
+                    - Example:
+                    {
                         'schema':
                             '{
                                 "type":"record","name":"reddit_post_key",'
@@ -71,18 +80,20 @@ class SchemaRegistry:
                                         }
                                     ]
                             }'
-                        }
+                    }
             Returns:
                 Json: {"id":subjectID}
         """
         __RQE = self.schemas_end_point
         __RQE = __RQE + '/' + subject + '/versions'
-        self.registerNewSchema = exec_request(__METHOD="post",
+        self.registerNewSchema = exec_request(
+            __METHOD="post",
             __EXPECTED="json",
             __URL=__RQE,
             __HEADERS=self.registry_headers,
-            __DATA=schema_json)
-        
+            __DATA=schema_json
+        )
+
         return self.registerNewSchema
 
     def DeleteSubj(self, subject):
@@ -91,15 +102,18 @@ class SchemaRegistry:
                 - subject name (String)
             Returns:
                 If subject exists - String: '[subjectVersion]'
-                If subject does not exist - String: '{"error_code":40401,"message":"Subject not found."}'
+                If subject does not exist - String:
+                '{"error_code":40401,"message":"Subject not found."}'
         """
         __RQE = self.schemas_end_point
         __RQE = __RQE + '/' + subject
-        self.deleteSubj = exec_request(__METHOD="delete",
+        self.deleteSubj = exec_request(
+            __METHOD="delete",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers)
-        
+            __HEADERS=self.registry_headers
+        )
+
         return self.deleteSubj
 
     def GetSchemaById(self, subjid):
@@ -108,15 +122,18 @@ class SchemaRegistry:
                 - subjectID (Integer)
             Returns:
                 If subjectID exists - Dictionary describing the schema
-                If subjectID does not exist - String: '{"error_code":404,"message":"HTTP 404 Not Found"}'
+                If subjectID does not exist - String:
+                '{"error_code":404,"message":"HTTP 404 Not Found"}'
         """
         __RQE = self.schemas_ids_end_point
         __RQE = __RQE + '/' + str(subjid)
-        self.getSchemaById = exec_request(__METHOD="get",
+        self.getSchemaById = exec_request(
+            __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers)
-        
+            __HEADERS=self.registry_headers
+        )
+
         return self.getSchemaById
 
     def GetSchemaByVer(self, subject, verid):
@@ -125,16 +142,20 @@ class SchemaRegistry:
                 - subject name (String)
                 - versionID (Integer)
             Returns:
-                If subject & versiodID exists - Dictionary describing the schema with the specific version
-                If subject & versiodID does not exist - String: '{"error_code":40402,"message":"Version not found."}'
+                If subject & versiodID exists -
+                    Dictionary describing the schema with the specific version
+                If subject & versiodID does not exist - String:
+                    '{"error_code":40402,"message":"Version not found."}'
         """
         __RQE = self.schemas_end_point
-        __RQE = __RQE + '/' +subject + '/versions/' + str(verid)
-        self.getSchemaByVer = exec_request(__METHOD="get",
+        __RQE = __RQE + '/' + subject + '/versions/' + str(verid)
+        self.getSchemaByVer = exec_request(
+            __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers)
-        
+            __HEADERS=self.registry_headers
+        )
+
         return self.getSchemaByVer
 
     def DeleteSchemaByVersion(self, subject, version):
@@ -143,18 +164,23 @@ class SchemaRegistry:
                 - subject name (String)
                 - versionID (Integer)
             Returns:
-                If subject & versiodID exists - String with the deleted version
-                If subject exists and versiodID does not exist - String: '{"error_code":40402,"message":"Version not found."}'
-                If subject does not exist - String: '{"error_code":40401,"message":"Subject not found."}'
+                If subject & versiodID exists -
+                    String with the deleted version
+                If subject exists and versiodID does not exist - String:
+                    '{"error_code":40402,"message":"Version not found."}'
+                If subject does not exist - String:
+                    '{"error_code":40401,"message":"Subject not found."}'
 
         """
         __RQE = self.schemas_end_point
         __RQE = __RQE + '/' + subject + '/versions/' + str(version)
-        self.deleteSchemaByVersion = exec_request(__METHOD="delete",
+        self.deleteSchemaByVersion = exec_request(
+            __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.registry_headers)
-        
+            __HEADERS=self.registry_headers
+        )
+
         return self.deleteSchemaByVersion
 
     def UpdateGlobalCompatibility(self, compatibility):
@@ -163,21 +189,25 @@ class SchemaRegistry:
                 - compatibility (String)
         """
         __RQE = self.schemas_config_end_point
-        self.updateGlobalCompatibility = exec_request(__METHOD="put",
+        self.updateGlobalCompatibility = exec_request(
+            __METHOD="put",
             __EXPECTED="json",
             __URL=__RQE,
             __HEADERS=self.registry_headers,
-            __DATA=compatibility)
-        
+            __DATA=compatibility
+        )
+
         return self.updateGlobalCompatibility
 
     def GetGlobalCompatibility(self):
         __RQE = self.schemas_config_end_point
-        self.getGlobalCompatibility = exec_request(__METHOD="get",
+        self.getGlobalCompatibility = exec_request(
+            __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers)
-        
+            __HEADERS=self.registry_headers
+        )
+
         return self.getGlobalCompatibility
 
     def ChangeCompatibility(self, subject, compatibility):
@@ -188,12 +218,14 @@ class SchemaRegistry:
         """
         __RQE = self.schemas_config_end_point
         __RQE = __RQE + '/' + subject
-        self.changeCompatibility = exec_request(__METHOD="put",
+        self.changeCompatibility = exec_request(
+            __METHOD="put",
             __EXPECTED="json",
             __URL=__RQE,
             __HEADERS=self.registry_headers,
-            __DATA=compatibility)
-        
+            __DATA=compatibility
+        )
+
         return self.changeCompatibility
 
     def GetCompatibility(self, subject):
@@ -203,9 +235,11 @@ class SchemaRegistry:
         """
         __RQE = self.schemas_config_end_point
         __RQE = __RQE + '/' + subject
-        self.getCompatibility = exec_request(__METHOD="get",
+        self.getCompatibility = exec_request(
+            __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers)
-        
+            __HEADERS=self.registry_headers
+        )
+
         return self.getCompatibility

@@ -1,8 +1,8 @@
 from lensesio.core.ws_auth import WebsocketAuth
 from lensesio.core.endpoints import getEndpoints
-from pprint import pprint as pp
 import websocket
 import json
+
 
 class DataSubscribe(WebsocketAuth):
 
@@ -12,19 +12,24 @@ class DataSubscribe(WebsocketAuth):
         self.lenses_websocket_endpoint = self.url + self.lensesWebsocketEndpoint
 
         if 'https' in self.lenses_websocket_endpoint:
-            self.lenses_websocket_endpoint = self.lenses_websocket_endpoint.replace("https", "wss")
+            self.lenses_websocket_endpoint = self.lenses_websocket_endpoint.replace(
+                "https", "wss"
+            )
         else:
-            self.lenses_websocket_endpoint = self.lenses_websocket_endpoint.replace("http", "ws")
+            self.lenses_websocket_endpoint = self.lenses_websocket_endpoint.replace(
+                "http", "ws"
+            )
 
     def Publish(self, topic, key, value, clientId='LensesPy'):
         self._Login(clientId)
 
-        requestdict = {"type": "PUBLISH",
-                       "content": '{"topic" :"' + topic + '","key" :"' + key + '","value" : "' + value + '"}',
-                       "correlationId": 1,
-                       "authToken": self.wc_conn_token
+        requestdict = {
+            "type": "PUBLISH",
+            "content": '{"topic" :"' + topic + '","key" :"' + key + '","value" : "' + value + '"}',
+            "correlationId": 1,
+            "authToken": self.wc_conn_token
         }
-        
+
         ws_con = websocket.create_connection(self.url_req)
         ws_con.send(json.dumps(requestdict))
 
@@ -52,34 +57,34 @@ class DataSubscribe(WebsocketAuth):
     def Subscribe(self, query, clientId='LensesPy'):
         self._Login(clientId)
 
-        request = {  "type": "SUBSCRIBE",
-                     "content": '{"sqls" : ["' + query + '"]}',
-                     "correlationId": 1,
-                     "authToken": self.wc_conn_token
+        request = {
+            "type": "SUBSCRIBE",
+            "content": '{"sqls" : ["' + query + '"]}',
+            "correlationId": 1,
+            "authToken": self.wc_conn_token
         }
 
         ws_con = websocket.create_connection(self.url_req)
         ws_con.send(json.dumps(request))
 
-        data_list = []
         while True:
             bucket = json.loads(ws_con.recv())
             if bucket['type'] == 'KAFKAMSG':
                 for message in bucket['content']:
-                    topic = message['topic']
-                    offset = message['offset']
-                    partition = message['partition']
+                    # topic = message['topic']
+                    # offset = message['offset']
+                    # partition = message['partition']
                     print(message)
             elif bucket['type'] in ['HEARTBEAT', 'SUCCESS']:
-                print(bucket)  
+                print(bucket)
 
-        ws_conn.close()
+        ws_con.close()
 
     def Unsubscribe(self, topic, clientId='LensesPy'):
         self._Login(clientId)
 
         requestjson = {
-            "type" :"UNSUBSCRIBE",
+            "type": "UNSUBSCRIBE",
             "content": '{"topics": ["' + topic + '"]}',
             "correlationId": 1,
             "authToken": self.wc_conn_token,

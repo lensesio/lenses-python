@@ -1,14 +1,18 @@
 from lensesio.core.endpoints import getEndpoints
 from lensesio.core.exec_action import exec_request
 
+
 class DataProcessor:
 
     def __init__(self):
         getEndpoints.__init__(self, "processorEndpoints")
 
         self.processor_end_point = self.url + self.lensesProcessorsEndpoint
-        self.processor_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
-                                'x-kafka-lenses-token': self.token}
+        self.processor_headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-kafka-lenses-token': self.token
+        }
 
     def CreateProcessor(self, name, sql, runners, clusterName, namespace=None, pipeline=None):
         """
@@ -20,8 +24,11 @@ class DataProcessor:
         :param namespace:string
         :param pipeline:string, applies for Kubernetes mode
         """
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain',
-                    'x-kafka-lenses-token': self.token}
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'text/plain',
+            'x-kafka-lenses-token': self.token
+        }
 
         params = dict(
             name=name,
@@ -30,22 +37,26 @@ class DataProcessor:
             clusterName=clusterName
         )
 
-        self.createProcessor = exec_request(__METHOD="post",
+        self.createProcessor = exec_request(
+            __METHOD="post",
             __EXPECTED="text",
             __URL=self.processor_end_point,
             __HEADERS=headers,
-            __DATA=params)
+            __DATA=params
+        )
 
         return self.createProcessor
 
     def GetProcessors(self):
-        self.getProcessors = exec_request(__METHOD="get",
+        self.getProcessors = exec_request(
+            __METHOD="get",
             __EXPECTED="json",
             __URL=self.processor_end_point,
-            __HEADERS=self.processor_headers)
+            __HEADERS=self.processor_headers
+        )
 
         return self.getProcessors
-    
+
     def GetProcessorID(self, processor_name):
         self.GetProcessors()
 
@@ -57,7 +68,7 @@ class DataProcessor:
 
             except KeyError:
                 pass
-        
+
         return self.getProcessorID
 
     def PauseProcessor(self, processorName):
@@ -67,10 +78,12 @@ class DataProcessor:
         """
         __RQE = self.processor_end_point
         __RQE = __RQE + '/' + processorName + '/pause'
-        self.pauseProcessor = exec_request(__METHOD="put",
+        self.pauseProcessor = exec_request(
+            __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.processor_headers)
+            __HEADERS=self.processor_headers
+        )
 
         return self.pauseProcessor
 
@@ -81,10 +94,12 @@ class DataProcessor:
         """
         __RQE = self.processor_end_point
         __RQE = __RQE + '/' + processorName + '/resume'
-        self.resumeProcessor = exec_request(__METHOD="put",
+        self.resumeProcessor = exec_request(
+            __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.processor_headers)
+            __HEADERS=self.processor_headers
+        )
 
         return self.resumeProcessor
 
@@ -97,10 +112,12 @@ class DataProcessor:
         __RQE = self.processor_end_point
         __RQE = __RQE + '/' + processorName + '/scale/'
         __RQE = __RQE + numberOfRunners
-        self.updateProcessorRunners = exec_request(__METHOD="put",
+        self.updateProcessorRunners = exec_request(
+            __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.processor_headers)
+            __HEADERS=self.processor_headers
+        )
 
         return self.updateProcessorRunners
 
@@ -111,9 +128,11 @@ class DataProcessor:
         """
         __RQE = self.processor_end_point
         __RQE = __RQE + '/' + processorName
-        self.deleteProcessor = exec_request(__METHOD="delete",
+        self.deleteProcessor = exec_request(
+            __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.processor_headers)
+            __HEADERS=self.processor_headers
+        )
 
         return self.deleteProcessor

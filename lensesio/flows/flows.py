@@ -1,3 +1,5 @@
+
+
 class LensesFlows():
 
     def GetFlows(self):
@@ -23,10 +25,10 @@ class LensesFlows():
                     for __TMP__KEY in __TOPOLOGY_FILTERED:
                         if __TMP__KEY == __KEY:
                             continue
-                        
+
                         if 'descendants' in __TOPOLOGY_FILTERED[__TMP__KEY]:
                             if __PARENT in __TOPOLOGY_FILTERED[__TMP__KEY]['descendants']:
                                 __TOPOLOGY_FILTERED[__TMP__KEY]['relations'][__KEY] = __TOPOLOGY_FILTERED[__KEY]
-        
+
         self.getFlows = __TOPOLOGY_FILTERED
         return self.getFlows

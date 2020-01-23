@@ -1,6 +1,6 @@
 from lensesio.core.endpoints import getEndpoints
 from lensesio.core.exec_action import exec_request
-import json
+
 
 class KafkaQuotas:
 
@@ -10,14 +10,19 @@ class KafkaQuotas:
         self.quotas_end_point = self.url + self.lensesQuotasEndpoint
         self.quotas_users_end_point = self.url + self.lensesUserQuotasEndpoint
         self.quotas_clients_end_point = self.url + self.lensesClientQuotasEndpoint
-        self.quota_headers = {'Content-Type': 'application/json', 'Accept': 'application/json',
-                                'x-kafka-lenses-token': self.token}
+        self.quota_headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-kafka-lenses-token': self.token
+        }
 
     def GetQuotas(self):
-        self.getQuotas = exec_request(__METHOD="get",
+        self.getQuotas = exec_request(
+            __METHOD="get",
             __EXPECTED="json",
             __URL=self.quotas_end_point,
-            __HEADERS=self.quota_headers)
+            __HEADERS=self.quota_headers
+        )
 
         return self.getQuotas
 
@@ -31,11 +36,13 @@ class KafkaQuotas:
             "request_percentage" : "75"
         }
         """
-        self.setQuotasAllUsers = exec_request(__METHOD="put",
+        self.setQuotasAllUsers = exec_request(
+            __METHOD="put",
             __EXPECTED="text",
             __URL=self.quotas_users_end_point,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.setQuotasAllUsers
 
@@ -51,13 +58,15 @@ class KafkaQuotas:
         }
         The quota contrain
         """
-        __RQE = self.quotas_users_end_point 
+        __RQE = self.quotas_users_end_point
         __RQE = __RQE + '/' + user + '/clients'
-        self.setQuotaUserAllClients = exec_request(__METHOD="put",
+        self.setQuotaUserAllClients = exec_request(
+            __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.setQuotaUserAllClients
 
@@ -76,11 +85,13 @@ class KafkaQuotas:
         __RQE = self.quotas_users_end_point
         __RQE = __RQE + '/' + user + '/clients/'
         __RQE = __RQE + clientid
-        self.setQuotaUserClient = exec_request(__METHOD="put",
+        self.setQuotaUserClient = exec_request(
+            __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.setQuotaUserClient
 
@@ -95,13 +106,15 @@ class KafkaQuotas:
             "request_percentage" : "75"
         }
         """
-        __RQE = self.quotas_users_end_point 
+        __RQE = self.quotas_users_end_point
         __RQE = __RQE + '/' + user
-        self.setQuotaUser = exec_request(__METHOD="put",
+        self.setQuotaUser = exec_request(
+            __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.setQuotaUser
 
@@ -115,11 +128,13 @@ class KafkaQuotas:
             "request_percentage" : "75"
         }
         """
-        self.setQuotaAllClient = exec_request(__METHOD="put",
+        self.setQuotaAllClient = exec_request(
+            __METHOD="put",
             __EXPECTED="text",
             __URL=self.quotas_clients_end_point,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.setQuotaAllClient
 
@@ -136,11 +151,13 @@ class KafkaQuotas:
         """
         __RQE = self.quotas_clients_end_point
         __RQE = __RQE + '/' + clientid
-        self.setQuotaClient = exec_request(__METHOD="put",
+        self.setQuotaClient = exec_request(
+            __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.setQuotaClient
 
@@ -149,11 +166,13 @@ class KafkaQuotas:
 
         :param config: A list we the parameters which want to delete
         """
-        self.deleteQutaAllUsers = exec_request(__METHOD="delete",
+        self.deleteQutaAllUsers = exec_request(
+            __METHOD="delete",
             __EXPECTED="text",
             __URL=self.quotas_users_end_point,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.deleteQutaAllUsers
 
@@ -165,11 +184,13 @@ class KafkaQuotas:
         """
         __RQE = self.quotas_users_end_point
         __RQE = __RQE + '/' + user + '/clients'
-        self.deleteQuotaUserAllClients = exec_request(__METHOD="delete",
+        self.deleteQuotaUserAllClients = exec_request(
+            __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.deleteQuotaUserAllClients
 
@@ -183,11 +204,13 @@ class KafkaQuotas:
         __RQE = self.quotas_users_end_point
         __RQE = __RQE + '/' + user + '/clients/'
         __RQE = __RQE + clientid
-        self.deleteQuotaUserClient = exec_request(__METHOD="delete",
+        self.deleteQuotaUserClient = exec_request(
+            __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.deleteQuotaUserClient
 
@@ -199,11 +222,13 @@ class KafkaQuotas:
         """
         __RQE = self.quotas_users_end_point
         __RQE = __RQE + '/' + user
-        self.deleteQuotaUser = exec_request(__METHOD="delete",
+        self.deleteQuotaUser = exec_request(
+            __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.deleteQuotaUser
 
@@ -212,11 +237,13 @@ class KafkaQuotas:
 
         :param config: A list we the parameters which want to delete
         """
-        self.deleteQuotaAllClients = exec_request(__METHOD="delete",
+        self.deleteQuotaAllClients = exec_request(
+            __METHOD="delete",
             __EXPECTED="text",
             __URL=self.quotas_clients_end_point,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.deleteQuotaAllClients
 
@@ -228,10 +255,12 @@ class KafkaQuotas:
         """
         __RQE = self.quotas_clients_end_point
         __RQE = __RQE + '/' + clientid
-        self.deleteQuotaClient = exec_request(__METHOD="delete",
+        self.deleteQuotaClient = exec_request(
+            __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config)
+            __DATA=config
+        )
 
         return self.deleteQuotaClient
