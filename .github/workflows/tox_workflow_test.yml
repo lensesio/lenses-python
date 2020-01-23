@@ -24,6 +24,8 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Start Lenses Box
         run: make docker
+        env:
+          DECRYPT_PSK: ${{ secrets.DECRYPT_PSK }}
       - name: Run Tox
         run: make test
       - name: Clean dockers
