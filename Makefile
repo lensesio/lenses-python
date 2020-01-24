@@ -87,7 +87,7 @@ virtenv: mkvirtenv
 pep8: virtenv
 	@$(FLAKE8) --statistics ./$(PROJECT)/ setup.py
 
-test: virtenv docker .wait-lenses
+test: virtenv .wait-lenses
 	@${TOX}
 
 .wait-lenses:
