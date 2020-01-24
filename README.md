@@ -2,7 +2,7 @@
 
 Python library for managing [Lenses](http://www.landoop.com/kafka-lenses) REST and WS APIs.
 
-[![build status](https://travis-ci.org/Landoop/lenses-python.svg?branch=v2.3)](https://travis-ci.org/Landoop/lenses-python)
+![Tox Workflow Tests](https://github.com/lensesio/lenses-python/workflows/Tox%20Workflow%20Tests/badge.svg)
 
 # Documentation
 
