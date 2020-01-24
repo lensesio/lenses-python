@@ -24,8 +24,8 @@ REQUIREMENTS = -r requirements-dev.txt
 
 all: install
 
-clean:
-	python3 setup.py clean
+clean: virtenv
+	@python3 setup.py clean
 
 decrypt_license:
 	@if [ ! -e _resources/lenses-kerberos/license.json  ]; then \
@@ -33,10 +33,6 @@ decrypt_license:
 		gpg --quiet --batch --yes --decrypt --passphrase="${DECRYPT_PSK}" \
 			--output _resources/lenses-kerberos/license.json license.json.gpg; \
 	fi
-
-rflake:
-	PATH="${ENV}":"${PATH}"
-	flake8 lensesio/
 
 docker: decrypt_license
 	@docker-compose -f _resources/lenses-kerberos/kerberos.yaml build
@@ -64,19 +60,36 @@ docker_clean:
 	@docker-compose -f _resources/lenses-kerberos/lenses-box.yaml down
 	@rm -rf _resources/lenses-kerberos/local
 
+build_py:
+	@python3 setup.py sdist bdist_wheel
 
-install: requirements-dev.txt setup.py
-	[ ! -d "$(ENV)/" ] && python3 -m venv $(ENV)/ || :
-	python3 setup.py install
-	pip install --exists-action w $(REQUIREMENTS)
+install: build_py
+	@pip install dist/lensesio-3.0.0-py3-none-any.whl[kerberos]
 
-pep8: install
-	$(FLAKE8) --statistics ./$(PROJECT)/ setup.py
+mkvirtenv:
+	@if [ ! -e venv ]; then \
+		python3 -m virtualenv -p $(shell which python3) venv; \
+		. venv/bin/activate ;\
+		pip3 install -Ur requirements-dev.txt ; \
+	fi
 
-test: .wait-lenses
-	tox
-	# $(TOX)
+rmvirtenv:
+	@if command -v deactivate; then \
+		deactivate; \
+	fi
+
+	@rm -rf venv
+
+virtenv: mkvirtenv
+	@. venv/bin/activate ;
+	@pip -V
+
+pep8: virtenv
+	@$(FLAKE8) --statistics ./$(PROJECT)/ setup.py
+
+test: virtenv docker .wait-lenses
+	@${TOX}
 
 .wait-lenses:
 	@echo "WAITING LENSES..."
-	./tests/wait-for-lenses-box.sh
+	@./tests/wait-for-lenses-box.sh
