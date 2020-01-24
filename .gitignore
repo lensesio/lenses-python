@@ -49,6 +49,11 @@ coverage.xml
 *,cover
 .hypothesis/
 test_file
+license.json
+subscribe.py
+license_encryption_psk
+_resources/lenses-kerberos/local/
+_resources/.travis.yml
 
 # PyBuilder
 target/
