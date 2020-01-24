@@ -1,9 +1,7 @@
 from setuptools import setup, find_packages, Command
-from sys import exit
 from os import path
 from io import open
 import shutil
-
 
 __CWD = path.abspath(path.dirname(__file__))
 with open(path.join(__CWD, 'README.md'), encoding='utf-8') as fstream:
@@ -11,12 +9,16 @@ with open(path.join(__CWD, 'README.md'), encoding='utf-8') as fstream:
 
 pkgversion = '3.0.0'
 
+
 class Clean(Command):
     user_options = []
+
     def initialize_options(self):
         pass
+
     def finalize_options(self):
         pass
+
     def run(self):
         for d in [
             'build',
@@ -30,13 +32,14 @@ class Clean(Command):
             'lensesio/registry/__pycache__',
             '.tox',
             '.venv'
-            ]:
+        ]:
             try:
                 if path.exists(d):
                     shutil.rmtree(d)
                     print("Deleted %s" % d)
-            except:
+            except OSError:
                 print("Error while trying to delete %s" % d)
+
 
 setup(
     name='lensesio',
@@ -76,18 +79,20 @@ setup(
             'lensesio.flows',
             'lensesio.registry',
             'lensesio.data'
-            ],
-            exclude=[]
+        ],
+        exclude=[]
     ),
     python_requires='>=3',
     install_requires=[
-        'requests==2.22.0', 
-        'websocket-client==0.56.0',],
+        'requests==2.22.0',
+        'websocket-client==0.56.0',
+    ],
     extras_require={
-        'kerberos': ['kerberos==1.3.0',],
+        'kerberos': [
+            'kerberos==1.3.0',
+        ],
     },
     cmdclass={
         'clean': Clean,
     },
 )
-

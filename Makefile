@@ -63,8 +63,12 @@ docker_clean:
 build_py:
 	@python3 setup.py sdist bdist_wheel
 
-install: build_py
-	@pip install dist/lensesio-3.0.0-py3-none-any.whl[kerberos]
+install:
+	@if [ -e dist/lensesio-3.0.0-py3-none-any.whl ]; then \
+		pip install dist/lensesio-3.0.0-py3-none-any.whl; \
+	else \
+		echo "No dist package found, please run make build_py first, to build the package"; \
+	fi
 
 mkvirtenv:
 	@if [ ! -e venv ]; then \
