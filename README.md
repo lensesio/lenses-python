@@ -113,6 +113,15 @@ To get a detailed description for a particular topic, issue
 
 #### Create a Topic
 
+Parameters for the **CreateTopic** method
+
+| Parameter Name             | Description                | Requried |
+|:-------------------------- |:---------------------------|:--------:|
+|topicName                   | Topic's Name               | Yes      |
+|partitions                  | Topic's partitions         | Yes      |
+|replication                 | Topic's replication number | Yes      |
+|config                      |Dict with Topic options     | No       |
+
 To create a topic, first create a dictionary with the options below
 
         config = {
@@ -134,6 +143,13 @@ The issue the CreateTopic method
 
 #### Update Topic configuration
 
+Parameters for the **UpdateTopicConfig** method
+
+| Parameter Name             | Description                | Requried |
+|:-------------------------- |:---------------------------|:--------:|
+|topicName                   | Topic's Name               | Yes      |
+|config                      | Dict with Topic options    | No       |
+
 Create the configuration with the desired options
 
         config = {"configs": [{"key": "cleanup.policy", "value": "compact"}]}
@@ -146,6 +162,14 @@ Use the UpdateTopicConfig method to update the topic's configuration
         'Topic [test_topic] updated config with [SetTopicConfiguration(...'
 
 #### Publish data to a Topic
+
+Parameters for the **Publish** method
+
+| Parameter Name             | Description                | Requried |
+|:-------------------------- |:-------------------------- |:--------:|
+|topic                       | Topic's Name               | Yes      |
+|key                         | Topic's key                | Yes      |
+|value                       | Topic's value              | Yes      |
 
 Publishing data to a topic is as easy as
 
@@ -160,6 +184,14 @@ Publishing data to a topic is as easy as
 
 #### Delete records from a Topic
 
+Parameters for the **DeleteTopicRecords** method
+
+| Parameter Name             | Description                | Requried |
+|:-------------------------- |:-------------------------- |:--------:|
+|topic                       | Topic's Name               | Yes      |
+|partition                   | Topic's partition          | Yes      |
+|offset                      | Topic's offset             | Yes      |
+
 Records can be deleted by providing a range of offsets
 
         result = lenses_lib.DeleteTopicRecords('test_topic', "0", "10")
@@ -168,6 +200,13 @@ Records can be deleted by providing a range of offsets
         "Records from topic '%s' and partition '0' up to offset '10'" % 'test_topic'
 
 #### Delete a Topic
+
+Parameters for the **DeleteTopic** method
+
+| Parameter Name             | Description                | Requried |
+|:-------------------------- |:-------------------------- |:--------:|
+|topicname                   | Topic's Name               | Yes      |
+
 
 Delete a topic called `test_topic` by using the DeleteTopic method
 
@@ -187,12 +226,34 @@ Example of listing kafka acls. Here we have not set any acls, hence we get an em
 
 #### Set Kafka ACLs
 
+Parameters for the **SetAcl** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|resourceType                | https://kafka.apache.org/documentation/#security_authz_cli     | Yes      |
+|resourceName                | -                                                              | Yes      |
+|principal                   | -                                                              | Yes      |
+|permissionType              | -                                                              | Yes      |
+|host                        | -                                                              | Yes      |
+|operation                   | -                                                              | Yes      |
+
     result = lenses_lib.SetAcl("Topic", "transactions", "GROUPA:UserA", "Allow", "*", "Read")
     
     print(result)
     'OK'
 
 #### Delete Kafka ACLs
+
+Parameters for the **DelAcl** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|resourceType                | https://kafka.apache.org/documentation/#security_authz_cli     | Yes      |
+|resourceName                | -                                                              | Yes      |
+|principal                   | -                                                              | Yes      |
+|permissionType              | -                                                              | Yes      |
+|host                        | -                                                              | Yes      |
+|operation                   | -                                                              | Yes      |
 
 To delete a Kafka ACL, issue:
 
@@ -206,6 +267,13 @@ To delete a Kafka ACL, issue:
 Below we include examples for the methods used to manage kafka connect
 
 ##### Create a Connector
+
+Parameters for the **CreateConnector** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|configs                     | Connector's config dict                                        | Yes      |
 
 If you have configured Lenses with Connect, then you can use the `CreateConnector` method for creating a new connector.
 
@@ -236,12 +304,25 @@ Note: `dev` is the connect cluster's name.
 
 ##### List all connectors
 
+Parameters for the **GetConnectors** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+
     result = lenses_lib.GetConnectors('dev')
 
     print(result)
     ['test_connector', 'logs-broker', 'nullsink']
 
 ##### Get information about a connector
+
+Parameters for the **GetConnectorInfo** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
 
     result = lenses_lib.GetConnectorInfo('dev', 'test_connector')
 
@@ -256,6 +337,13 @@ Note: `dev` is the connect cluster's name.
 
 ##### Get Connector's Configuration
 
+Parameters for the **GetConnectorConfig** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
+
     result = lenses_lib.GetConnectorConfig('dev', 'test_connector')
     
     print(result)
@@ -265,6 +353,13 @@ Note: `dev` is the connect cluster's name.
      'topic': 'test_connector_topic'}
 
 ##### Get Connector's Status
+
+Parameters for the **GetConnectorStatus** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
 
     result = lenses_lib.GetConnectorStatus('dev', 'test_connector')
 
@@ -276,6 +371,13 @@ Note: `dev` is the connect cluster's name.
 
 ##### Get Connector's Tasks
 
+Parameters for the **GetConnectorTasks** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
+
     result = lenses_lib.GetConnectorTasks('dev', 'test_connector')
     
     print(result)
@@ -286,6 +388,14 @@ Note: `dev` is the connect cluster's name.
 
 ##### Get Connector's Task Status
 
+Parameters for the **GetStatusTask** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
+|task_id                     | Connector's task ID                                            | Yes      |
+
     result = lenses_lib.GetStatusTask('dev', 'test_connector', '0')
     
     print(result)
@@ -293,9 +403,23 @@ Note: `dev` is the connect cluster's name.
 
 ##### Restart a Task
 
+Parameters for the **RestartConnectorTask** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
+|task_id                     | Connector's task ID                                            | Yes      |
+
     result = lenses_lib.RestartConnectorTask('dev', 'test_connector', '0')
 
 ##### Get Connector's plugins
+
+Parameters for the **GetConnectorPlugins** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
 
     result = lenses_lib.GetConnectorPlugins('dev')
     
@@ -311,17 +435,46 @@ Note: `dev` is the connect cluster's name.
 
 ##### Pause a Connector
 
+Parameters for the **PauseConnector** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
+
     result = lenses_lib.PauseConnector('dev', 'test_connector')
 
 ##### Resume a Connector
+
+Parameters for the **ResumeConnector** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
 
     result = lenses_lib.ResumeConnector('dev', 'test_connector')
 
 ##### Restart a Connector
 
+Parameters for the **RestartConnector** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
+
     result = lenses_lib.RestartConnector('dev', 'test_connector')
 
 ##### Update Connector's configuration
+
+Parameters for the **SetConnectorConfig** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
+|configs                     | Connector's config dict                                        | Yes      |
 
         config = {
             "name": "test_connector",
@@ -346,6 +499,13 @@ Note: `dev` is the connect cluster's name.
     }
 
 ##### Delete a Connector
+
+Parameters for the **DeleteConnector** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|cluster                     | Connect cluster                                                | Yes      |
+|connector                   | Connector's name                                               | Yes      |
 
     result = lenses_lib.DeleteConnector('dev', 'test_connector')
 
@@ -382,6 +542,12 @@ Note: `dev` is the connect cluster's name.
 Examples for the methods used for running sql commands for the SQL Engine
 
 #### Create a Topic via SQL Engine
+
+Parameters for the **ExecSQL** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|Query                       | SQL Query                                                      | Yes      |
 
     query = (
         "CREATE TABLE greetings(_key string, _value string) FORMAT (string, string)"
@@ -453,6 +619,18 @@ Examples with methods used to manage SQL Processors
 
 ##### Create a Processor
 
+Parameters for the **CreateProcessor** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|name                        | Processors name                                                | Yes      |
+|sql                         | SQL Query                                                      | Yes      |
+|runners                     | SQL Processor's runners                                        | Yes      |
+|clusterName                 | Cluster's name                                                 | Yes      |
+|namespace                   | K8 Namespace                                                   | No       |
+|pipeline                    | SQL Pipeline tag                                               | No       |
+
+
     query = (
         "SET autocreate=true; insert into test_processor_target SELECT * FROM test_processor_source"
     )
@@ -463,6 +641,12 @@ Examples with methods used to manage SQL Processors
     lsql_fa101b766ec04586b156a1d7f725f771
 
 ##### Pause a Processor
+
+Parameters for the **PauseProcessor** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|name                        | Processors name                                                | Yes      |
 
 First get the processor's ID
 
@@ -478,15 +662,34 @@ Next use the `PauseProcessor` method to pause the processor
 
 ##### Resume a processor
 
+Parameters for the **ResumeProcessor** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|name                        | Processors name                                                | Yes      |
+
     processor_id = lenses_lib.GetProcessorID('test_processor')
     result = lenses_lib.ResumeProcessor(processor_id[0])
 
 ##### Update Processor's Runners
 
+Parameters for the **UpdateProcessorRunners** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|name                        | Processors name                                                | Yes      |
+|runners                     | SQL Processor's runners                                        | Yes      |
+
     processor_id = lenses_lib.GetProcessorID('test_processor')
     lenses_lib.UpdateProcessorRunners(processor_id[0], '4')
 
 ##### Delete a Processor
+
+Parameters for the **DeleteProcessor** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|name                        | Processors name                                                | Yes      |
 
     processor_id = lenses_lib.GetProcessorID('test_processor')
     result = lenses_lib.DeleteProcessor(processor_id[0])
@@ -527,6 +730,16 @@ Examples with methos used to manage data policies in Lenses
 
 ##### Set a Policy
 
+Parameters for the **SetPolicy** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|name                        | Policy name                                                    | Yes      |
+|obfuscation                 | Whether to protect messages at a field level                   | Yes      |
+|impactType                  | The business impact levels in relation to the data             | Yes      |
+|category                    | Category of sensitivity in the data                            | Yes      |
+|fields                      | Definition of fields that the data policy will apply to        | No       |
+
     result = lenses_lib.SetPolicy("test_policy","All","HIGH","test_category",["test_field"])
     print(result)
     'c844ecd4-7cbd-4ec3-82f0-f3750a692efd'
@@ -549,6 +762,12 @@ Examples with methos used to manage data policies in Lenses
 
 ##### Delete a Policy
 
+Parameters for the **DelPolicy** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|name                        | Policy name                                                    | Yes      |
+
     lenses_lib.DelPolicy("test_policy")
 
 #### Kafka Quotas
@@ -557,60 +776,135 @@ Examples with methods used to manage Kafka quotas
 
 ##### Get All Quotas
 
+    lenses_lib.GetQuotas()
+
+##### Set Quotas All Users
+
+Parameters for the **SetQuotasAllUsers** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|config                      | Quota Configuration Dict                                       | Yes      |
+
     QUOTA_CONFIG = {
         "producer_byte_rate": "100000",
         "consumer_byte_rate": "200000",
         "request_percentage": "75"
     }
 
-    lenses_lib.GetQuotas()
-
-##### Set Quotas All Users
-
     lenses_lib.SetQuotasAllUsers(QUOTA_CONFIG)
 
 ##### Set User Quota for a Client
+
+Parameters for the **SetQuotaUserClient** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|user                        | The user to set the quota for                                  | Yes      |
+|clientid                    | The client id to set the quota for                             | Yes      |
+|config                      | Quota Configuration Dict                                       | Yes      |
 
     lenses_lib.SetQuotaUserClient('admin', 'admin', QUOTA_CONFIG)
 
 ##### Set Quota for User
 
+Parameters for the **SetQuotaUser** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|user                        | The user to set the quota for                                  | Yes      |
+|config                      | Quota Configuration Dict                                       | Yes      |
+
     lenses_lib.SetQuotaUser("admin", QUOTA_CONFIG)
 
 ##### Set Quota for all Clients
+
+Parameters for the **SetQuotaAllClient** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|config                      | Quota Configuration Dict                                       | Yes      |
 
     lenses_lib.SetQuotaAllClient(QUOTA_CONFIG)
 
 ##### Set Quota for a Client
 
+Parameters for the **SetQuotaClient** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|clientid                    | The client id to set the quota for                             | Yes      |
+|config                      | Quota Configuration Dict                                       | Yes      |
+
     lenses_lib.SetQuotaClient("admin", QUOTA_CONFIG)
 
 ##### Delete Quota for all Users
+
+Parameters for the **DeleteQutaAllUsers** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|config                      | Quota Configuration Dict                                       | Yes      |
 
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQutaAllUsers(config)
 
 ##### Delete User Quota for all Clients
 
+Parameters for the **DeleteQuotaUserAllClients** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|user                        | The user to delete the quota for                               | Yes      |
+|config                      | Quota Configuration Dict                                       | Yes      |
+
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQuotaUserAllClients("admin", config)
 
 ##### Delete User Quota for a Client
+
+Parameters for the **DeleteQuotaUserClient** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|user                        | The user to delete the quota for                               | Yes      |
+|clientid                    | The client id to delete the quota for                          | Yes      |
+|config                      | Quota Configuration Dict                                       | Yes      |
 
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQuotaUserClient("admin", "admin", config)
 
 ##### Delete Quota for User
 
+Parameters for the **DeleteQuotaUser** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|user                        | The user to delete the quota for                               | Yes      |
+|config                      | Quota Configuration Dict                                       | Yes      |
+
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQuotaUser("admin", config)
 
 ##### Delete Quota for all Clients
 
+Parameters for the **DeleteQuotaAllClients** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|config                      | Quota Configuration Dict                                       | Yes      |
+
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQuotaAllClients(config)
 
 ##### Delete Quota for a Client
+
+Parameters for the **DeleteQuotaClient** method
+
+| Parameter Name             | Description                                                    | Requried |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|
+|clientid                    | The client id to delete the quota for                          | Yes      |
+|config                      | Quota Configuration Dict                                       | Yes      |
 
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQuotaClient('admin', config)
