@@ -11,11 +11,23 @@ See [Lenses Python documentation](https://docs.lenses.io/dev/python-lib/).
 ### Authentication
 
 There are three different ways that can be used for authentication.
-- **basic** (username & password)
-- **service** (service account: username:token)
-- **kerberos** (krb_service: service)
+
+| Authentication Type | Description                    |
+|:------------------- |:-------------------------------|
+|basic                | Basic (Accont) Authentication  |
+|service              | Service Account (Token Based)  |
+|krb5                 | Kerberos Authentication        |
 
 #### Basic Auth
+
+Parameters for the **basic_auth** method
+
+| Parameter Name             | Description                | Requried |
+|:-------------------------- |:---------------------------|:--------:|
+|auth_type                   | Authentication Type        | Yes      |
+|url                         | Lenses Endpoint            | Yes      |
+|username                    | Username                   | Yes      |
+|password                    | Password                   | No       |
 
 For basic authentication, issue:
 
@@ -31,6 +43,14 @@ For basic authentication, issue:
 where `lenses_endpoint`, `user`, `psk` are python variables set by you with the endpoint, username and password
 
 #### Kerberos Auth
+
+Parameters for the **krb_auth** method
+
+| Parameter Name             | Description                | Requried |
+|:-------------------------- |:---------------------------|:--------:|
+|auth_type                   | Authentication Type        | Yes      |
+|url                         | Lenses Endpoint            | Yes      |
+|krb_service                 | Service                    | Yes      |
 
 **Note**: Kerberos support is only supported for linux platform and is not enabled by default.
 To enable Kerberos support follow kerberos dependency step in the `Install` section at the end
