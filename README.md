@@ -1,8 +1,8 @@
+![Tox Workflow Tests](https://github.com/lensesio/lenses-python/workflows/Tox%20Workflow%20Tests/badge.svg)
+
 # Python - Lenses for Apache Kafka
 
 Python library for managing [Lenses](http://www.landoop.com/kafka-lenses) REST and WS APIs.
-
-![Tox Workflow Tests](https://github.com/lensesio/lenses-python/workflows/Tox%20Workflow%20Tests/badge.svg)
 
 # Documentation
 
@@ -40,7 +40,6 @@ For basic authentication, issue:
         password=psk
     )
 
-where `lenses_endpoint`, `user`, `psk` are python variables set by you with the endpoint, username and password
 
 #### Kerberos Auth
 
