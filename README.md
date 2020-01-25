@@ -1380,20 +1380,30 @@ source virtenv/bin/activate
 
 #### Start Lenses Box
 
+**Note**: To run the docker images. First download a valid license to your host and copy it under repository/_resources/lenses-kerberos/license.json.
+You can find a dev license key [here](https://www.lenses.io/downloads/)
+
 ```
 make docker
 ```
 
 #### Run tests
 
+**Note**: Run tests require a running container instance of lenses-box with container name `lenses-box`.
+Apart from the container, they also require: LensesUrl="http://localhost:3030", username="admin", password="admin".
+If you do not have such an instance running, make sure to follow the `make docker` target from above.
+
 ```
-make LICENSE_KEY=<YOUR-LICENSE-KEY> docker
 make test
 ```
 
-This command will start a Lenses docker box and when it's ready the integration tests will run.
+#### Clean Dockers
 
-*Note*: You can find a dev license key [here](https://www.lenses.io/downloads/)
+To stop and remove the dockers containers that `make docker` target initiated, issue:
+
+```
+make docker_clean
+```
 
 ## License
 
