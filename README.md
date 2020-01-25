@@ -27,7 +27,7 @@ Parameters for the **basic_auth** method
 |auth_type                   | Authentication Type        | Yes      |
 |url                         | Lenses Endpoint            | Yes      |
 |username                    | Username                   | Yes      |
-|password                    | Password                   | No       |
+|password                    | Password                   | Yes      |
 
 For basic authentication, issue:
 
