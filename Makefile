@@ -70,11 +70,16 @@ install:
 		echo "No dist package found, please run make build_py first, to build the package"; \
 	fi
 
+test_install: virtenv clean
+	@./venv/bin/pip3 install -U setuptools
+	@./venv/bin/python3 setup.py sdist bdist_wheel
+	@./venv/bin/pip3 install -U dist/lensesio-3.0.0-py3-none-any.whl
+
 mkvirtenv:
 	@if [ ! -e venv ]; then \
 		python3 -m virtualenv -p $(shell which python3) venv; \
 		. venv/bin/activate ;\
-		pip3 install -Ur requirements-dev.txt ; \
+		./venv/bin/pip3 install -Ur requirements-dev.txt ; \
 	fi
 
 rmvirtenv:
