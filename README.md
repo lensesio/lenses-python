@@ -22,12 +22,12 @@ There are three different ways that can be used for authentication.
 
 Parameters for the **basic_auth** method
 
-| Parameter Name             | Description                | Requried |
-|:-------------------------- |:---------------------------|:--------:|
-|auth_type                   | Authentication Type        | Yes      |
-|url                         | Lenses Endpoint            | Yes      |
-|username                    | Username                   | Yes      |
-|password                    | Password                   | Yes      |
+| Parameter Name             | Description                | Requried | Type       | Default                   |
+|:-------------------------- |:---------------------------|:--------:|:-----------|:--------------------------|
+|auth_type                   | Authentication Type        | Yes      | String     | None                      |
+|url                         | Lenses Endpoint            | Yes      | String     | None                      |
+|username                    | Username                   | Yes      | String     | None                      |
+|password                    | Password                   | Yes      | String     | None                      |
 
 For basic authentication, issue:
 
@@ -45,11 +45,11 @@ For basic authentication, issue:
 
 Parameters for the **krb_auth** method
 
-| Parameter Name             | Description                | Requried |
-|:-------------------------- |:---------------------------|:--------:|
-|auth_type                   | Authentication Type        | Yes      |
-|url                         | Lenses Endpoint            | Yes      |
-|krb_service                 | Service                    | Yes      |
+| Parameter Name             | Description                | Requried | Type       | Default                   |
+|:-------------------------- |:---------------------------|:--------:|:-----------|:--------------------------|
+|auth_type                   | Authentication Type        | Yes      | String     | None                      |
+|url                         | Lenses Endpoint            | Yes      | String     | None                      |
+|krb_service                 | Service                    | Yes      | String     | None                      |
 
 **Note**: Kerberos support is only supported for linux platform and is not enabled by default.
 To enable Kerberos support follow kerberos dependency step in the `Install` section at the end
@@ -63,7 +63,7 @@ For Kerberos authentcation, issue:
     lenses_lib = main(
         auth_type="krb5", 
         url="http://localhost:3030", 
-        krb_service="HTTP@primef.dev.local"
+        krb_service="HTTP"
     ) 
 
 #### Get User Info after authentication
@@ -134,12 +134,12 @@ To get a detailed description for a particular topic, issue
 
 Parameters for the **CreateTopic** method
 
-| Parameter Name             | Description                | Requried |
-|:-------------------------- |:---------------------------|:--------:|
-|topicName                   | Topic's Name               | Yes      |
-|partitions                  | Topic's partitions         | Yes      |
-|replication                 | Topic's replication number | Yes      |
-|config                      |Dict with Topic options     | No       |
+| Parameter Name             | Description                | Requried | Type       | Default                   |
+|:-------------------------- |:---------------------------|:--------:|:-----------|:--------------------------|
+|topicName                   | Topic's Name               | Yes      | String     | -                         |
+|partitions                  | Topic's partitions         | Yes      | Int.       | -                         |
+|replication                 | Topic's replication number | Yes      | Int.       | -                         |
+|config                      | Dict with Topic options    | No       | Json       | -                         |
 
 To create a topic, first create a dictionary with the options below
 
@@ -164,10 +164,10 @@ The issue the CreateTopic method
 
 Parameters for the **UpdateTopicConfig** method
 
-| Parameter Name             | Description                | Requried |
-|:-------------------------- |:---------------------------|:--------:|
-|topicName                   | Topic's Name               | Yes      |
-|config                      | Dict with Topic options    | No       |
+| Parameter Name             | Description                | Requried | Type       | Default                   |
+|:-------------------------- |:---------------------------|:--------:|:-----------|:--------------------------|
+|topicName                   | Topic's Name               | Yes      | String     | -                         |
+|config                      | Dict with Topic options    | No       | Json       | -                         |
 
 Create the configuration with the desired options
 
@@ -184,11 +184,11 @@ Use the UpdateTopicConfig method to update the topic's configuration
 
 Parameters for the **Publish** method
 
-| Parameter Name             | Description                | Requried |
-|:-------------------------- |:-------------------------- |:--------:|
-|topic                       | Topic's Name               | Yes      |
-|key                         | Topic's key                | Yes      |
-|value                       | Topic's value              | Yes      |
+| Parameter Name             | Description                | Requried | Type         | Default              |
+|:-------------------------- |:---------------------------|:--------:|:-------------|:---------------------|
+|topic                       | Topic's Name               | Yes      | String       | -                    |
+|key                         | Topic's key                | Yes      | String/Json  | -                    |
+|value                       | Topic's value              | Yes      | String/Json  | -                    |
 
 Publishing data to a topic is as easy as
 
@@ -205,11 +205,11 @@ Publishing data to a topic is as easy as
 
 Parameters for the **DeleteTopicRecords** method
 
-| Parameter Name             | Description                | Requried |
-|:-------------------------- |:-------------------------- |:--------:|
-|topic                       | Topic's Name               | Yes      |
-|partition                   | Topic's partition          | Yes      |
-|offset                      | Topic's offset             | Yes      |
+| Parameter Name             | Description                | Requried | Type       | Default                   |
+|:-------------------------- |:---------------------------|:--------:|:-----------|:--------------------------|
+|topic                       | Topic's Name               | Yes      | String     | -                         |
+|partition                   | Topic's partition          | Yes      | Int        | -                         |
+|offset                      | Topic's offset             | Yes      | Int        | -                         |
 
 Records can be deleted by providing a range of offsets
 
@@ -222,9 +222,9 @@ Records can be deleted by providing a range of offsets
 
 Parameters for the **DeleteTopic** method
 
-| Parameter Name             | Description                | Requried |
-|:-------------------------- |:-------------------------- |:--------:|
-|topicname                   | Topic's Name               | Yes      |
+| Parameter Name             | Description                | Requried | Type       | Default                   |
+|:-------------------------- |:---------------------------|:--------:|:-----------|:--------------------------|
+|topicname                   | Topic's Name               | Yes      | String     | -                         |
 
 
 Delete a topic called `test_topic` by using the DeleteTopic method
@@ -247,14 +247,14 @@ Example of listing kafka acls. Here we have not set any acls, hence we get an em
 
 Parameters for the **SetAcl** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|resourceType                | https://kafka.apache.org/documentation/#security_authz_cli     | Yes      |
-|resourceName                | -                                                              | Yes      |
-|principal                   | -                                                              | Yes      |
-|permissionType              | -                                                              | Yes      |
-|host                        | -                                                              | Yes      |
-|operation                   | -                                                              | Yes      |
+| Parameter Name             | Description                                                  | Requried | Type       |
+|:-------------------------- |:-------------------------------------------------------------|:--------:|:-----------|
+|resourceType                | https://kafka.apache.org/documentation/#security_authz_cli   | Yes      | String     |
+|resourceName                | -                                                            | Yes      | String     |
+|principal                   | -                                                            | Yes      | String     |
+|permissionType              | -                                                            | Yes      | String     |
+|host                        | -                                                            | Yes      | String     |
+|operation                   | -                                                            | Yes      | String     |
 
     result = lenses_lib.SetAcl("Topic", "transactions", "GROUPA:UserA", "Allow", "*", "Read")
     
@@ -265,14 +265,14 @@ Parameters for the **SetAcl** method
 
 Parameters for the **DelAcl** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|resourceType                | https://kafka.apache.org/documentation/#security_authz_cli     | Yes      |
-|resourceName                | -                                                              | Yes      |
-|principal                   | -                                                              | Yes      |
-|permissionType              | -                                                              | Yes      |
-|host                        | -                                                              | Yes      |
-|operation                   | -                                                              | Yes      |
+| Parameter Name             | Description                                                  | Requried | Type       |
+|:-------------------------- |:-------------------------------------------------------------|:--------:|:-----------|
+|resourceType                | https://kafka.apache.org/documentation/#security_authz_cli   | Yes      | String     |
+|resourceName                | -                                                            | Yes      | String     |
+|principal                   | -                                                            | Yes      | String     |
+|permissionType              | -                                                            | Yes      | String     |
+|host                        | -                                                            | Yes      | String     |
+|operation                   | -                                                            | Yes      | String     |
 
 To delete a Kafka ACL, issue:
 
@@ -289,10 +289,10 @@ Below we include examples for the methods used to manage kafka connect
 
 Parameters for the **CreateConnector** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|configs                     | Connector's config dict                                        | Yes      |
+| Parameter Name             | Description                | Requried | Type       |
+|:-------------------------- |:---------------------------|:--------:|:-----------|
+|cluster                     | Connect cluster            | Yes      | String     |
+|configs                     | Connector's config dict    | Yes      | Json       |
 
 If you have configured Lenses with Connect, then you can use the `CreateConnector` method for creating a new connector.
 
@@ -325,9 +325,9 @@ Note: `dev` is the connect cluster's name.
 
 Parameters for the **GetConnectors** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
+| Parameter Name             | Description                                        | Requried | Type      |
+|:-------------------------- |:---------------------------------------------------|:--------:|:----------|
+|cluster                     | Connect cluster                                    | Yes      | String    |
 
     result = lenses_lib.GetConnectors('dev')
 
@@ -338,10 +338,10 @@ Parameters for the **GetConnectors** method
 
 Parameters for the **GetConnectorInfo** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
 
     result = lenses_lib.GetConnectorInfo('dev', 'test_connector')
 
@@ -358,10 +358,10 @@ Parameters for the **GetConnectorInfo** method
 
 Parameters for the **GetConnectorConfig** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
 
     result = lenses_lib.GetConnectorConfig('dev', 'test_connector')
     
@@ -375,10 +375,10 @@ Parameters for the **GetConnectorConfig** method
 
 Parameters for the **GetConnectorStatus** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
 
     result = lenses_lib.GetConnectorStatus('dev', 'test_connector')
 
@@ -392,10 +392,10 @@ Parameters for the **GetConnectorStatus** method
 
 Parameters for the **GetConnectorTasks** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
 
     result = lenses_lib.GetConnectorTasks('dev', 'test_connector')
     
@@ -409,11 +409,11 @@ Parameters for the **GetConnectorTasks** method
 
 Parameters for the **GetStatusTask** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
-|task_id                     | Connector's task ID                                            | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
+|task_id                     | Connector's task ID                                            | Yes      | String    |
 
     result = lenses_lib.GetStatusTask('dev', 'test_connector', '0')
     
@@ -424,11 +424,11 @@ Parameters for the **GetStatusTask** method
 
 Parameters for the **RestartConnectorTask** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
-|task_id                     | Connector's task ID                                            | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
+|task_id                     | Connector's task ID                                            | Yes      | String    |
 
     result = lenses_lib.RestartConnectorTask('dev', 'test_connector', '0')
 
@@ -436,9 +436,9 @@ Parameters for the **RestartConnectorTask** method
 
 Parameters for the **GetConnectorPlugins** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
 
     result = lenses_lib.GetConnectorPlugins('dev')
     
@@ -456,10 +456,10 @@ Parameters for the **GetConnectorPlugins** method
 
 Parameters for the **PauseConnector** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
 
     result = lenses_lib.PauseConnector('dev', 'test_connector')
 
@@ -467,10 +467,10 @@ Parameters for the **PauseConnector** method
 
 Parameters for the **ResumeConnector** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
 
     result = lenses_lib.ResumeConnector('dev', 'test_connector')
 
@@ -478,10 +478,10 @@ Parameters for the **ResumeConnector** method
 
 Parameters for the **RestartConnector** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
 
     result = lenses_lib.RestartConnector('dev', 'test_connector')
 
@@ -489,11 +489,11 @@ Parameters for the **RestartConnector** method
 
 Parameters for the **SetConnectorConfig** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
-|configs                     | Connector's config dict                                        | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
+|configs                     | Connector's config dict                                        | Yes      | Json      |
 
         config = {
             "name": "test_connector",
@@ -521,10 +521,10 @@ Parameters for the **SetConnectorConfig** method
 
 Parameters for the **DeleteConnector** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|cluster                     | Connect cluster                                                | Yes      |
-|connector                   | Connector's name                                               | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|cluster                     | Connect cluster                                                | Yes      | String    |
+|connector                   | Connector's name                                               | Yes      | String    |
 
     result = lenses_lib.DeleteConnector('dev', 'test_connector')
 
@@ -564,9 +564,9 @@ Examples for the methods used for running sql commands for the SQL Engine
 
 Parameters for the **ExecSQL** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|Query                       | SQL Query                                                      | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|Query                       | SQL Query                                                      | Yes      | String    |
 
     query = (
         "CREATE TABLE greetings(_key string, _value string) FORMAT (string, string)"
@@ -640,14 +640,14 @@ Examples with methods used to manage SQL Processors
 
 Parameters for the **CreateProcessor** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|name                        | Processors name                                                | Yes      |
-|sql                         | SQL Query                                                      | Yes      |
-|runners                     | SQL Processor's runners                                        | Yes      |
-|clusterName                 | Cluster's name                                                 | Yes      |
-|namespace                   | K8 Namespace                                                   | No       |
-|pipeline                    | SQL Pipeline tag                                               | No       |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Processors name                                                | Yes      | String    |
+|sql                         | SQL Query                                                      | Yes      | String    |
+|runners                     | SQL Processor's runners                                        | Yes      | String    |
+|clusterName                 | Cluster's name                                                 | Yes      | String    |
+|namespace                   | K8 Namespace                                                   | No       | String    |
+|pipeline                    | SQL Pipeline tag                                               | No       | String    |
 
 
     query = (
@@ -663,9 +663,9 @@ Parameters for the **CreateProcessor** method
 
 Parameters for the **PauseProcessor** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|name                        | Processors name                                                | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Processors name                                                | Yes      | String    |
 
 First get the processor's ID
 
@@ -683,9 +683,9 @@ Next use the `PauseProcessor` method to pause the processor
 
 Parameters for the **ResumeProcessor** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|name                        | Processors name                                                | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Processors name                                                | Yes      | String    |
 
     processor_id = lenses_lib.GetProcessorID('test_processor')
     result = lenses_lib.ResumeProcessor(processor_id[0])
@@ -694,10 +694,10 @@ Parameters for the **ResumeProcessor** method
 
 Parameters for the **UpdateProcessorRunners** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|name                        | Processors name                                                | Yes      |
-|runners                     | SQL Processor's runners                                        | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Processors name                                                | Yes      | String    |
+|runners                     | SQL Processor's runners                                        | Yes      | String    |
 
     processor_id = lenses_lib.GetProcessorID('test_processor')
     lenses_lib.UpdateProcessorRunners(processor_id[0], '4')
@@ -706,9 +706,9 @@ Parameters for the **UpdateProcessorRunners** method
 
 Parameters for the **DeleteProcessor** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|name                        | Processors name                                                | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Processors name                                                | Yes      | String    |
 
     processor_id = lenses_lib.GetProcessorID('test_processor')
     result = lenses_lib.DeleteProcessor(processor_id[0])
@@ -751,13 +751,13 @@ Examples with methos used to manage data policies in Lenses
 
 Parameters for the **SetPolicy** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|name                        | Policy name                                                    | Yes      |
-|obfuscation                 | Whether to protect messages at a field level                   | Yes      |
-|impactType                  | The business impact levels in relation to the data             | Yes      |
-|category                    | Category of sensitivity in the data                            | Yes      |
-|fields                      | Definition of fields that the data policy will apply to        | No       |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Policy name                                                    | Yes      | String    |
+|obfuscation                 | Whether to protect messages at a field level                   | Yes      | String    |
+|impactType                  | The business impact levels in relation to the data             | Yes      | String    |
+|category                    | Category of sensitivity in the data                            | Yes      | Str/List  |
+|fields                      | Definition of fields that the data policy will apply to        | No       | Str/List  |
 
     result = lenses_lib.SetPolicy("test_policy","All","HIGH","test_category",["test_field"])
     print(result)
@@ -783,9 +783,9 @@ Parameters for the **SetPolicy** method
 
 Parameters for the **DelPolicy** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|name                        | Policy name                                                    | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Policy name                                                    | Yes      | String    |
 
     lenses_lib.DelPolicy("test_policy")
 
@@ -801,9 +801,9 @@ Examples with methods used to manage Kafka quotas
 
 Parameters for the **SetQuotasAllUsers** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
 
     QUOTA_CONFIG = {
         "producer_byte_rate": "100000",
@@ -817,11 +817,11 @@ Parameters for the **SetQuotasAllUsers** method
 
 Parameters for the **SetQuotaUserClient** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|user                        | The user to set the quota for                                  | Yes      |
-|clientid                    | The client id to set the quota for                             | Yes      |
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
+|user                        | The user to set the quota for                                  | Yes      | String    |
+|clientid                    | The client id to set the quota for                             | Yes      | String    |
 
     lenses_lib.SetQuotaUserClient('admin', 'admin', QUOTA_CONFIG)
 
@@ -829,10 +829,10 @@ Parameters for the **SetQuotaUserClient** method
 
 Parameters for the **SetQuotaUser** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|user                        | The user to set the quota for                                  | Yes      |
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
+|user                        | The user to set the quota for                                  | Yes      | String    |
 
     lenses_lib.SetQuotaUser("admin", QUOTA_CONFIG)
 
@@ -840,9 +840,9 @@ Parameters for the **SetQuotaUser** method
 
 Parameters for the **SetQuotaAllClient** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
 
     lenses_lib.SetQuotaAllClient(QUOTA_CONFIG)
 
@@ -850,10 +850,10 @@ Parameters for the **SetQuotaAllClient** method
 
 Parameters for the **SetQuotaClient** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|clientid                    | The client id to set the quota for                             | Yes      |
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
+|clientid                    | The client id to set the quota for                             | Yes      | String    |
 
     lenses_lib.SetQuotaClient("admin", QUOTA_CONFIG)
 
@@ -861,9 +861,9 @@ Parameters for the **SetQuotaClient** method
 
 Parameters for the **DeleteQutaAllUsers** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
 
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQutaAllUsers(config)
@@ -872,10 +872,10 @@ Parameters for the **DeleteQutaAllUsers** method
 
 Parameters for the **DeleteQuotaUserAllClients** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|user                        | The user to delete the quota for                               | Yes      |
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
+|user                        | The user to delete the quota for                               | Yes      | String    |
 
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQuotaUserAllClients("admin", config)
@@ -884,11 +884,11 @@ Parameters for the **DeleteQuotaUserAllClients** method
 
 Parameters for the **DeleteQuotaUserClient** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|user                        | The user to delete the quota for                               | Yes      |
-|clientid                    | The client id to delete the quota for                          | Yes      |
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
+|user                        | The user to delete the quota for                               | Yes      | String    |
+|clientid                    | The client id to delete the quota for                          | Yes      | String    |
 
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQuotaUserClient("admin", "admin", config)
@@ -897,10 +897,10 @@ Parameters for the **DeleteQuotaUserClient** method
 
 Parameters for the **DeleteQuotaUser** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|user                        | The user to delete the quota for                               | Yes      |
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
+|user                        | The user to delete the quota for                               | Yes      | String    |
 
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQuotaUser("admin", config)
@@ -909,9 +909,9 @@ Parameters for the **DeleteQuotaUser** method
 
 Parameters for the **DeleteQuotaAllClients** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
 
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQuotaAllClients(config)
@@ -920,10 +920,10 @@ Parameters for the **DeleteQuotaAllClients** method
 
 Parameters for the **DeleteQuotaClient** method
 
-| Parameter Name             | Description                                                    | Requried |
-|:-------------------------- |:-------------------------------------------------------------- |:--------:|
-|clientid                    | The client id to delete the quota for                          | Yes      |
-|config                      | Quota Configuration Dict                                       | Yes      |
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|config                      | Quota Configuration Dict                                       | Yes      | Json      |
+|clientid                    | The client id to delete the quota for                          | Yes      | String    |
 
     config = ['consumer_byte_rate', 'producer_byte_rate', 'request_percentage']
     lenses_lib.DeleteQuotaClient('admin', config)
@@ -933,6 +933,12 @@ Parameters for the **DeleteQuotaClient** method
 Examples with methods provided for managing the Lenses Admin interface
 
 ##### Create a Group
+
+Parameters for the **CreateGroup** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|payload                     | Group configuration                                            | Yes      | Json      |
 
     group_payload = {
         "name":"test_group",
@@ -996,6 +1002,13 @@ Examples with methods provided for managing the Lenses Admin interface
 
 ##### Update a Group
 
+Parameters for the **UpdateGroup** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|payload                     | Group configuration                                            | Yes      | Json      |
+|group                       | Group's name                                                   | Yes      | String    |
+
     group_payload = {
         "name":"test_group","description":"test_description_updated","namespaces":[
             {
@@ -1024,11 +1037,27 @@ Examples with methods provided for managing the Lenses Admin interface
 
 ##### Delete a Group
 
+Parameters for the **DeleteGroup** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|group                       | Group's name                                                   | Yes      | String    |
+
     lenses_lib.DeleteGroup("test_group")
 
 ##### Create a User
 
-Note you must create a group prior to creating a user
+Parameters for the **CreateUser** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|acType                      | Accont Type: **BASIC** or **KERBEROS**                         | Yes      | String    |
+|username                    | Username                                                       | Yes      | String    |
+|password                    | Password                                                       | Yes      | String    |
+|email                       | Email Address                                                  | No       | String    |
+|groups                      | Group or Groups                                                | Yes      | Str/List  |
+
+**Note**: you must create a group prior to creating a user
 
     lenses_lib.CreateUser(
         acType="BASIC", 
@@ -1056,6 +1085,16 @@ Note you must create a group prior to creating a user
 
 ##### Update a User
 
+Parameters for the **UpdateUser** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|acType                      | Accont Type: **BASIC** or **KERBEROS**                         | Yes      | String    |
+|username                    | Username                                                       | Yes      | String    |
+|password                    | Password                                                       | Yes      | String    |
+|email                       | Email Address                                                  | No       | String    |
+|groups                      | Group or Groups                                                | Yes      | Str/List  |
+
     result = lenses_lib.UpdateUser(
         acType="BASIC", 
         username="test_user", 
@@ -1066,6 +1105,13 @@ Note you must create a group prior to creating a user
 
 ##### Change User's Password
 
+Parameters for the **UpdateUserPassword** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|username                    | Username                                                       | Yes      | String    |
+|password                    | Password                                                       | Yes      | String    |
+
     result = lenses_lib.UpdateUserPassword(
         username="test_user",
         password="test_user_updated"
@@ -1073,12 +1119,28 @@ Note you must create a group prior to creating a user
 
 ##### Delete a User
 
+Parameters for the **DeleteUser** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|username                    | Username                                                       | Yes      | String    |
+
     result = lenses_lib.DeleteUser(
         username="test_user",
     )
 
 ##### Create a Service Account
-Note you must first create a group and a user before creating a service account
+
+Parameters for the **CreateSA** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Service Account Name                                           | Yes      | String    |
+|groups                      | Group or Groups                                                | Yes      | Str/List  |
+|owner                       | Owner of service account                                       | Yes      | String    |
+|token                       | Token (Do not set for a random token)                          | No       | String    |
+
+**Note** you must first create a group and a user before creating a service account
 
     result = lenses_lib.CreateSA(
         name="test_sa",
@@ -1089,6 +1151,14 @@ Note you must first create a group and a user before creating a service account
 
 ##### Update a Service Account
 
+Parameters for the **CreateSA** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Service Account Name                                           | Yes      | String    |
+|groups                      | Group or Groups                                                | Yes      | Str/List  |
+|owner                       | Owner of service account                                       | Yes      | String    |
+
     result = lenses_lib.UpdateSA(
         name="test_sa",
         groups=["test_group_sa", "test_group_user"],
@@ -1096,7 +1166,15 @@ Note you must first create a group and a user before creating a service account
     )
 
 ##### Add a new Token to a Service Account
-Note adding a new token, automatically expires the old one
+
+Parameters for the **UpdateSAToken** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Service Account Name                                           | Yes      | String    |
+|token                       | Token (Do not set for a random token)                          | No       | String    |
+
+**Note**: adding a new token, automatically expires the old one
 
     result = lenses_lib.UpdateSAToken(
         name="test_sa",
@@ -1104,11 +1182,18 @@ Note adding a new token, automatically expires the old one
     )
 
 ##### Add a new Random Token to a Service Account
-Note adding a new token, automatically expires the old one
+
+**Note**: adding a new token, automatically expires the old one
 
     result = lenses_lib.UpdateSAToken(name="test_sa",)
 
 ##### Delete a Service Account
+
+Parameters for the **DeleteSA** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|name                        | Service Account Name                                           | Yes      | String    |
 
     result = lenses_lib.DeleteSA(name="test_sa")
 
@@ -1202,6 +1287,13 @@ Examples with methods used to manage schemas.
 
 ##### Register a new Schema
 
+Parameters for the **RegisterNewSchema** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|subject                     | Schemas Name                                                   | Yes      | String    |
+|subject_json                | Schema                                                         | Yes      | Json      |
+
     SCHEMA_CONFIG = {
         'schema':
             '{"type":"record","name":"reddit_post_key",'
@@ -1211,9 +1303,15 @@ Examples with methods used to manage schemas.
     COMPATIBILITY_CONFIG = {'compatibility': 'BACKWARD'}
     COMPATIBILITY_CONFIG_UPDATE = {'compatibility': 'FULL'}
 
-    result = lenses_lib.RegisterNewSchema('test_schema', SCHEMA_CONFIG).keys()
+    result = lenses_lib.RegisterNewSchema('test_schema', SCHEMA_CONFIG)
 
 ##### List Versions of a Schema
+
+Parameters for the **ListVersionsSubj** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|subject                     | Schemas Name                                                   | Yes      | String    |
 
     result = lenses_lib.ListVersionsSubj('test_schema')
     
@@ -1222,6 +1320,12 @@ Examples with methods used to manage schemas.
 
 ##### Get Schema by ID
 
+Parameters for the **GetSchemaById** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|subjid                      | ID of Schema                                                   | Yes      | Int.      |
+
     lenses_lib.GetSchemaById(schema_id)
 
 ##### Get Global Compatibility
@@ -1229,19 +1333,46 @@ Examples with methods used to manage schemas.
     result = lenses_lib.GetGlobalCompatibility()
 
 ##### Update Global Compatibility
-Note see under register new schema for the `COMPATIBILITY_CONFIG_UPDATE`
+
+Parameters for the **UpdateGlobalCompatibility** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|compatibility               | Schema Compatibility                                           | Yes      | Json      |
+
+**Note**: see under register new schema for the `COMPATIBILITY_CONFIG_UPDATE`
 
     lenses_lib.UpdateGlobalCompatibility(COMPATIBILITY_CONFIG_UPDATE)
 
 ##### Change Compatibility of a Schema
 
+Parameters for the **ChangeCompatibility** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|subject                     | Schemas Name                                                   | Yes      | String    |
+|compatibility               | Schema Compatibility                                           | Yes      | Json      |
+
     lenses_lib.ChangeCompatibility('test_schema', COMPATIBILITY_CONFIG_UPDATE)
 
 ##### Get Compatibility of a Schema
 
+Parameters for the **GetCompatibility** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|subject                     | Schemas Name                                                   | Yes      | String    |
+
     lenses_lib.GetCompatibility('test_schema')
 
 ##### Update a Schema (If compatible)
+
+Parameters for the **UpdateSchema** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|subject                     | Schemas Name                                                   | Yes      | String    |
+|subject_json                | Schema                                                         | Yes      | Json      |
 
     SCHEMA_CONFIG_UPDATE = {
         'schema':
@@ -1253,13 +1384,33 @@ Note see under register new schema for the `COMPATIBILITY_CONFIG_UPDATE`
 
 ##### Get a certain version of a Schema
 
+Parameters for the **GetSchemaByVer** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|subject                     | Schemas Name                                                   | Yes      | String    |
+|verid                       | Version of Schema                                              | Yes      | Int.      |
+
     lenses_lib.GetSchemaByVer('test_schema', subj_ver)
 
 ##### Delete a Schema version
 
+Parameters for the **GetSchemaByVer** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|subject                     | Schemas Name                                                   | Yes      | String    |
+|verid                       | Version of Schema                                              | Yes      | Int.      |
+
     lenses_lib.DeleteSchemaByVersion("test_schema", subj_ver)
 
 ##### Delete a Schema (all versions)
+
+Parameters for the **GetSchemaByVer** method
+
+| Parameter Name             | Description                                                    | Requried | Type      |
+|:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
+|subject                     | Schemas Name                                                   | Yes      | String    |
 
     lenses_lib.DeleteSubj("test_schema")
 
