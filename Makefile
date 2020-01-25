@@ -73,7 +73,7 @@ install:
 test_install: virtenv clean
 	@./venv/bin/pip3 install -U setuptools
 	@./venv/bin/python3 setup.py sdist bdist_wheel
-	@./venv/bin/pip3 install -U dist/lensesio-3.0.0-py3-none-any.whl[kerberos]
+	@./venv/bin/pip3 install -U dist/lensesio-3.0.0-py3-none-any.whl
 
 mkvirtenv:
 	@if [ ! -e venv ]; then \
