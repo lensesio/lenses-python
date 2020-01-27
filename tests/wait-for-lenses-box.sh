@@ -13,7 +13,7 @@ for ((i=0;i<48;i++)); do
 done
 
 # Sleep another 30 seconds to allow us create connectors, rebalance, etc.
-sleep 30
+sleep "${1}"
 
 # Check the docker logs just in case
 echo "=========== Docker Logs ==========="

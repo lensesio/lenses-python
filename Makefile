@@ -24,7 +24,7 @@ REQUIREMENTS = -r requirements-dev.txt
 
 all: install
 
-clean: virtenv
+clean:
 	@python3 setup.py clean
 
 decrypt_license:
@@ -70,7 +70,7 @@ install:
 		echo "No dist package found, please run make build_py first, to build the package"; \
 	fi
 
-test_install: virtenv clean
+test_install: virtenv
 	@./venv/bin/pip3 install -U setuptools
 	@./venv/bin/python3 setup.py sdist bdist_wheel
 	@./venv/bin/pip3 install -U dist/lensesio-3.0.0-py3-none-any.whl
@@ -101,4 +101,4 @@ test: virtenv .wait-lenses
 
 .wait-lenses:
 	@echo "WAITING LENSES..."
-	@./tests/wait-for-lenses-box.sh
+	@./tests/wait-for-lenses-box.sh 30
