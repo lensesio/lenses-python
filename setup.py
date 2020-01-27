@@ -31,7 +31,8 @@ class Clean(Command):
             'lensesio/core/__pycache__',
             'lensesio/registry/__pycache__',
             '.tox',
-            '.venv'
+            'venv',
+            '.pytest_cache',
         ]:
             try:
                 if path.exists(d):

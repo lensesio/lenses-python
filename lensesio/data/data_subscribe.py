@@ -54,7 +54,7 @@ class DataSubscribe(WebsocketAuth):
         ws_con.close()
         return self.commit
 
-    def Subscribe(self, query, clientId='LensesPy'):
+    def Subscribe(self, dataFunc, query, clientId='LensesPy'):
         self._Login(clientId)
 
         request = {
@@ -71,12 +71,9 @@ class DataSubscribe(WebsocketAuth):
             bucket = json.loads(ws_con.recv())
             if bucket['type'] == 'KAFKAMSG':
                 for message in bucket['content']:
-                    # topic = message['topic']
-                    # offset = message['offset']
-                    # partition = message['partition']
-                    print(message)
+                    dataFunc(message)
             elif bucket['type'] in ['HEARTBEAT', 'SUCCESS']:
-                print(bucket)
+                dataFunc(bucket)
 
         ws_con.close()
 

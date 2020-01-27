@@ -80,7 +80,11 @@ To get the authenticated user info, issue:
      'token': '***',
      'user': '***'}
 
-### Get Topics List
+#### Kafka Topics
+
+Examples with methods used to work with Kafka Tpics
+
+##### Get Topics List
 
 To get a list with all kafka topics, issue
 
@@ -92,7 +96,7 @@ To get a list with all kafka topics, issue
     ...
     ]
 
-### Get Topics Description
+##### Get Topics Description
 
 To get detailed description for all kafka topics, issue
 
@@ -108,7 +112,7 @@ To get detailed description for all kafka topics, issue
       'consumers': 0,
       ...
 
-### Detailed info for a Topic
+##### Detailed info for a Topic
 
 To get a detailed description for a particular topic, issue
 
@@ -130,7 +134,7 @@ To get a detailed description for a particular topic, issue
        'value': '1 MB'},
        ...
 
-#### Create a Topic
+##### Create a Topic
 
 Parameters for the **CreateTopic** method
 
@@ -160,7 +164,7 @@ The issue the CreateTopic method
         print(result)
         'Topic [test_topic] created'
 
-#### Update Topic configuration
+##### Update Topic configuration
 
 Parameters for the **UpdateTopicConfig** method
 
@@ -180,7 +184,7 @@ Use the UpdateTopicConfig method to update the topic's configuration
         print(result)
         'Topic [test_topic] updated config with [SetTopicConfiguration(...'
 
-#### Publish data to a Topic
+##### Publish data to a Topic
 
 Parameters for the **Publish** method
 
@@ -201,7 +205,28 @@ Publishing data to a topic is as easy as
         print(result)
         {'content': None, 'correlationId': 1, 'type': 'SUCCESS'}
 
-#### Delete records from a Topic
+##### Subscribe data to a Topic
+
+Parameters for the **Subscribe** method
+
+| Parameter Name             | Description                        | Requried | Type         | Default              |
+|:-------------------------- |:-----------------------------------|:--------:|:-------------|:---------------------|
+|dataFunc                    | Custom function to work with data  | Yes      | String       | -                    |
+|query                       | SQL Query                          | Yes      | String/Json  | -                    |
+|clientId                    | Client ID                          | No       | String/Json  | LensesPy             |
+
+**Note**: First define a custom function to work with your data. A custom function is needed because the query is continues.
+
+    def print_data(message):
+        print(message)
+
+Subscribing to a topic is as easy as
+
+    lenses_lib.Subscribe(print_data, "select * from my_topic")
+    {'content': 'test_topic', 'correlationId': 1, 'type': 'SUCCESS'}
+    {'key': '8387236824701691257', 'offset': 0, 'partition': 0, 'timestamp': 1580157301897, 'topic': 'test_topic', 'value': "{'value':1}"}
+
+##### Delete records from a Topic
 
 Parameters for the **DeleteTopicRecords** method
 
@@ -218,7 +243,7 @@ Records can be deleted by providing a range of offsets
         print(result)
         "Records from topic '%s' and partition '0' up to offset '10'" % 'test_topic'
 
-#### Delete a Topic
+##### Delete a Topic
 
 Parameters for the **DeleteTopic** method
 
