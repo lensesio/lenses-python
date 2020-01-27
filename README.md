@@ -215,7 +215,7 @@ Parameters for the **Subscribe** method
 |query                       | SQL Query                          | Yes      | String/Json  | -                    |
 |clientId                    | Client ID                          | No       | String/Json  | LensesPy             |
 
-**Note**: First define a custom function to work with your data. A custom function is needed because the query is continues.
+**Note**: First define a custom function to work with your data. A custom function is needed because the query is continuous.
 
     def print_data(message):
         print(message)
