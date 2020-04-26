@@ -7,10 +7,10 @@ services:
       context: "."
       dockerfile: Dockerfile
     healthcheck:
-        test: ["CMD-SHELL", "if [[ -e /local/krb5.keytab && -e /local/krb5.conf]]", "then exit 0", "else exit 1", "fi"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
+        test: ["CMD-SHELL", "if [ -e /local/krb5.keytab ] && [ -e /local/krb5.conf ]; then if kinit devops  <<<'devops'; then exit 0; else exit 1; fi; else exit 1; fi"]
+        interval: 5s
+        timeout: 5s
+        retries: 30
     environment:
       - DOMAIN=localhost.localdomain
       - HOST_FQDN=localhost.localdomain
