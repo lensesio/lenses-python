@@ -165,12 +165,14 @@ class DataSubscribe():
                 if bucket['type'] == 'KAFKAMSG':
                     for message in bucket['content']:
                         dataFunc(message)
-
-                    self.Commit(
-                        payload=bucket,
-                        token=self.wc_conn_token,
-                        clientId=bucket['correlationId']
-                    )
+## Auto commit is disabled for now. We need to switch the websocket request
+## to successfully list the client as a subscriber in order for auto-commit to work
+## Part of ToDo 
+#                     self.Commit(
+#                         payload=bucket,
+#                         token=self.wc_conn_token,
+#                         clientId=bucket['correlationId']
+#                     )
                 elif bucket['type'] in ['HEARTBEAT', 'SUCCESS']:
                     dataFunc(bucket)
 
