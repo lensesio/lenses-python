@@ -60,11 +60,16 @@ class DataSubscribe():
             "authToken": self.wc_conn_token
         }
 
-        ws_con = websocket.create_connection(self.url_req)
-        ws_con.send(json.dumps(requestdict))
+        try:
+            ws_con = websocket.create_connection(self.url_req)
+            ws_con.send(json.dumps(requestdict))
 
-        self.publish = json.loads(ws_con.recv())
-        ws_con.close()
+            self.publish = json.loads(ws_con.recv())
+            ws_con.close()
+        except KeyboardInterrupt:
+            ws_con.close()
+            return None
+
         return self.publish
 
     def GetCommits(self, payload):
@@ -88,7 +93,7 @@ class DataSubscribe():
                     {
                         "topic": msg['topic'],
                         "partition": msg['partition'],
-                        "offset" : msg['offset']
+                        "offset" : int(msg['offset'])
                     }
                 )
         elif check_if_message(payload):
@@ -96,7 +101,7 @@ class DataSubscribe():
                 {
                     "topic": payload['topic'],
                     "partition": payload['partition'],
-                    "offset" : payload['offset']
+                    "offset" : int(payload['offset'])
                 }
             ]
         else:
@@ -118,20 +123,35 @@ class DataSubscribe():
             "authToken": token
         }
 
-        ws_con = websocket.create_connection(self.url_req)
-        ws_con.send(json.dumps(requestdict))
+        try:
+            ws_con = websocket.create_connection(self.url_req)
+            ws_con.send(json.dumps(requestdict))
 
-        self.commit = json.loads(ws_con.recv())
-        ws_con.close()
+            self.commit = json.loads(ws_con.recv())
+            ws_con.close()
+        except KeyboardInterrupt:
+            ws_con.close()
+            return None
 
         return self.commit
 
     def Subscribe(self, dataFunc, query, clientId=1):
         self._Login(clientId)
 
+        if type(query) is list: 
+            sql_query = {
+                "sqls": query
+            }
+        elif type(query) is str:
+            sql_query = {
+                "sqls": [query]
+            }
+        else:
+            return dataFunc("Error. Please provide either a query(type str) or a list of queries [q1, ...]")
+
         request = {
             "type": "SUBSCRIBE",
-            "content": '{"sqls" : ["' + query + '"]}',
+            "content": json.dumps(sql_query),
             "correlationId": int(clientId),
             "authToken": self.wc_conn_token
         }
@@ -141,7 +161,7 @@ class DataSubscribe():
         try:
             while True:
                 bucket = json.loads(ws_con.recv())
-                print(bucket.keys())
+
                 if bucket['type'] == 'KAFKAMSG':
                     for message in bucket['content']:
                         dataFunc(message)
@@ -168,9 +188,14 @@ class DataSubscribe():
             "authToken": self.wc_conn_token,
         }
 
-        ws_con = websocket.create_connection(self.url_req)
-        ws_con.send(json.dumps(requestjson))
+        try:
+            ws_con = websocket.create_connection(self.url_req)
+            ws_con.send(json.dumps(requestjson))
 
-        self.unscribe = json.loads(ws_con.recv())
-        ws_con.close()
+            self.unscribe = json.loads(ws_con.recv())
+            ws_con.close()
+        except KeyboardInterrupt:
+            ws_con.close()
+            return None
+        
         return self.unscribe

@@ -226,6 +226,10 @@ Subscribing to a topic is as easy as
     {'content': 'test_topic', 'correlationId': 1, 'type': 'SUCCESS'}
     {'key': '8387236824701691257', 'offset': 0, 'partition': 0, 'timestamp': 1580157301897, 'topic': 'test_topic', 'value': "{'value':1}"}
 
+
+**Note**: We could have used **print** as the **dataFunc**.
+
+
 ##### Delete records from a Topic
 
 Parameters for the **DeleteTopicRecords** method
