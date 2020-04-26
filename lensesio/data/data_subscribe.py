@@ -1,10 +1,9 @@
-from lensesio.core.ws_auth import WebsocketAuth
 from lensesio.core.endpoints import getEndpoints
 import websocket
 import json
 
 
-class DataSubscribe(WebsocketAuth):
+class DataSubscribe():
 
     def __init__(self):
         getEndpoints.__init__(self, "websocketEndpoints")
@@ -20,13 +19,44 @@ class DataSubscribe(WebsocketAuth):
                 "http", "ws"
             )
 
-    def Publish(self, topic, key, value, clientId='LensesPy'):
+    def _Login(self, clientId):
+        if self.auth_type == 'krb5':
+            self.wc_conn_token = self.token
+            self.url_req = self.lenses_websocket_endpoint + str(clientId)
+            return self.token
+
+        auth_payload = {
+            "user": self.username,
+            "password": self.password
+        }
+        loginrequest = {
+            "type": "LOGIN",
+            "content": json.dumps(auth_payload),
+            "correlationId": int(clientId),
+            "authToken": ""
+        }
+
+        self.url_req = self.lenses_websocket_endpoint + str(clientId)
+
+        ws = websocket.create_connection(self.url_req)
+        ws.send(json.dumps(loginrequest))
+
+        response = json.loads(ws.recv())
+        self.wc_conn_token = response['content']
+
+    def Publish(self, topic, key, value, clientId=1):
         self._Login(clientId)
+
+        publish_payload = {
+            "topic" : topic,
+            "key": key,
+            "value": value
+        }
 
         requestdict = {
             "type": "PUBLISH",
-            "content": '{"topic" :"' + topic + '","key" :"' + key + '","value" : "' + value + '"}',
-            "correlationId": 1,
+            "content": json.dumps(publish_payload),
+            "correlationId": int(clientId),
             "authToken": self.wc_conn_token
         }
 
@@ -37,53 +67,104 @@ class DataSubscribe(WebsocketAuth):
         ws_con.close()
         return self.publish
 
-    def Commit(self, topic, partition, offset, clientId='LensesPy'):
-        self._Login(clientId)
+    def GetCommits(self, payload):
+        def check_if_message(message):
+            is_msg = False
+            for e in ['topic', 'partition', 'offset']:
+                if e not in message.keys():
+                    break
+            else:
+                is_msg = True
+            
+            return is_msg
+
+        if type(payload) is not dict:
+            return None
+
+        commits = []
+        if payload.get('content'):
+            for msg in payload['content']:
+                commits.append(
+                    {
+                        "topic": msg['topic'],
+                        "partition": msg['partition'],
+                        "offset" : msg['offset']
+                    }
+                )
+        elif check_if_message(payload):
+            commits = [
+                {
+                    "topic": payload['topic'],
+                    "partition": payload['partition'],
+                    "offset" : payload['offset']
+                }
+            ]
+        else:
+            return None
+
+        return commits
+
+    def Commit(self, payload, token, clientId=1):
+        commits = self.GetCommits(payload)
+        if not commits:
+            return "Invalid payload: %s. No commit was made" % (
+                payload
+            )
 
         requestdict = {
             "type": "COMMIT",
-            "content": '{"commits": [{"topic":"' + str(topic) + '","partition":"' + str(partition) + '","offset" : "' + str(offset) + '"}]}',
-            "correlationId": 1,
-            "authToken": self.wc_conn_token
-            }
+            "content": json.dumps({"commits": commits}),
+            "correlationId": int(clientId),
+            "authToken": token
+        }
 
         ws_con = websocket.create_connection(self.url_req)
         ws_con.send(json.dumps(requestdict))
 
         self.commit = json.loads(ws_con.recv())
         ws_con.close()
+
         return self.commit
 
-    def Subscribe(self, dataFunc, query, clientId='LensesPy'):
+    def Subscribe(self, dataFunc, query, clientId=1):
         self._Login(clientId)
 
         request = {
             "type": "SUBSCRIBE",
             "content": '{"sqls" : ["' + query + '"]}',
-            "correlationId": 1,
+            "correlationId": int(clientId),
             "authToken": self.wc_conn_token
         }
 
         ws_con = websocket.create_connection(self.url_req)
         ws_con.send(json.dumps(request))
+        try:
+            while True:
+                bucket = json.loads(ws_con.recv())
+                print(bucket.keys())
+                if bucket['type'] == 'KAFKAMSG':
+                    for message in bucket['content']:
+                        dataFunc(message)
 
-        while True:
-            bucket = json.loads(ws_con.recv())
-            if bucket['type'] == 'KAFKAMSG':
-                for message in bucket['content']:
-                    dataFunc(message)
-            elif bucket['type'] in ['HEARTBEAT', 'SUCCESS']:
-                dataFunc(bucket)
+                    self.Commit(
+                        payload=bucket,
+                        token=self.wc_conn_token,
+                        clientId=bucket['correlationId']
+                    )
+                elif bucket['type'] in ['HEARTBEAT', 'SUCCESS']:
+                    dataFunc(bucket)
 
-        ws_con.close()
+            ws_con.close()
+        except KeyboardInterrupt:
+            ws_con.close()
 
-    def Unsubscribe(self, topic, clientId='LensesPy'):
+    def Unsubscribe(self, topic, clientId=1):
         self._Login(clientId)
 
         requestjson = {
             "type": "UNSUBSCRIBE",
             "content": '{"topics": ["' + topic + '"]}',
-            "correlationId": 1,
+            "correlationId": int(clientId),
             "authToken": self.wc_conn_token,
         }
 
