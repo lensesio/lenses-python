@@ -2,6 +2,10 @@
 
 List of objectives for lensesio pylib
 
+## Bugs
+
+Subscribing creates a continuous query but does not list the client as a subscriber. This blocks any auto-commits
+
 ## Update
 
 **Subscribe method should support Queues**
