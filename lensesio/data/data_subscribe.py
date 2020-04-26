@@ -147,7 +147,7 @@ class DataSubscribe():
                 "sqls": [query]
             }
         else:
-            return dataFunc("Error. Please provide either a query(type str) or a list of queries [q1, ...]")
+            return "Error. Please provide either a query (type str) or a list of queries [q1, ...]"
 
         request = {
             "type": "SUBSCRIBE",
