@@ -8,6 +8,8 @@ Python library for managing [Lenses](http://www.landoop.com/kafka-lenses) REST a
 
 See [Lenses Python documentation](https://docs.lenses.io/dev/python-lib/).
 
+For additional information about specific payloads, visit Lenses API: https://api.lenses.io
+
 ### Authentication
 
 There are three different ways that can be used for authentication.
@@ -965,6 +967,8 @@ Examples with methods provided for managing the Lenses Admin interface
 
 Parameters for the **CreateGroup** method
 
+**Note**: For additional information about the Groups payload, visit: https://api.lenses.io
+
 | Parameter Name             | Description                                                    | Requried | Type      |
 |:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
 |payload                     | Group configuration                                            | Yes      | Json      |
@@ -1032,6 +1036,8 @@ Parameters for the **CreateGroup** method
 ##### Update a Group
 
 Parameters for the **UpdateGroup** method
+
+**Note**: For additional information about the Groups payload, visit: https://api.lenses.io
 
 | Parameter Name             | Description                                                    | Requried | Type      |
 |:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
@@ -1323,6 +1329,8 @@ Parameters for the **RegisterNewSchema** method
 |subject                     | Schemas Name                                                   | Yes      | String    |
 |subject_json                | Schema                                                         | Yes      | Json      |
 
+To register a new schema first create the schema config
+
     SCHEMA_CONFIG = {
         'schema':
             '{"type":"record","name":"reddit_post_key",'
@@ -1331,6 +1339,8 @@ Parameters for the **RegisterNewSchema** method
     }
     COMPATIBILITY_CONFIG = {'compatibility': 'BACKWARD'}
     COMPATIBILITY_CONFIG_UPDATE = {'compatibility': 'FULL'}
+
+Finally issue:
 
     result = lenses_lib.RegisterNewSchema('test_schema', SCHEMA_CONFIG)
 
@@ -1341,6 +1351,8 @@ Parameters for the **ListVersionsSubj** method
 | Parameter Name             | Description                                                    | Requried | Type      |
 |:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
 |subject                     | Schemas Name                                                   | Yes      | String    |
+
+To list the versions of schema named `test_schema` issue:
 
     result = lenses_lib.ListVersionsSubj('test_schema')
     
@@ -1354,6 +1366,8 @@ Parameters for the **GetSchemaById** method
 | Parameter Name             | Description                                                    | Requried | Type      |
 |:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
 |subjid                      | ID of Schema                                                   | Yes      | Int.      |
+
+To get a schema by it's ID issue:
 
     lenses_lib.GetSchemaById(schema_id)
 
@@ -1371,6 +1385,8 @@ Parameters for the **UpdateGlobalCompatibility** method
 
 **Note**: see under register new schema for the `COMPATIBILITY_CONFIG_UPDATE`
 
+To update global compatibility issue:
+
     lenses_lib.UpdateGlobalCompatibility(COMPATIBILITY_CONFIG_UPDATE)
 
 ##### Change Compatibility of a Schema
@@ -1382,6 +1398,8 @@ Parameters for the **ChangeCompatibility** method
 |subject                     | Schemas Name                                                   | Yes      | String    |
 |compatibility               | Schema Compatibility                                           | Yes      | Json      |
 
+Change compatibility of schema named `test_schema`
+
     lenses_lib.ChangeCompatibility('test_schema', COMPATIBILITY_CONFIG_UPDATE)
 
 ##### Get Compatibility of a Schema
@@ -1391,6 +1409,8 @@ Parameters for the **GetCompatibility** method
 | Parameter Name             | Description                                                    | Requried | Type      |
 |:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
 |subject                     | Schemas Name                                                   | Yes      | String    |
+
+Get compatibility of schema named `test_schema`
 
     lenses_lib.GetCompatibility('test_schema')
 
@@ -1403,12 +1423,17 @@ Parameters for the **UpdateSchema** method
 |subject                     | Schemas Name                                                   | Yes      | String    |
 |subject_json                | Schema                                                         | Yes      | Json      |
 
+To update the schema, first export the updated schema
+
     SCHEMA_CONFIG_UPDATE = {
         'schema':
             '{"type":"record","name":"reddit_post_key",'
             '"namespace":"com.landoop.social.reddit.post.key",'
             '"fields":[{"name":"testit_id","type":"string","doc":"desc."}]}'
     }
+
+Finally issue:
+
     lenses_lib.UpdateSchema('test_schema', SCHEMA_CONFIG_UPDATE)
 
 ##### Get a certain version of a Schema
@@ -1419,6 +1444,8 @@ Parameters for the **GetSchemaByVer** method
 |:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
 |subject                     | Schemas Name                                                   | Yes      | String    |
 |verid                       | Version of Schema                                              | Yes      | Int.      |
+
+To get schema version issue:
 
     lenses_lib.GetSchemaByVer('test_schema', subj_ver)
 
@@ -1431,6 +1458,8 @@ Parameters for the **GetSchemaByVer** method
 |subject                     | Schemas Name                                                   | Yes      | String    |
 |verid                       | Version of Schema                                              | Yes      | Int.      |
 
+Delete schema version from schema named `test_schema`
+
     lenses_lib.DeleteSchemaByVersion("test_schema", subj_ver)
 
 ##### Delete a Schema (all versions)
@@ -1440,6 +1469,8 @@ Parameters for the **GetSchemaByVer** method
 | Parameter Name             | Description                                                    | Requried | Type      |
 |:-------------------------- |:-------------------------------------------------------------- |:--------:|:----------|
 |subject                     | Schemas Name                                                   | Yes      | String    |
+
+Delete schema named `test_schema`
 
     lenses_lib.DeleteSubj("test_schema")
 
