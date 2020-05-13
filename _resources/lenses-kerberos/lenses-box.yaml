@@ -6,6 +6,14 @@ services:
     env_file:
       - ./acls-dev.env
     environment:
+      ENABLE_SSL: 1
+      LENSES_SSL_KEYSTORE_LOCATION: /tmp/certs/kafka.jks
+      LENSES_SSL_KEYSTORE_PASSWORD: fastdata
+      LENSES_SSL_KEY_PASSWORD: fastdata
+      LENSES_SSL_TRUSTSTORE_LOCATION: /tmp/certs/truststore.jks
+      LENSES_SSL_TRUSTSTORE_PASSWORD: fastdata
+      LENSES_SSL_CLIENT_AUTH: "false"
+
       DEBUG_SCRIPT: 0
 
       CONNECT_HEAP_OPTS: "-Xmx128M -Xms64M"
