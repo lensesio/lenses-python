@@ -7,7 +7,8 @@ def exec_request(
                 __URL,
                 __HEADERS=None,
                 __DATA=None,
-                __DT='json'):
+                __DT='json',
+                __VERIFY=False):
     if not __URL:
         print("Please provide an endpoint.")
 
@@ -16,7 +17,8 @@ def exec_request(
             requests, __METHOD
         )(
             url=__URL,
-            headers=__HEADERS
+            headers=__HEADERS,
+            verify=__VERIFY,
         )
 
     elif __DATA and __DT == 'json':
@@ -25,7 +27,8 @@ def exec_request(
         )(
             url=__URL,
             headers=__HEADERS,
-            json=__DATA
+            json=__DATA,
+            verify=__VERIFY,
         )
     elif __DATA and __DT == 'data':
         request = getattr(
@@ -33,7 +36,8 @@ def exec_request(
         )(
             url=__URL,
             headers=__HEADERS,
-            data=__DATA
+            data=__DATA,
+            verify=__VERIFY,
         )
     else:
         return "Error handling the request. Please report this."

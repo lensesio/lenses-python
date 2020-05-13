@@ -32,7 +32,8 @@ class main(
             username=None,
             password=None,
             krb_service=None,
-            service_account=None,):
+            service_account=None,
+            verify_cert=False):
         try:
             if auth_type not in ['basic', 'service', 'krb5']:
                 print('''
@@ -64,10 +65,10 @@ class main(
         self.url = url
 
         if self.auth_type == 'basic':
-            Basic.__init__(self, url, username, password)
+            Basic.__init__(self, url=url, username=username, password=password, verify_cert=verify_cert)
             self.connect()
         if self.auth_type == 'service':
-            Basic.__init__(self, url=url, service_account=service_account)
+            Basic.__init__(self, url=url, service_account=service_account, verify_cert=verify_cert)
             self.serviceConnect()
         elif self.auth_type == 'krb5':
             if platform.system().lower() in ['linux', 'linux2', 'darwin']:

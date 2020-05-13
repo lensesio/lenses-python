@@ -6,9 +6,10 @@ from lensesio.core.exception import lenses_exception
 
 
 class Basic(lenses_exception):
-    def __init__(self, url, username=None, password=None, service_account=None):
+    def __init__(self, url, username=None, password=None, service_account=None, verify_cert=False):
         self.username = username
         self.password = password
+        self.verify_cert = verify_cert
 
         self.payload = {
             'user': username,
@@ -34,7 +35,8 @@ class Basic(lenses_exception):
             self.response = post(
                 self.login_url,
                 data=dumps(self.payload),
-                headers=self.default_headers
+                headers=self.default_headers,
+                verify=self.verify_cert
             )
 
             self.token = self.response.text
@@ -59,7 +61,8 @@ class Basic(lenses_exception):
     def UserInfo(self):
         response = get(
             self.auth_url,
-            headers=self.active_headers
+            headers=self.active_headers,
+            verify=self.verify_cert
         )
 
         if response.status_code in [200, 201, 202, 203]:
