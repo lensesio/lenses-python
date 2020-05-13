@@ -1,7 +1,7 @@
 from lensesio.core.endpoints import getEndpoints
 import websocket
 import json
-
+import ssl
 
 class DataSubscribe():
 
@@ -38,7 +38,10 @@ class DataSubscribe():
 
         self.url_req = self.lenses_websocket_endpoint + str(clientId)
 
-        ws = websocket.create_connection(self.url_req)
+        ws = websocket.create_connection(
+            self.url_req,
+            sslopt={"cert_reqs": ssl.CERT_NONE}
+        )
         ws.send(json.dumps(loginrequest))
 
         response = json.loads(ws.recv())
@@ -61,7 +64,10 @@ class DataSubscribe():
         }
 
         try:
-            ws_con = websocket.create_connection(self.url_req)
+            ws_con = websocket.create_connection(
+                self.url_req,
+                sslopt={"cert_reqs": ssl.CERT_NONE}
+            )
             ws_con.send(json.dumps(requestdict))
 
             self.publish = json.loads(ws_con.recv())
@@ -124,7 +130,10 @@ class DataSubscribe():
         }
 
         try:
-            ws_con = websocket.create_connection(self.url_req)
+            ws_con = websocket.create_connection(
+                self.url_req,
+                sslopt={"cert_reqs": ssl.CERT_NONE}
+            )
             ws_con.send(json.dumps(requestdict))
 
             self.commit = json.loads(ws_con.recv())
@@ -156,7 +165,10 @@ class DataSubscribe():
             "authToken": self.wc_conn_token
         }
 
-        ws_con = websocket.create_connection(self.url_req)
+        ws_con = websocket.create_connection(
+            self.url_req,
+            sslopt={"cert_reqs": ssl.CERT_NONE}
+        )
         ws_con.send(json.dumps(request))
         try:
             while True:
@@ -191,7 +203,10 @@ class DataSubscribe():
         }
 
         try:
-            ws_con = websocket.create_connection(self.url_req)
+            ws_con = websocket.create_connection(
+                self.url_req,
+                sslopt={"cert_reqs": ssl.CERT_NONE}
+            )
             ws_con.send(json.dumps(requestjson))
 
             self.unscribe = json.loads(ws_con.recv())

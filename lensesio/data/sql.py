@@ -2,6 +2,7 @@ from lensesio.core.endpoints import getEndpoints
 from lensesio.core.exec_action import exec_request
 import json
 import websocket
+import ssl
 
 
 class SQLExec:
@@ -50,7 +51,10 @@ class SQLExec:
                 "http", "ws"
             )
 
-        conn = websocket.create_connection(self.lenses_exec_sql_endpoint)
+        conn = websocket.create_connection(
+            self.lenses_exec_sql_endpoint,
+            sslopt={"cert_reqs": ssl.CERT_NONE}
+        )
         message = {
             "token": self.token,
             "sql": self.query,
