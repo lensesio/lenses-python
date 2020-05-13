@@ -110,8 +110,6 @@ Table of Contents
         * [Get a certain version of a Schema](#get-a-certain-version-of-a-schema)
         * [Delete a Schema version](#delete-a-schema-version)
         * [Delete a Schema (all versions)](#delete-a-schema--all-versions-)
-- [Use Cases and Examples](#use-cases-and-examples)
-  * [Jupyter Example](#jupyter-example)
 - [Installation](#installation)
     + [Dependencies](#dependencies)
       - [Build Dependencies](#build-dependencies)
@@ -1596,17 +1594,6 @@ Delete schema named `test_schema`
 
     lenses_lib.DeleteSubj("test_schema")
 
-# Use Cases and Examples
-
-* CI/CD and Automation
-* Jupyter Notebooks
-* Machine Learning
-
-## Jupyter Example
-
-<p align="center">
-  <img src="https://pbs.twimg.com/media/DbeXsAZXcAAw8uy.jpg" width="400"/>
-</p>
 
 # Installation
 
