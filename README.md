@@ -115,7 +115,7 @@ Table of Contents
       - [Build Dependencies](#build-dependencies)
         * [Virtual Environment (Recommended)](#virtual-environment--recommended-)
           + [Create a python virtual environment:](#create-a-python-virtual-environment-)
-        * [Exiting virtualenv:](#exiting-virtualenv-)
+          + [Exiting virtualenv:](#exiting-virtualenv-)
         * [Remove installed virtualenv along with the relevant packages:](#remove-installed-virtualenv-along-with-the-relevant-packages-)
         * [Build lensesio lib](#build-lensesio-lib)
         * [Install lensesio lib](#install-lensesio-lib)
@@ -128,6 +128,7 @@ Table of Contents
   * [License](#license)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 
 ### Authentication
@@ -1635,7 +1636,7 @@ All virtualenvs and their packages will be installed under ``~/VirtEnv/.virtuale
     ls ~/VirtEnv/.virtualenvs
     get_env_details  initialize  machinelab  postactivate ...
 
-###### Create a python virtual environment:
+####### Create a python virtual environment:
 
     mkvirtualenv myvirtenv
 
@@ -1645,7 +1646,7 @@ Activate the virtualenv (activated by default after creation):
     [user@hostname]$ workon myvirtenv
     (myvirtenv)[user@hostname]$
 
-##### Exiting virtualenv:
+###### Exiting virtualenv:
 
     (myvirtenv)[user@hostname]$ deactivate
     [user@hostname]$
