@@ -1490,12 +1490,20 @@ Delete schema named `test_schema`
 
 ### Dependencies
 
+#### Build Dependencies
+
+* pip3
+* setuptools
+* wheel
+
 Install Pip3:
 
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 
     python3.8 get-pip.py
     rm -f get-pip.py
+
+    pip3 install setuptools wheel
 
 ##### Virtual Environment (Recommended)
 
@@ -1539,6 +1547,8 @@ Activate the virtualenv (activated by default after creation):
 
 ##### Build lensesio lib
 
+**Note**: This requires `setuptools` and `wheel` (See Build Dependencies above)
+
     python3 setup.py sdist bdist_wheel
 
 ##### Install lensesio lib
@@ -1548,6 +1558,8 @@ You can install by using pip
     pip3 install dist/lensesio-3.0.0-py3-none-any.whl
     
 for kerberos support, issue
+
+**Note**: This is only for Linux,Darwin OS
 
     pip3 install dist/lensesio-3.0.0-py3-none-any.whl[kerberos]
 
