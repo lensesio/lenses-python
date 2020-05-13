@@ -12,7 +12,6 @@ For additional information about specific payloads, visit Lenses API: https://ap
 
 Table of Contents
 =================
-
    * [Python - Lenses for Apache Kafka](#python---lenses-for-apache-kafka)
    * [Documentation](#documentation)
          * [Authentication](#authentication)
@@ -117,6 +116,7 @@ Table of Contents
             * [Build Dependencies](#build-dependencies)
                * [Virtual Environment (Recommended)](#virtual-environment-recommended)
                   * [Create a python virtual environment:](#create-a-python-virtual-environment)
+   * [To activate just run workon myvirtenv](#to-activate-just-run-workon-myvirtenv)
                * [Exiting virtualenv:](#exiting-virtualenv)
                * [Remove installed virtualenv along with the relevant packages:](#remove-installed-virtualenv-along-with-the-relevant-packages)
                * [Build lensesio lib](#build-lensesio-lib)
@@ -128,6 +128,7 @@ Table of Contents
             * [Run tests](#run-tests)
             * [Clean Dockers](#clean-dockers)
       * [License](#license)
+
 
 ### Authentication
 
