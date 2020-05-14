@@ -15,6 +15,7 @@ from lensesio.data.data_subscribe import DataSubscribe
 from lensesio.data.consumers import DataConsumers
 from lensesio.data.topology import Topology
 from lensesio.flows.flows import LensesFlows
+from lensesio.pulsar.pulsar_producer import SetupPulsar
 from sys import exit
 import platform
 
@@ -23,7 +24,7 @@ class main(
             Basic, KafkaTopic, SchemaRegistry, SQLExec,
             KafkaQuotas, Policy, DataProcessor, DataConnector,
             KafkaACL, DataSubscribe, LensesFlows, lenses_exception,
-            DataConsumers, Topology, AdminPanel,
+            DataConsumers, Topology, AdminPanel, SetupPulsar,
         ):
     def __init__(
             self,
@@ -97,3 +98,6 @@ class main(
         KafkaACL.__init__(self)
         DataSubscribe.__init__(self)
         DataConsumers.__init__(self)
+    
+    def InitPulsar(self, host):
+        SetupPulsar.__init__(self, host)
