@@ -2,13 +2,127 @@
 
 # Python - Lenses for Apache Kafka
 
-Python library for managing [Lenses](http://www.landoop.com/kafka-lenses) REST and WS APIs.
+Python library for managing [Lenses.io](https://lenses.io) REST and WS APIs.
 
 # Documentation
 
-See [Lenses Python documentation](https://docs.lenses.io/dev/python-lib/).
+See [Lenses.io Python documentation](https://docs.lenses.io/dev/python-lib/).
 
 For additional information about specific payloads, visit Lenses API: https://api.lenses.io
+
+Table of Contents
+=================
+- [Python - Lenses.io for Apache Kafka](#python---lenses-for-apache-kafka)
+- [Documentation](#documentation)
+  * [Table of Contents](#table-of-contents)
+    + [Authentication](#authentication)
+      - [Basic Auth](#basic-auth)
+      - [Kerberos Auth](#kerberos-auth)
+      - [Get User Info after authentication](#get-user-info-after-authentication)
+      - [Kafka Topics](#kafka-topics)
+        * [Get Topics List](#get-topics-list)
+        * [Get Topics Description](#get-topics-description)
+        * [Detailed info for a Topic](#detailed-info-for-a-topic)
+        * [Create a Topic](#create-a-topic)
+        * [Update Topic configuration](#update-topic-configuration)
+        * [Publish data to a Topic](#publish-data-to-a-topic)
+        * [Subscribe data to a Topic](#subscribe-data-to-a-topic)
+        * [Delete records from a Topic](#delete-records-from-a-topic)
+        * [Delete a Topic](#delete-a-topic)
+      - [List Kafka ACLs](#list-kafka-acls)
+      - [Set Kafka ACLs](#set-kafka-acls)
+      - [Delete Kafka ACLs](#delete-kafka-acls)
+      - [Managing Connect Distributed](#managing-connect-distributed)
+        * [Create a Connector](#create-a-connector)
+        * [List all connectors](#list-all-connectors)
+        * [Get information about a connector](#get-information-about-a-connector)
+        * [Get Connector's Configuration](#get-connector-s-configuration)
+        * [Get Connector's Status](#get-connector-s-status)
+        * [Get Connector's Tasks](#get-connector-s-tasks)
+        * [Get Connector's Task Status](#get-connector-s-task-status)
+        * [Restart a Task](#restart-a-task)
+        * [Get Connector's plugins](#get-connector-s-plugins)
+        * [Pause a Connector](#pause-a-connector)
+        * [Resume a Connector](#resume-a-connector)
+        * [Restart a Connector](#restart-a-connector)
+        * [Update Connector's configuration](#update-connector-s-configuration)
+        * [Delete a Connector](#delete-a-connector)
+        * [Get all kafka Consumers](#get-all-kafka-consumers)
+        * [List all Consumer names](#list-all-consumer-names)
+      - [SQL Engine](#sql-engine)
+      - [Create a Topic via SQL Engine](#create-a-topic-via-sql-engine)
+        * [Insert records into a Topic](#insert-records-into-a-topic)
+        * [Query a Topic](#query-a-topic)
+        * [Delete a Topic via SQL](#delete-a-topic-via-sql)
+      - [SQL Processors](#sql-processors)
+        * [Create a Processor](#create-a-processor)
+        * [Pause a Processor](#pause-a-processor)
+        * [Resume a processor](#resume-a-processor)
+        * [Update Processor's Runners](#update-processor-s-runners)
+        * [Delete a Processor](#delete-a-processor)
+      - [Data Flows](#data-flows)
+      - [Data Policy](#data-policy)
+        * [Set a Policy](#set-a-policy)
+        * [View Policies](#view-policies)
+        * [Delete a Policy](#delete-a-policy)
+      - [Kafka Quotas](#kafka-quotas)
+        * [Get All Quotas](#get-all-quotas)
+        * [Set Quotas All Users](#set-quotas-all-users)
+        * [Set User Quota for a Client](#set-user-quota-for-a-client)
+        * [Set Quota for User](#set-quota-for-user)
+        * [Set Quota for all Clients](#set-quota-for-all-clients)
+        * [Set Quota for a Client](#set-quota-for-a-client)
+        * [Delete Quota for all Users](#delete-quota-for-all-users)
+        * [Delete User Quota for all Clients](#delete-user-quota-for-all-clients)
+        * [Delete User Quota for a Client](#delete-user-quota-for-a-client)
+        * [Delete Quota for User](#delete-quota-for-user)
+        * [Delete Quota for all Clients](#delete-quota-for-all-clients)
+        * [Delete Quota for a Client](#delete-quota-for-a-client)
+      - [Administration](#lenses-admin)
+        * [Create a User Group](#create-a-group)
+        * [View Groups](#view-groups)
+        * [Update a Group](#update-a-group)
+        * [Delete a Group](#delete-a-group)
+        * [Create a User](#create-a-user)
+        * [Get all Users](#get-all-users)
+        * [Update a User](#update-a-user)
+        * [Change User's Password](#change-user-s-password)
+        * [Delete a User](#delete-a-user)
+        * [Create a Service Account](#create-a-service-account)
+        * [Update a Service Account](#update-a-service-account)
+        * [Add a new Token to a Service Account](#add-a-new-token-to-a-service-account)
+        * [Add a new Random Token to a Service Account](#add-a-new-random-token-to-a-service-account)
+        * [Delete a Service Account](#delete-a-service-account)
+        * [Get Configuration](#get-lenses-configuration)
+        * [Get Auditing events](#get-lenses-audits)
+        * [Get Alerts](#get-lenses-alerts)
+        * [Get Logs](#get-lenses-logs--java-logs-)
+      - [Schema Registry](#registry)
+        * [Get all Schemas](#get-all-schemas)
+        * [Register a new Schema](#register-a-new-schema)
+        * [List Versions of a Schema](#list-versions-of-a-schema)
+        * [Get Schema by ID](#get-schema-by-id)
+        * [Get Global Compatibility](#get-global-compatibility)
+        * [Update Global Compatibility](#update-global-compatibility)
+        * [Change Compatibility of a Schema](#change-compatibility-of-a-schema)
+        * [Get Compatibility of a Schema](#get-compatibility-of-a-schema)
+        * [Update a Schema (If compatible)](#update-a-schema--if-compatible-)
+        * [Get a certain version of a Schema](#get-a-certain-version-of-a-schema)
+        * [Delete a Schema version](#delete-a-schema-version)
+        * [Delete a Schema (all versions)](#delete-a-schema--all-versions-)
+- [Installation](#installation)
+    + [Dependencies](#dependencies)
+      - [Build Dependencies](#build-dependencies)
+        * [Build lensesio lib](#build-lensesio-lib)
+        * [Install lensesio lib](#install-lensesio-lib)
+  * [Integration Tests](#integration-tests)
+      - [Requirements](#requirements)
+      - [Run tests](#run-tests)
+  * [License](#license)
+
+
+
+
 
 ### Authentication
 
@@ -1474,17 +1588,6 @@ Delete schema named `test_schema`
 
     lenses_lib.DeleteSubj("test_schema")
 
-# Use Cases and Examples
-
-* CI/CD and Automation
-* Jupyter Notebooks
-* Machine Learning
-
-## Jupyter Example
-
-<p align="center">
-  <img src="https://pbs.twimg.com/media/DbeXsAZXcAAw8uy.jpg" width="400"/>
-</p>
 
 # Installation
 
@@ -1526,7 +1629,7 @@ All virtualenvs and their packages will be installed under ``~/VirtEnv/.virtuale
     ls ~/VirtEnv/.virtualenvs
     get_env_details  initialize  machinelab  postactivate ...
 
-###### Create a python virtual environment:
+####### Create a python virtual environment:
 
     mkvirtualenv myvirtenv
 
@@ -1536,7 +1639,7 @@ Activate the virtualenv (activated by default after creation):
     [user@hostname]$ workon myvirtenv
     (myvirtenv)[user@hostname]$
 
-##### Exiting virtualenv:
+###### Exiting virtualenv:
 
     (myvirtenv)[user@hostname]$ deactivate
     [user@hostname]$
