@@ -79,7 +79,8 @@ setup(
             'lensesio.kafka',
             'lensesio.flows',
             'lensesio.registry',
-            'lensesio.data'
+            'lensesio.data',
+            'lensesio.pulsar'
         ],
         exclude=[]
     ),
