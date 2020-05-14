@@ -2,11 +2,11 @@
 
 # Python - Lenses for Apache Kafka
 
-Python library for managing [Lenses](http://www.landoop.com/kafka-lenses) REST and WS APIs.
+Python library for managing [Lenses.io](https://lenses.io) REST and WS APIs.
 
 # Documentation
 
-See [Lenses Python documentation](https://docs.lenses.io/dev/python-lib/).
+See [Lenses.io Python documentation](https://docs.lenses.io/dev/python-lib/).
 
 For additional information about specific payloads, visit Lenses API: https://api.lenses.io
 
@@ -78,7 +78,7 @@ Table of Contents
         * [Delete Quota for User](#delete-quota-for-user)
         * [Delete Quota for all Clients](#delete-quota-for-all-clients)
         * [Delete Quota for a Client](#delete-quota-for-a-client)
-      - [Lenses Admin](#lenses-admin)
+      - [Administration](#lenses-admin)
         * [Create a Group](#create-a-group)
         * [View Groups](#view-groups)
         * [Update a Group](#update-a-group)
@@ -127,7 +127,7 @@ Table of Contents
       - [Clean Dockers](#clean-dockers)
   * [License](#license)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 
 
