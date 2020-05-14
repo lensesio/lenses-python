@@ -12,7 +12,7 @@ For additional information about specific payloads, visit Lenses API: https://ap
 
 Table of Contents
 =================
-- [Python - Lenses for Apache Kafka](#python---lenses-for-apache-kafka)
+- [Python - Lenses.io for Apache Kafka](#python---lenses-for-apache-kafka)
 - [Documentation](#documentation)
   * [Table of Contents](#table-of-contents)
     + [Authentication](#authentication)
