@@ -87,6 +87,7 @@ setup(
     install_requires=[
         'requests==2.22.0',
         'websocket-client==0.56.0',
+        'pulsar-client==2.5.1',
     ],
     extras_require={
         'kerberos': [

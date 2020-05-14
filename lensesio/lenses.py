@@ -99,5 +99,5 @@ class main(
         DataSubscribe.__init__(self)
         DataConsumers.__init__(self)
     
-    def InitPulsar(self, host):
+    def InitPulsarProducer(self, host):
         SetupPulsar.__init__(self, host)

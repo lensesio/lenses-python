@@ -10,6 +10,13 @@ See [Lenses Python documentation](https://docs.lenses.io/dev/python-lib/).
 
 For additional information about specific payloads, visit Lenses API: https://api.lenses.io
 
+
+## Table of Contents 
+[Authentication](###authentication)  
+
+
+<a name="authentication"/>
+
 ### Authentication
 
 There are three different ways that can be used for authentication.
@@ -19,6 +26,8 @@ There are three different ways that can be used for authentication.
 |basic                | Basic (Accont) Authentication  |
 |service              | Service Account (Token Based)  |
 |krb5                 | Kerberos Authentication        |
+
+<a name="basic-auth"/>
 
 #### Basic Auth
 
@@ -81,6 +90,7 @@ To get the authenticated user info, issue:
      'security': {'http': False, 'kerberos': True, 'ldap': False},
      'token': '***',
      'user': '***'}
+
 
 #### Kafka Topics
 
@@ -230,6 +240,36 @@ Subscribing to a topic is as easy as
 
 
 **Note**: We could have used **print** as the **dataFunc**.
+
+###### (New) Produce to pulsar
+
+The lib is already integrated with pulsar. Below we show an example of piping the output
+of Subscriber to pulsar producer
+
+    from lensesio.lenses import main
+    from json import dumps
+
+    lenses_lib = main(
+        auth_type="basic",
+        url="http://lenses_endpoint",
+        username="username",
+        password="password"
+    )
+
+    lenses_lib.InitPulsarProducer('pulsar://pulsar_endpoint')
+    lenses_lib.StartPulsarProducer("example-topic")
+
+    def send_pulsar(payload):
+        payload = dumps(payload).encode('utf-8') 
+        lenses_lib.PulsarProduce(payload)
+
+    lenses_lib.Subscribe(send_pulsar, "SELECT smart_194_raw FROM backblaze_smart", 10000)
+
+In the above code setups lenses_lib, then initiates a pulsar producer for topic "example-topic".
+Next, we create a function that is required by the subscribe function which sends our payload to pulsar, 
+and finally we subscribe to a topic by passing the pulsar_send function.
+
+All records that are queried via the subscribe method are automatically encoded and send to pulsar
 
 
 ##### Delete records from a Topic
@@ -1536,7 +1576,7 @@ Activate the virtualenv (activated by default after creation):
     [user@hostname]$ workon myvirtenv
     (myvirtenv)[user@hostname]$
 
-##### Exiting virtualenv:
+###### Exiting virtualenv:
 
     (myvirtenv)[user@hostname]$ deactivate
     [user@hostname]$
