@@ -15,7 +15,7 @@ from lensesio.data.data_subscribe import DataSubscribe
 from lensesio.data.consumers import DataConsumers
 from lensesio.data.topology import Topology
 from lensesio.flows.flows import LensesFlows
-from lensesio.pulsar.pulsar_producer import SetupPulsar
+from lensesio.pulsar.pulsar_client import SetupPulsar
 from sys import exit
 import platform
 
@@ -99,5 +99,5 @@ class main(
         DataSubscribe.__init__(self)
         DataConsumers.__init__(self)
     
-    def InitPulsarProducer(self, host):
+    def InitPulsarClient(self, host):
         SetupPulsar.__init__(self, host)
