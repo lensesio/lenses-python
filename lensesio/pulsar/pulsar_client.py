@@ -1,4 +1,7 @@
-import pulsar
+try:
+    import pulsar
+except ImportError:
+    pass 
 
 
 class SetupPulsar():

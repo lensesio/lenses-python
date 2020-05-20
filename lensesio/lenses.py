@@ -17,6 +17,7 @@ from lensesio.data.topology import Topology
 from lensesio.flows.flows import LensesFlows
 from lensesio.pulsar.pulsar_client import SetupPulsar
 from sys import exit
+from sys import modules as sys_mods
 import platform
 
 
@@ -35,6 +36,10 @@ class main(
             krb_service=None,
             service_account=None,
             verify_cert=False):
+        
+        if auth_type is None:
+            return
+
         try:
             if auth_type not in ['basic', 'service', 'krb5']:
                 print('''
@@ -98,6 +103,10 @@ class main(
         KafkaACL.__init__(self)
         DataSubscribe.__init__(self)
         DataConsumers.__init__(self)
-    
+
     def InitPulsarClient(self, host):
-        SetupPulsar.__init__(self, host)
+        try:
+            self.Pulsar = SetupPulsar.__init__(self, host)
+        except NameError:
+            print("Pulsar client lib is not installed")
+            return None
