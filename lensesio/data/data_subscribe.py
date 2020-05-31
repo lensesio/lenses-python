@@ -330,7 +330,7 @@ class DataSubscribe():
         try:
             while self.running_state:
                 bucket = json.loads(ws_con.recv())
-                print(bucket)
+
                 if bucket['type'] == 'KAFKAMSG':
                     for message in bucket['content']:
                         dataFunc(message)
