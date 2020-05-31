@@ -29,6 +29,9 @@ active_threads = {
     'sql': {
         "t": 0,
     },
+    'subscribe': {
+        "t": 0,
+    },
     "thread_lock": ThreadLock
 }
 
@@ -113,13 +116,13 @@ class main(
         Topology.__init__(self, verify_cert=verify_cert)
         KafkaTopic.__init__(self, verify_cert=verify_cert)
         SchemaRegistry.__init__(self, verify_cert=verify_cert)
-        SQLExec.__init__(self,  active_threads=active_threads, verify_cert=verify_cert)
+        SQLExec.__init__(self, active_threads=active_threads, verify_cert=verify_cert)
         KafkaQuotas.__init__(self, verify_cert=verify_cert)
         Policy.__init__(self, verify_cert=verify_cert)
         DataProcessor.__init__(self, verify_cert=verify_cert)
         DataConnector.__init__(self, verify_cert=verify_cert)
         KafkaACL.__init__(self, verify_cert=verify_cert)
-        DataSubscribe.__init__(self, service_account=service_account, verify_cert=verify_cert)
+        DataSubscribe.__init__(self, active_threads=active_threads, service_account=service_account, verify_cert=verify_cert)
         DataConsumers.__init__(self, verify_cert=verify_cert)
 
     def InitPulsarClient(self, host):
