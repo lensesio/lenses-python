@@ -4,9 +4,10 @@ from lensesio.core.exec_action import exec_request
 
 class Topology:
 
-    def __init__(self):
+    def __init__(self, verify_cert=True):
         getEndpoints.__init__(self, "topologyEndpoints")
 
+        self.verify_cert=verify_cert
         self.lenses_topology_endpoint = self.url + self.lensesTopologyEndpoint
         self.topology_headers = {
             'Content-Type': 'application/json',
@@ -20,7 +21,8 @@ class Topology:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.topology_headers
+            __HEADERS=self.topology_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getTopology

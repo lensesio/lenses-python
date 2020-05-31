@@ -8,7 +8,7 @@ def exec_request(
                 __HEADERS=None,
                 __DATA=None,
                 __DT='json',
-                __VERIFY=False):
+                __VERIFY=True):
     if not __URL:
         print("Please provide an endpoint.")
 

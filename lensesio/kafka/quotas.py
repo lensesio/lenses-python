@@ -4,9 +4,10 @@ from lensesio.core.exec_action import exec_request
 
 class KafkaQuotas:
 
-    def __init__(self):
+    def __init__(self, verify_cert=True):
         getEndpoints.__init__(self, "quotaEndpoints")
 
+        self.verify_cert=verify_cert
         self.quotas_end_point = self.url + self.lensesQuotasEndpoint
         self.quotas_users_end_point = self.url + self.lensesUserQuotasEndpoint
         self.quotas_clients_end_point = self.url + self.lensesClientQuotasEndpoint
@@ -21,7 +22,8 @@ class KafkaQuotas:
             __METHOD="get",
             __EXPECTED="json",
             __URL=self.quotas_end_point,
-            __HEADERS=self.quota_headers
+            __HEADERS=self.quota_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getQuotas
@@ -41,7 +43,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=self.quotas_users_end_point,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.setQuotasAllUsers
@@ -65,7 +68,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.setQuotaUserAllClients
@@ -90,7 +94,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.setQuotaUserClient
@@ -113,7 +118,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.setQuotaUser
@@ -133,7 +139,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=self.quotas_clients_end_point,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.setQuotaAllClient
@@ -156,7 +163,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.setQuotaClient
@@ -171,7 +179,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=self.quotas_users_end_point,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteQutaAllUsers
@@ -189,7 +198,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteQuotaUserAllClients
@@ -209,7 +219,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteQuotaUserClient
@@ -227,7 +238,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteQuotaUser
@@ -242,7 +254,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=self.quotas_clients_end_point,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteQuotaAllClients
@@ -260,7 +273,8 @@ class KafkaQuotas:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.quota_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteQuotaClient

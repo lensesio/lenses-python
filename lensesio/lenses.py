@@ -35,7 +35,7 @@ class main(
             password=None,
             krb_service=None,
             service_account=None,
-            verify_cert=False):
+            verify_cert=True):
         
         if auth_type is None:
             return
@@ -77,32 +77,36 @@ class main(
             Basic.__init__(self, url=url, service_account=service_account, verify_cert=verify_cert)
             self.serviceConnect()
         elif self.auth_type == 'krb5':
-            if platform.system().lower() in ['linux', 'linux2', 'darwin']:
+            if platform.system().lower() not in ['linux', 'linux2', 'darwin']:
+                msg = "Error: gssapi kerberos integration is not supported for "
+                print(msg + platform.system())
+                exit(1)
+
+            try:
                 from lensesio.core.krb_auth import krb5
                 self.krb5 = krb5
                 self.krb5.__init__(self, url=url, service=krb_service)
                 self.krb5.KrbAuth(self)
-            else:
-                msg = "Error: gssapi kerberos integration is not supported for "
-                print(msg + platform.system())
-                exit(1)
+            except NameError:
+                print("Kerberos client lib is not installed")
+                return None
 
         if self.ConnectionValidation() == 1:
             print("Could not login to lenses. Please check the auth options")
             exit(1)
 
-        AdminPanel.__init__(self)
-        Topology.__init__(self)
-        KafkaTopic.__init__(self)
-        SchemaRegistry.__init__(self)
-        SQLExec.__init__(self)
-        KafkaQuotas.__init__(self)
-        Policy.__init__(self)
-        DataProcessor.__init__(self)
-        DataConnector.__init__(self)
-        KafkaACL.__init__(self)
-        DataSubscribe.__init__(self)
-        DataConsumers.__init__(self)
+        AdminPanel.__init__(self, verify_cert=verify_cert)
+        Topology.__init__(self, verify_cert=verify_cert)
+        KafkaTopic.__init__(self, verify_cert=verify_cert)
+        SchemaRegistry.__init__(self, verify_cert=verify_cert)
+        SQLExec.__init__(self, verify_cert=verify_cert)
+        KafkaQuotas.__init__(self, verify_cert=verify_cert)
+        Policy.__init__(self, verify_cert=verify_cert)
+        DataProcessor.__init__(self, verify_cert=verify_cert)
+        DataConnector.__init__(self, verify_cert=verify_cert)
+        KafkaACL.__init__(self, verify_cert=verify_cert)
+        DataSubscribe.__init__(self, service_account=service_account, verify_cert=verify_cert)
+        DataConsumers.__init__(self, verify_cert=verify_cert)
 
     def InitPulsarClient(self, host):
         try:

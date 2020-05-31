@@ -4,9 +4,10 @@ from lensesio.core.exec_action import exec_request
 
 class KafkaTopic():
 
-    def __init__(self):
+    def __init__(self, verify_cert=True):
         getEndpoints.__init__(self, "topicEndpoints")
 
+        self.verify_cert=verify_cert
         self.topic_end_point = self.url + self.lensesTopicsEndpoint
         self.topic_config_end_point = self.url + self.lensesTopicsConfigEndpoint
         self.manage_topic_endpoint = self.url + self.lensesManageTopicEndpoint
@@ -22,7 +23,8 @@ class KafkaTopic():
             __METHOD="get",
             __EXPECTED="json",
             __URL=self.topic_end_point,
-            __HEADERS=self.topic_headers
+            __HEADERS=self.topic_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.allTopics
@@ -38,7 +40,8 @@ class KafkaTopic():
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.topic_headers
+            __HEADERS=self.topic_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.topicInfo
@@ -61,7 +64,8 @@ class KafkaTopic():
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.topic_headers,
-            __DATA=data_params
+            __DATA=data_params,
+            __VERIFY=self.verify_cert
         )
 
         return self.updateTopicConfig
@@ -99,7 +103,8 @@ class KafkaTopic():
             __EXPECTED="text",
             __URL=self.manage_topic_endpoint,
             __HEADERS=self.topic_headers,
-            __DATA=params
+            __DATA=params,
+            __VERIFY=self.verify_cert
         )
 
         return self.createTopic
@@ -115,7 +120,8 @@ class KafkaTopic():
             __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.topic_headers
+            __HEADERS=self.topic_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteTopic
@@ -135,7 +141,8 @@ class KafkaTopic():
             __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.topic_headers
+            __HEADERS=self.topic_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteTopicRecords
@@ -145,7 +152,8 @@ class KafkaTopic():
             __METHOD="get",
             __EXPECTED="json",
             __URL=self.topic_config_end_point,
-            __HEADERS=self.topic_headers
+            __HEADERS=self.topic_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.defaultTopicConfigs
@@ -156,7 +164,8 @@ class KafkaTopic():
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.topic_headers
+            __HEADERS=self.topic_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.availableTopicConfigKeys

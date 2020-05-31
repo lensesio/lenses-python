@@ -4,9 +4,10 @@ from lensesio.core.exec_action import exec_request
 
 class SchemaRegistry:
 
-    def __init__(self):
+    def __init__(self, verify_cert=True):
         getEndpoints.__init__(self, "schemaEndpoints")
 
+        self.verify_cert=verify_cert
         self.schemas_end_point = self.url + self.lensesSchemasEndpoint
         self.schemas_config_end_point = self.url + self.lensesSchemasConfigEndpoint
         self.schemas_ids_end_point = self.url + self.lensesSchemasIDsEndpoint
@@ -24,7 +25,8 @@ class SchemaRegistry:
             __METHOD="get",
             __EXPECTED="json",
             __URL=self.schemas_end_point,
-            __HEADERS=self.registry_headers
+            __HEADERS=self.registry_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getAllSubjects
@@ -38,7 +40,8 @@ class SchemaRegistry:
             __EXPECTED="json",
             __URL=__RQE,
             __HEADERS=self.registry_headers,
-            __DATA=schema_json
+            __DATA=schema_json,
+            __VERIFY=self.verify_cert
         )
 
         return self.registerNewSchema
@@ -57,7 +60,8 @@ class SchemaRegistry:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers
+            __HEADERS=self.registry_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.listVersionsSubj
@@ -91,7 +95,8 @@ class SchemaRegistry:
             __EXPECTED="json",
             __URL=__RQE,
             __HEADERS=self.registry_headers,
-            __DATA=schema_json
+            __DATA=schema_json,
+            __VERIFY=self.verify_cert
         )
 
         return self.registerNewSchema
@@ -111,7 +116,8 @@ class SchemaRegistry:
             __METHOD="delete",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers
+            __HEADERS=self.registry_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteSubj
@@ -131,7 +137,8 @@ class SchemaRegistry:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers
+            __HEADERS=self.registry_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getSchemaById
@@ -153,7 +160,8 @@ class SchemaRegistry:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers
+            __HEADERS=self.registry_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getSchemaByVer
@@ -178,7 +186,8 @@ class SchemaRegistry:
             __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.registry_headers
+            __HEADERS=self.registry_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteSchemaByVersion
@@ -194,7 +203,8 @@ class SchemaRegistry:
             __EXPECTED="json",
             __URL=__RQE,
             __HEADERS=self.registry_headers,
-            __DATA=compatibility
+            __DATA=compatibility,
+            __VERIFY=self.verify_cert
         )
 
         return self.updateGlobalCompatibility
@@ -205,7 +215,8 @@ class SchemaRegistry:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers
+            __HEADERS=self.registry_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getGlobalCompatibility
@@ -223,7 +234,8 @@ class SchemaRegistry:
             __EXPECTED="json",
             __URL=__RQE,
             __HEADERS=self.registry_headers,
-            __DATA=compatibility
+            __DATA=compatibility,
+            __VERIFY=self.verify_cert
         )
 
         return self.changeCompatibility
@@ -239,7 +251,8 @@ class SchemaRegistry:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.registry_headers
+            __HEADERS=self.registry_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getCompatibility

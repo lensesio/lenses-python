@@ -1,5 +1,9 @@
 from requests import get
-import kerberos
+
+try:
+    import kerberos
+except ImportError:
+    pass
 
 
 class KerberosTicket:

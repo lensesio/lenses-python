@@ -6,7 +6,7 @@ from lensesio.core.exception import lenses_exception
 
 
 class Basic(lenses_exception):
-    def __init__(self, url, username=None, password=None, service_account=None, verify_cert=False):
+    def __init__(self, url, username=None, password=None, service_account=None, verify_cert=True):
         self.username = username
         self.password = password
         self.verify_cert = verify_cert

@@ -7,9 +7,10 @@ import ssl
 
 class SQLExec:
 
-    def __init__(self):
+    def __init__(self, verify_cert=True):
         getEndpoints.__init__(self, "sqlEndpoints")
 
+        self.verify_cert=verify_cert
         self.lenses_sql_query_validation = self.url + self.lensesSQLValidationEndpoint
         self.lenses_exec_sql_endpoint = self.url + self.lensesSQLEndpoint
         self.sql_headers = {
@@ -24,7 +25,8 @@ class SQLExec:
             __EXPECTED="text",
             __URL=self.lenses_sql_query_validation,
             __HEADERS=self.active_headers,
-            __DATA=self.params
+            __DATA=self.params,
+            __VERIFY=self.verify_cert
         )
 
         if 'Expected one of Alter' in self.validateSqlQuery:
@@ -51,10 +53,16 @@ class SQLExec:
                 "http", "ws"
             )
 
-        conn = websocket.create_connection(
-            self.lenses_exec_sql_endpoint,
-            sslopt={"cert_reqs": ssl.CERT_NONE}
-        )
+        if self.verify_cert:
+            conn = websocket.create_connection(
+                self.lenses_exec_sql_endpoint
+            )
+        else:
+            conn = websocket.create_connection(
+                self.lenses_exec_sql_endpoint,
+                sslopt={"cert_reqs": ssl.CERT_NONE}
+            )
+
         message = {
             "token": self.token,
             "sql": self.query,

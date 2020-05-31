@@ -1,7 +1,7 @@
 try:
     import pulsar
 except ImportError:
-    pass 
+    pass
 
 
 class SetupPulsar():
