@@ -1,24 +1,36 @@
 #!/usr/bin/env python3
 
+
+from lensesio.data.data_subscribe import DataSubscribe
+from lensesio.pulsar.pulsar_client import SetupPulsar
 from lensesio.core.exception import lenses_exception
-from lensesio.core.admin import AdminPanel
-from lensesio.core.basic_auth import Basic
-from lensesio.kafka.topics import KafkaTopic
 from lensesio.registry.schemas import SchemaRegistry
-from lensesio.data.sql import SQLExec
-from lensesio.kafka.quotas import KafkaQuotas
-from lensesio.data.policy import Policy
 from lensesio.data.processors import DataProcessor
 from lensesio.data.connectors import DataConnector
-from lensesio.kafka.acls import KafkaACL
-from lensesio.data.data_subscribe import DataSubscribe
 from lensesio.data.consumers import DataConsumers
-from lensesio.data.topology import Topology
+from threading import Thread, enumerate, RLock
+from lensesio.kafka.quotas import KafkaQuotas
 from lensesio.flows.flows import LensesFlows
-from lensesio.pulsar.pulsar_client import SetupPulsar
-from sys import exit
+from lensesio.kafka.topics import KafkaTopic
+from lensesio.data.topology import Topology
+from lensesio.core.admin import AdminPanel
+from lensesio.core.basic_auth import Basic
+from lensesio.kafka.acls import KafkaACL
+from lensesio.data.policy import Policy
+from lensesio.data.sql import SQLExec
 from sys import modules as sys_mods
+from sys import exit
 import platform
+
+
+ThreadLock = RLock()
+
+active_threads = {
+    'sql': {
+        "t": 0,
+    },
+    "thread_lock": ThreadLock
+}
 
 
 class main(
@@ -39,6 +51,8 @@ class main(
         
         if auth_type is None:
             return
+
+        self.active_threads = active_threads
 
         try:
             if auth_type not in ['basic', 'service', 'krb5']:
@@ -99,7 +113,7 @@ class main(
         Topology.__init__(self, verify_cert=verify_cert)
         KafkaTopic.__init__(self, verify_cert=verify_cert)
         SchemaRegistry.__init__(self, verify_cert=verify_cert)
-        SQLExec.__init__(self, verify_cert=verify_cert)
+        SQLExec.__init__(self,  active_threads=active_threads, verify_cert=verify_cert)
         KafkaQuotas.__init__(self, verify_cert=verify_cert)
         Policy.__init__(self, verify_cert=verify_cert)
         DataProcessor.__init__(self, verify_cert=verify_cert)
