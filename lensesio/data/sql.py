@@ -46,9 +46,9 @@ class SQLExec:
     def consume_sql_queue(self, t):
         try:
             data = self.sql_active_threads['sql'][t]['sqlQue'].get(block=False)
-            return data
+            return data, True
         except queue.Empty:
-            return "Empty Queue"
+            return "Empty Queue", False
 
     def SQL(self, query, spawn_thread=None, stats=0):
         if spawn_thread:
@@ -104,10 +104,12 @@ class SQLExec:
         :return: In case is_extract if false return a dictionary,
         otherwise return Pandas dataframe
         """
-        def update_thread_state(msg):
+        def update_thread_state(msg, state=True):
             if sqlQue:
-                self.sql_active_threads['sql'][t]['state'] = True
-                self.sql_active_threads['sql'][t]['state'] = msg
+                self.sql_active_threads['thread_lock'].acquire()
+                self.sql_active_threads['sql'][t]['state'] = state
+                self.sql_active_threads['sql'][t]['state_info'] = msg
+                self.sql_active_threads['thread_lock'].release()
 
         update_thread_state("Started")
         self.query = query
@@ -177,13 +179,13 @@ class SQLExec:
 
             if sqlQue:
                 sqlQue.put(execSQL)
-                update_thread_state("Query execution finished successfully")
+                update_thread_state("Query execution finished successfully", False)
             else:
                 return execSQL
         except KeyboardInterrupt:
             update_thread_state("")
             conn.close()
         except:
-            update_thread_state(str(sys.exc_info()[0]))
+            update_thread_state(str(sys.exc_info()[0]), False)
             conn.close()
             raise
