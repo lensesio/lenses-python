@@ -4,9 +4,10 @@ from lensesio.core.exec_action import exec_request
 
 class DataConnector:
 
-    def __init__(self):
+    def __init__(self, verify_cert=True):
         getEndpoints.__init__(self, "connectEndpoints")
 
+        self.verify_cert=verify_cert
         self.lenses_connect_endpoint = self.url + self.lensesConnectEndpoint
         self.connector_headers = {
             'Content-Type': 'application/json',
@@ -25,7 +26,8 @@ class DataConnector:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getConnectors
@@ -43,7 +45,8 @@ class DataConnector:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getConnectorInfo
@@ -61,7 +64,8 @@ class DataConnector:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getConnectorConfig
@@ -79,7 +83,8 @@ class DataConnector:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getConnectorStatus
@@ -97,7 +102,8 @@ class DataConnector:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getConnectorTasks
@@ -119,7 +125,8 @@ class DataConnector:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getStatusTask
@@ -138,7 +145,8 @@ class DataConnector:
             __METHOD="post",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.restartConnectorTask
@@ -154,7 +162,8 @@ class DataConnector:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getConnectorPlugins
@@ -172,7 +181,8 @@ class DataConnector:
             __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.pauseConnector
@@ -190,7 +200,8 @@ class DataConnector:
             __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.resumeConnector
@@ -208,7 +219,8 @@ class DataConnector:
             __METHOD="post",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.restartConnector
@@ -232,7 +244,8 @@ class DataConnector:
             __EXPECTED="json",
             __URL=__RQE,
             __HEADERS=self.connector_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.createConnector
@@ -260,7 +273,8 @@ class DataConnector:
             __EXPECTED="json",
             __URL=__RQE,
             __HEADERS=self.connector_headers,
-            __DATA=config
+            __DATA=config,
+            __VERIFY=self.verify_cert
         )
 
         return self.setConnectorConfig
@@ -277,7 +291,8 @@ class DataConnector:
             __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.connector_headers
+            __HEADERS=self.connector_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteConnector

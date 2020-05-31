@@ -5,10 +5,15 @@ import ssl
 
 class DataSubscribe():
 
-    def __init__(self):
+    def __init__(self, service_account=None, verify_cert=True):
         getEndpoints.__init__(self, "websocketEndpoints")
 
+        self.verify_cert=verify_cert
         self.lenses_websocket_endpoint = self.url + self.lensesWebsocketEndpoint
+
+        self.service_account = service_account
+        if self.service_account:
+            self.wc_conn_token = self.service_account
 
         if 'https' in self.lenses_websocket_endpoint:
             self.lenses_websocket_endpoint = self.lenses_websocket_endpoint.replace(
@@ -38,17 +43,27 @@ class DataSubscribe():
 
         self.url_req = self.lenses_websocket_endpoint + str(clientId)
 
-        ws = websocket.create_connection(
-            self.url_req,
-            sslopt={"cert_reqs": ssl.CERT_NONE}
-        )
+        if self.verify_cert:
+            ws = websocket.create_connection(
+                self.url_req
+            )
+        else:
+            ws = websocket.create_connection(
+                self.url_req,
+                sslopt={"cert_reqs": ssl.CERT_NONE}
+            )
+
         ws.send(json.dumps(loginrequest))
 
         response = json.loads(ws.recv())
         self.wc_conn_token = response['content']
 
     def Publish(self, topic, key, value, clientId=1):
-        self._Login(clientId)
+        if self.service_account:
+            self.wc_conn_token == self.service_account
+            self.url_req = self.lenses_websocket_endpoint + str(clientId)
+        else:
+            self._Login(clientId)
 
         publish_payload = {
             "topic" : topic,
@@ -64,10 +79,16 @@ class DataSubscribe():
         }
 
         try:
-            ws_con = websocket.create_connection(
-                self.url_req,
-                sslopt={"cert_reqs": ssl.CERT_NONE}
-            )
+            if self.verify_cert:
+                ws_con = websocket.create_connection(
+                    self.url_req
+                )
+            else:
+                ws_con = websocket.create_connection(
+                    self.url_req,
+                    sslopt={"cert_reqs": ssl.CERT_NONE}
+                )
+
             ws_con.send(json.dumps(requestdict))
 
             self.publish = json.loads(ws_con.recv())
@@ -130,10 +151,16 @@ class DataSubscribe():
         }
 
         try:
-            ws_con = websocket.create_connection(
-                self.url_req,
-                sslopt={"cert_reqs": ssl.CERT_NONE}
-            )
+            if self.verify_cert:
+                ws_con = websocket.create_connection(
+                    self.url_req
+                )
+            else:
+                ws_con = websocket.create_connection(
+                    self.url_req,
+                    sslopt={"cert_reqs": ssl.CERT_NONE}
+                )
+
             ws_con.send(json.dumps(requestdict))
 
             self.commit = json.loads(ws_con.recv())
@@ -145,7 +172,11 @@ class DataSubscribe():
         return self.commit
 
     def Subscribe(self, dataFunc, query, clientId=1):
-        self._Login(clientId)
+        if self.service_account:
+            self.wc_conn_token == self.service_account
+            self.url_req = self.lenses_websocket_endpoint + str(clientId)
+        else:
+            self._Login(clientId)
 
         if type(query) is list: 
             sql_query = {
@@ -165,10 +196,16 @@ class DataSubscribe():
             "authToken": self.wc_conn_token
         }
 
-        ws_con = websocket.create_connection(
-            self.url_req,
-            sslopt={"cert_reqs": ssl.CERT_NONE}
-        )
+        if self.verify_cert:
+            ws_con = websocket.create_connection(
+                self.url_req
+            )
+        else:
+            ws_con = websocket.create_connection(
+                self.url_req,
+                sslopt={"cert_reqs": ssl.CERT_NONE}
+            )
+
         ws_con.send(json.dumps(request))
         try:
             while True:
@@ -177,14 +214,14 @@ class DataSubscribe():
                 if bucket['type'] == 'KAFKAMSG':
                     for message in bucket['content']:
                         dataFunc(message)
-## Auto commit is disabled for now. We need to switch the websocket request
-## to successfully list the client as a subscriber in order for auto-commit to work
-## Part of ToDo 
-#                     self.Commit(
-#                         payload=bucket,
-#                         token=self.wc_conn_token,
-#                         clientId=bucket['correlationId']
-#                     )
+                    # # Auto commit is disabled for now. We need to switch the websocket request
+                    # # to successfully list the client as a subscriber in order for auto-commit to work
+                    # # Part of ToDo 
+                    # self.Commit(
+                    #     payload=bucket,
+                    #     token=self.wc_conn_token,
+                    #     clientId=bucket['correlationId']
+                    # )
                 elif bucket['type'] in ['HEARTBEAT', 'SUCCESS']:
                     dataFunc(bucket)
 
@@ -193,7 +230,11 @@ class DataSubscribe():
             ws_con.close()
 
     def Unsubscribe(self, topic, clientId=1):
-        self._Login(clientId)
+        if self.service_account:
+            self.wc_conn_token == self.service_account
+            self.url_req = self.lenses_websocket_endpoint + str(clientId)
+        else:
+            self._Login(clientId)
 
         requestjson = {
             "type": "UNSUBSCRIBE",
@@ -203,10 +244,16 @@ class DataSubscribe():
         }
 
         try:
-            ws_con = websocket.create_connection(
-                self.url_req,
-                sslopt={"cert_reqs": ssl.CERT_NONE}
-            )
+            if self.verify_cert:
+                ws_con = websocket.create_connection(
+                    self.url_req
+                )
+            else:
+                ws_con = websocket.create_connection(
+                    self.url_req,
+                    sslopt={"cert_reqs": ssl.CERT_NONE}
+                )
+
             ws_con.send(json.dumps(requestjson))
 
             self.unscribe = json.loads(ws_con.recv())

@@ -4,9 +4,10 @@ from lensesio.core.exec_action import exec_request
 
 class DataProcessor:
 
-    def __init__(self):
+    def __init__(self, verify_cert=True):
         getEndpoints.__init__(self, "processorEndpoints")
 
+        self.verify_cert=verify_cert
         self.processor_end_point = self.url + self.lensesProcessorsEndpoint
         self.processor_headers = {
             'Content-Type': 'application/json',
@@ -42,7 +43,8 @@ class DataProcessor:
             __EXPECTED="text",
             __URL=self.processor_end_point,
             __HEADERS=headers,
-            __DATA=params
+            __DATA=params,
+            __VERIFY=self.verify_cert
         )
 
         return self.createProcessor
@@ -52,7 +54,8 @@ class DataProcessor:
             __METHOD="get",
             __EXPECTED="json",
             __URL=self.processor_end_point,
-            __HEADERS=self.processor_headers
+            __HEADERS=self.processor_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getProcessors
@@ -82,7 +85,8 @@ class DataProcessor:
             __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.processor_headers
+            __HEADERS=self.processor_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.pauseProcessor
@@ -98,7 +102,8 @@ class DataProcessor:
             __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.processor_headers
+            __HEADERS=self.processor_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.resumeProcessor
@@ -116,7 +121,8 @@ class DataProcessor:
             __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.processor_headers
+            __HEADERS=self.processor_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.updateProcessorRunners
@@ -132,7 +138,8 @@ class DataProcessor:
             __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.processor_headers
+            __HEADERS=self.processor_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteProcessor

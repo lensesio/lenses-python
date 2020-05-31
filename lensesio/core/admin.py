@@ -4,9 +4,10 @@ from lensesio.core.exec_action import exec_request
 
 class AdminPanel:
 
-    def __init__(self):
+    def __init__(self, verify_cert=True):
         getEndpoints.__init__(self, "adminEndpoint")
 
+        self.verify_cert=verify_cert
         self.admin_config_info_endpoint = self.url + self.lensesConfigInfoEndpoint
         self.admin_audits_endpoint = self.url + self.lensesAdminAuditsEndpoint
         self.admin_alerts_endpoint = self.url + self.lensesAdminAlertsEndpoint
@@ -32,7 +33,8 @@ class AdminPanel:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers
+            __HEADERS=self.admin_x_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getGroups
@@ -43,8 +45,9 @@ class AdminPanel:
             __METHOD="post",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers,
-            __DATA=payload
+            __HEADERS=self.admin_x_headers,
+            __DATA=payload,
+            __VERIFY=self.verify_cert
         )
 
         return self.createGroup
@@ -56,7 +59,8 @@ class AdminPanel:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.admin_text_plain_headers,
-            __DATA=payload
+            __DATA=payload,
+            __VERIFY=self.verify_cert
         )
 
         return self.updateGroup
@@ -67,7 +71,8 @@ class AdminPanel:
             __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers
+            __HEADERS=self.admin_text_plain_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteGroup
@@ -78,7 +83,8 @@ class AdminPanel:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers
+            __HEADERS=self.admin_x_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getUsers
@@ -117,7 +123,8 @@ class AdminPanel:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.admin_text_plain_headers,
-            __DATA=payload
+            __DATA=payload,
+            __VERIFY=self.verify_cert
         )
 
         return self.createUser
@@ -156,7 +163,8 @@ class AdminPanel:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.admin_text_plain_headers,
-            __DATA=payload
+            __DATA=payload,
+            __VERIFY=self.verify_cert
         )
 
         return self.updateUser
@@ -172,7 +180,8 @@ class AdminPanel:
             __EXPECTED="text",
             __URL=__RQE,
             __HEADERS=self.admin_text_plain_headers,
-            __DATA=payload
+            __DATA=payload,
+            __VERIFY=self.verify_cert
         )
 
         return self.updateUserPassword
@@ -183,7 +192,8 @@ class AdminPanel:
             __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers
+            __HEADERS=self.admin_text_plain_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteUser
@@ -194,7 +204,8 @@ class AdminPanel:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers
+            __HEADERS=self.admin_x_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getServiceAccounts
@@ -224,8 +235,9 @@ class AdminPanel:
             __METHOD="post",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers,
-            __DATA=payload
+            __HEADERS=self.admin_x_headers,
+            __DATA=payload,
+            __VERIFY=self.verify_cert
         )
 
         return self.createSA
@@ -254,8 +266,9 @@ class AdminPanel:
             __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers,
-            __DATA=payload
+            __HEADERS=self.admin_x_headers,
+            __DATA=payload,
+            __VERIFY=self.verify_cert
         )
 
         return self.updateSA
@@ -271,8 +284,9 @@ class AdminPanel:
                 __METHOD="put",
                 __EXPECTED="json",
                 __URL=__RQE,
-                __HEADERS=self.admin_text_plain_headers,
-                __DATA=payload
+                __HEADERS=self.admin_x_headers,
+                __DATA=payload,
+                __VERIFY=self.verify_cert
             )
         else:
             __RQE = self.url + "/api/v1/serviceaccount/" + name + '/revoke'
@@ -280,9 +294,10 @@ class AdminPanel:
                 __METHOD="put",
                 __EXPECTED="json",
                 __URL=__RQE,
-                __HEADERS=self.admin_text_plain_headers,
+                __HEADERS=self.admin_x_headers,
                 __DATA='{}',
-                __DT='data'
+                __DT='data',
+                __VERIFY=self.verify_cert
             )
 
         return self.updateSAToken
@@ -293,7 +308,8 @@ class AdminPanel:
             __METHOD="delete",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers
+            __HEADERS=self.admin_x_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.deleteSA
@@ -303,7 +319,8 @@ class AdminPanel:
             __METHOD="get",
             __EXPECTED="json",
             __URL=self.admin_config_info_endpoint,
-            __HEADERS=self.admin_text_plain_headers
+            __HEADERS=self.admin_text_plain_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getConfig
@@ -315,7 +332,8 @@ class AdminPanel:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.admin_x_headers
+            __HEADERS=self.admin_x_headers,
+            __VERIFY=self.verify_cert
         )
 
         if type(self.audits) is dict:
@@ -330,7 +348,8 @@ class AdminPanel:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.admin_x_headers
+            __HEADERS=self.admin_x_headers,
+            __VERIFY=self.verify_cert
         )
 
         if type(self.alerts) is dict:
@@ -349,7 +368,8 @@ class AdminPanel:
             __METHOD="get",
             __EXPECTED="json",
             __URL=__RQE,
-            __HEADERS=self.admin_x_headers
+            __HEADERS=self.admin_x_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getLogs

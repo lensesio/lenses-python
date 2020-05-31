@@ -3,9 +3,10 @@ from lensesio.core.exec_action import exec_request
 
 
 class Policy:
-    def __init__(self):
+    def __init__(self, verify_cert=True):
         getEndpoints.__init__(self, "policyEndpoints")
 
+        self.verify_cert=verify_cert
         self.lenses_policies_endpoint = self.url + self.lensesPoliciesEndpoint
         self.policy_headers = {
             'Content-Type': 'application/json',
@@ -17,7 +18,8 @@ class Policy:
             __METHOD="get",
             __EXPECTED="json",
             __URL=self.lenses_policies_endpoint,
-            __HEADERS=self.policy_headers
+            __HEADERS=self.policy_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.viewPolicy
@@ -38,7 +40,8 @@ class Policy:
             __EXPECTED="text",
             __URL=self.lenses_policies_endpoint,
             __HEADERS=self.policy_headers,
-            __DATA=params
+            __DATA=params,
+            __VERIFY=self.verify_cert
         )
 
         return self.setPolicy
@@ -58,7 +61,8 @@ class Policy:
                 __METHOD="delete",
                 __EXPECTED="text",
                 __URL=_REQ,
-                __HEADERS=self.policy_headers
+                __HEADERS=self.policy_headers,
+                __VERIFY=self.verify_cert
             )
         else:
             return "No policy with name %s" % name

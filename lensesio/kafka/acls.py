@@ -4,9 +4,10 @@ from lensesio.core.exec_action import exec_request
 
 class KafkaACL():
 
-    def __init__(self):
+    def __init__(self, verify_cert=True):
         getEndpoints.__init__(self, "aclEndpoints")
 
+        self.verify_cert=verify_cert
         self.lenses_acl_endpoint = self.url + self.lensesAclEndpoint
         self.acls_headers = {
             'Content-Type': 'application/json',
@@ -23,7 +24,8 @@ class KafkaACL():
             __METHOD="get",
             __EXPECTED="json",
             __URL=self.lenses_acl_endpoint,
-            __HEADERS=self.acls_headers
+            __HEADERS=self.acls_headers,
+            __VERIFY=self.verify_cert
         )
 
         return self.getACL
@@ -52,7 +54,8 @@ class KafkaACL():
             __EXPECTED="text",
             __URL=self.lenses_acl_endpoint,
             __HEADERS=self.acls_headers,
-            __DATA=params
+            __DATA=params,
+            __VERIFY=self.verify_cert
         )
 
         return self.setAcl
@@ -82,7 +85,8 @@ class KafkaACL():
             __EXPECTED="text",
             __URL=self.lenses_acl_endpoint,
             __HEADERS=self.acls_headers,
-            __DATA=params
+            __DATA=params,
+            __VERIFY=self.verify_cert
         )
 
         return self.setAcl
