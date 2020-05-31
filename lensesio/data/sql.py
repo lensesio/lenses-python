@@ -23,7 +23,7 @@ class SQLExec:
             'x-kafka-lenses-token': self.token
         }
 
-        self.active_threads = active_threads
+        self.sql_active_threads = active_threads
 
     def ValidateSqlQuery(self):
         self.validateSqlQuery = exec_request(
@@ -51,16 +51,16 @@ class SQLExec:
                 daemon=False
             )
 
-            self.active_threads['thread_lock'].acquire()
-            self.active_threads['sql']['t'] += 1
-            t = self.active_threads['sql']['t']
-            self.active_threads['sql'][t] = {
+            self.sql_active_threads['thread_lock'].acquire()
+            self.sql_active_threads['sql']['t'] += 1
+            t = self.sql_active_threads['sql']['t']
+            self.sql_active_threads['sql'][t] = {
                 'query': query,
                 'sqlQue': sqlQue,
                 'stats': stats,
             }
 
-            self.active_threads['thread_lock'].release()
+            self.sql_active_threads['thread_lock'].release()
             self.new_sql.start()
 
             print(

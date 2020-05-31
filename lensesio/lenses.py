@@ -52,6 +52,8 @@ class main(
         if auth_type is None:
             return
 
+        self.active_threads = active_threads
+
         try:
             if auth_type not in ['basic', 'service', 'krb5']:
                 print('''
