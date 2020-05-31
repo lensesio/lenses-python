@@ -1,13 +1,17 @@
 from lensesio.core.endpoints import getEndpoints
 from lensesio.core.exec_action import exec_request
+from threading import Thread, enumerate, RLock
+from queue import Queue
+import inspect
 import json
+import sys
 import websocket
 import ssl
 
 
 class SQLExec:
 
-    def __init__(self, verify_cert=True):
+    def __init__(self, active_threads, verify_cert=True):
         getEndpoints.__init__(self, "sqlEndpoints")
 
         self.verify_cert=verify_cert
@@ -18,6 +22,8 @@ class SQLExec:
             'Accept': 'text/event-stream',
             'x-kafka-lenses-token': self.token
         }
+
+        self.active_threads = active_threads
 
     def ValidateSqlQuery(self):
         self.validateSqlQuery = exec_request(
@@ -32,7 +38,45 @@ class SQLExec:
         if 'Expected one of Alter' in self.validateSqlQuery:
             raise Exception(self.validateSqlQuery.text)
 
-    def ExecSQL(self, query, stats=0):
+    def SQL(self, query, spawn_thread=None, stats=0):
+        if spawn_thread:
+            sqlQue=Queue()
+            self.new_sql = Thread(
+                target=self.ExecSQL,
+                args=(
+                    query,
+                    stats,
+                    sqlQue,
+                ),
+                daemon=False
+            )
+
+            self.active_threads['thread_lock'].acquire()
+            self.active_threads['sql']['t'] += 1
+            t = self.active_threads['sql']['t']
+            self.active_threads['sql'][t] = {
+                'query': query,
+                'sqlQue': sqlQue,
+                'stats': stats,
+            }
+
+            self.active_threads['thread_lock'].release()
+            self.new_sql.start()
+
+            print(
+                "SQL Thread -\t with SQL_ID: %s has been started\n" % t,
+                "You may find thread info at .active_threads object\n",
+                "To access the thread's data, use the thread's queue:\n"
+                "\tcallers_name.active_theads['sql'][SQL_ID][sqlQueu]\n",
+                "Example how to get data from a thread's queue with soft lock:\n",
+                "\tcallers_name.active_theads['sql'][SQL_ID]['sqlQueu'].get(block=True, timeout=5)\n"
+            )
+        elif spawn_thread is None:
+            self.execSQL = self.ExecSQL(query, stats, sqlQue=None)
+            return self.execSQL
+
+
+    def ExecSQL(self, query, stats=0, sqlQue=None):
         """
 
         :param is_live:
@@ -98,13 +142,19 @@ class SQLExec:
                     sql_error.append(__data["data"])
 
             conn.close()
-            self.execSQL = {
+            execSQL = {
                 'data': data_list,
                 'stats': stats_list,
                 'metadata': sql_metadata,
                 'ERROR': sql_error
             }
 
-            return self.execSQL
+            if sqlQue:
+                sqlQue.put(execSQL)
+            else:
+                return execSQL
         except KeyboardInterrupt:
             conn.close()
+        except:
+            conn.close()
+            raise
