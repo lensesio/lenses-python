@@ -32,6 +32,12 @@ active_threads = {
     'subscribe': {
         "t": 0,
     },
+    'pulsar_consumer': {
+        "t": 0,
+    },
+    'pulsar_reader': {
+        "t": 0,
+    },
     "thread_lock": ThreadLock
 }
 
@@ -125,9 +131,9 @@ class main(
         DataSubscribe.__init__(self, active_threads=active_threads, service_account=service_account, verify_cert=verify_cert)
         DataConsumers.__init__(self, verify_cert=verify_cert)
 
-    def InitPulsarClient(self, host):
+    def InitPulsarClient(self, host, **kwargs):
         try:
-            self.Pulsar = SetupPulsar.__init__(self, host)
+            self.Pulsar = SetupPulsar.__init__(self, active_threads, host)
         except NameError:
             print("Pulsar client lib is not installed")
             return None

@@ -186,6 +186,6 @@ class SQLExec:
             update_thread_state("")
             conn.close()
         except:
-            update_thread_state(str(sys.exc_info()[0]), False)
+            update_thread_state(sys.exc_info(), False)
             conn.close()
             raise
