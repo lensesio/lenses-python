@@ -15,12 +15,13 @@ class DataProcessor:
             'x-kafka-lenses-token': self.token
         }
 
-    def CreateProcessor(self, name, sql, runners, clusterName, namespace=None, pipeline=None):
+#{"cluster":"k8-lenses-domain","name":"dev","runnerCount":1,"sql":"INSERT INTO devtopic001 SELECT TABLE * FROM backblaze_smart","settings":{},"namespace":"se-instance","pipeline":"a"}
+    def CreateProcessor(self, name, sql, clusterName="IN_PROC", namespace=None, pipeline=None, runnerCount=1):
         """
 
         :param name: string
         :param sql:string, query
-        :param runners:int
+        :param runnerCount:int
         :param clusterName:string
         :param namespace:string
         :param pipeline:string, applies for Kubernetes mode
@@ -34,9 +35,15 @@ class DataProcessor:
         params = dict(
             name=name,
             sql=sql,
-            runners=runners,
-            clusterName=clusterName
+            runnerCount=str(runnerCount),
+            cluster=clusterName,
         )
+
+        if namespace != None:
+            params["namespace"] = namespace
+
+        if pipeline != None:
+            params["pipeline"] = pipeline
 
         self.createProcessor = exec_request(
             __METHOD="post",
