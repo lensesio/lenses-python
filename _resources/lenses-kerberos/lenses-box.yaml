@@ -1,18 +1,18 @@
 version: '3'
 services:
   lenses-box:
-    image: lensesio/box:3.2.1
+    image: lensesio/box:4.0.1
     container_name: lenses-box
     env_file:
       - ./acls-dev.env
     environment:
       ENABLE_SSL: 1
-      LENSES_SSL_KEYSTORE_LOCATION: /tmp/certs/kafka.jks
-      LENSES_SSL_KEYSTORE_PASSWORD: fastdata
-      LENSES_SSL_KEY_PASSWORD: fastdata
-      LENSES_SSL_TRUSTSTORE_LOCATION: /tmp/certs/truststore.jks
-      LENSES_SSL_TRUSTSTORE_PASSWORD: fastdata
-      LENSES_SSL_CLIENT_AUTH: "false"
+      # LENSES_SSL_KEYSTORE_LOCATION: /tmp/certs/kafka.jks
+      # LENSES_SSL_KEYSTORE_PASSWORD: fastdata
+      # LENSES_SSL_KEY_PASSWORD: fastdata
+      # LENSES_SSL_TRUSTSTORE_LOCATION: /tmp/certs/truststore.jks
+      # LENSES_SSL_TRUSTSTORE_PASSWORD: fastdata
+      # LENSES_SSL_CLIENT_AUTH: "false"
 
       DEBUG_SCRIPT: 0
 

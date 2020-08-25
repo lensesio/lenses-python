@@ -5,7 +5,10 @@ class TestSql:
             "CREATE TABLE greetings(_key string, _value string) FORMAT (string, string)"
         )
         result = lenses_conn.ExecSQL(query)
-        assert result['data'][0]['value']['flag']
+        if len(result["ERROR"]) == 0:
+            assert result['data'][0]['value']['flag']
+        else:
+            assert result['ERROR'][0] == 'Kafka topic greetings already exists'
 
     def test_sql_insert_data(self, lenses_conn):
         query = (

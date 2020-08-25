@@ -146,7 +146,7 @@ class TestAdmin:
         assert lenses_conn.CreateUser(
             acType="BASIC", 
             username="test_user", 
-            password="test_user", 
+            password="testuser", 
             email=None, 
             groups="test_group_user"
         ) == 'OK'
@@ -155,7 +155,7 @@ class TestAdmin:
         assert lenses_conn.CreateUser(
             acType="BASIC", 
             username="test_user_mail", 
-            password="test_user_mail", 
+            password="testuser", 
             email="test@localhost.localdomain", 
             groups="test_group_user"
         ) == 'OK'
@@ -172,7 +172,7 @@ class TestAdmin:
         assert lenses_conn.UpdateUser(
             acType="BASIC", 
             username="test_user_mail", 
-            password="test_user_mail", 
+            password="testuser", 
             email="test_updated@localhost.localdomain", 
             groups="test_group_user"
         ) == 'OK'
@@ -188,7 +188,7 @@ class TestAdmin:
     def test_update_user_password(self, lenses_conn):
         assert lenses_conn.UpdateUserPassword(
             username="test_user_mail",
-            password="test_user_mail_updated"
+            password="testpwd"
         ) == 'OK'
     
     def test_delete_user_basic_no_mail(self, lenses_conn):
@@ -237,7 +237,7 @@ class TestAdmin:
         assert lenses_conn.CreateUser(
             acType="BASIC", 
             username="test_user_sa", 
-            password="test_user_sa", 
+            password="testpwd", 
             email="test_user_sa@localhost.localdomain", 
             groups="test_group_sa"
         ) == 'OK'

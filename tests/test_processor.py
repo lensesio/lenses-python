@@ -15,9 +15,15 @@ class TestProcessor:
     def test_create_processor(self, lenses_conn):
         time.sleep(10)
         query = (
-            "SET autocreate=true; insert into test_processor_target SELECT * FROM test_processor_source"
+            "SET defaults.topic.autocreate=true; insert into test_processor_target SELECT TABLE * FROM test_processor_source"
         )
-        result = lenses_conn.CreateProcessor("test_processor", query, 1, 'dev', 'ns', '1').split('_')[0]
+        result = lenses_conn.CreateProcessor(
+            name="test_processor",
+            sql=query,
+            clusterName='IN_PROC',
+            namespace='ns',
+            runnerCount='1',
+        ).split('_')[0]
         assert "lsql" in result
 
     def test_pause_processor(self, lenses_conn):

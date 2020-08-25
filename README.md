@@ -25,8 +25,6 @@ Table of Contents
         * [Detailed info for a Topic](#detailed-info-for-a-topic)
         * [Create a Topic](#create-a-topic)
         * [Update Topic configuration](#update-topic-configuration)
-        * [Publish data to a Topic](#publish-data-to-a-topic)
-        * [Subscribe data to a Topic](#subscribe-data-to-a-topic)
         * [Delete records from a Topic](#delete-records-from-a-topic)
         * [Delete a Topic](#delete-a-topic)
       - [List Kafka ACLs](#list-kafka-acls)
@@ -274,7 +272,7 @@ To create a topic, first create a dictionary with the options below
 The issue the CreateTopic method
 
         result = lenses_lib.CreateTopic(
-            name="test_topic",
+            topicName="test_topic",
             partitions=1,
             replication=1,
             config=config
@@ -302,81 +300,6 @@ Use the UpdateTopicConfig method to update the topic's configuration
         
         print(result)
         'Topic [test_topic] updated config with [SetTopicConfiguration(...'
-
-##### Publish data to a Topic
-
-Parameters for the **Publish** method
-
-| Parameter Name             | Description                | Requried | Type         | Default              |
-|:-------------------------- |:---------------------------|:--------:|:-------------|:---------------------|
-|topic                       | Topic's Name               | Yes      | String       | -                    |
-|key                         | Topic's key                | Yes      | String/Json  | -                    |
-|value                       | Topic's value              | Yes      | String/Json  | -                    |
-
-Publishing data to a topic is as easy as
-
-        result = lenses_lib.Publish(
-            "test_topic",
-            "test_key",
-            "{'value':1}"
-        )
-        
-        print(result)
-        {'content': None, 'correlationId': 1, 'type': 'SUCCESS'}
-
-##### Subscribe data to a Topic
-
-Parameters for the **Subscribe** method
-
-| Parameter Name             | Description                        | Requried | Type         | Default              |
-|:-------------------------- |:-----------------------------------|:--------:|:-------------|:---------------------|
-|dataFunc                    | Custom function to work with data  | Yes      | String       | -                    |
-|query                       | SQL Query                          | Yes      | String/Json  | -                    |
-|clientId                    | Client ID                          | No       | String/Json  | LensesPy             |
-
-**Note**: First define a custom function to work with your data. A custom function is needed because the query is continuous.
-
-    def print_data(message):
-        print(message)
-
-Subscribing to a topic is as easy as
-
-    lenses_lib.Subscribe(print_data, "select * from my_topic")
-    {'content': 'test_topic', 'correlationId': 1, 'type': 'SUCCESS'}
-    {'key': '8387236824701691257', 'offset': 0, 'partition': 0, 'timestamp': 1580157301897, 'topic': 'test_topic', 'value': "{'value':1}"}
-
-
-**Note**: We could have used **print** as the **dataFunc**.
-
-###### (New) Produce to pulsar
-
-The lib is already integrated with pulsar. Below we show an example of piping the output
-of Subscriber to pulsar producer
-
-    from lensesio.lenses import main
-    from json import dumps
-
-    lenses_lib = main(
-        auth_type="basic",
-        url="http://lenses_endpoint",
-        username="username",
-        password="password"
-    )
-
-    lenses_lib.InitPulsarProducer('pulsar://pulsar_endpoint')
-    lenses_lib.StartPulsarProducer("example-topic")
-
-    def send_pulsar(payload):
-        payload = dumps(payload).encode('utf-8') 
-        lenses_lib.PulsarProduce(payload)
-
-    lenses_lib.Subscribe(send_pulsar, "SELECT smart_194_raw FROM backblaze_smart", 10000)
-
-In the above code setups lenses_lib, then initiates a pulsar producer for topic "example-topic".
-Next, we create a function that is required by the subscribe function which sends our payload to pulsar, 
-and finally we subscribe to a topic by passing the pulsar_send function.
-
-All records that are queried via the subscribe method are automatically encoded and send to pulsar
 
 
 ##### Delete records from a Topic
@@ -434,7 +357,7 @@ Parameters for the **SetAcl** method
 |host                        | -                                                            | Yes      | String     |
 |operation                   | -                                                            | Yes      | String     |
 
-    result = lenses_lib.SetAcl("TOPIC", "transactions", "GROUPA:UserA", "ALLOW", "*", "Read")
+    result = lenses_lib.SetAcl("TOPIC", "transactions", "GROUPA:UserA", "ALLOW", "*", "READ")
     
     print(result)
     'OK'
@@ -454,7 +377,7 @@ Parameters for the **DelAcl** method
 
 To delete a Kafka ACL, issue:
 
-    result = lenses_lib.DelAcl("TOPIC", "transactions", "GROUPA:UserA", "ALLOW", "*", "Read")
+    result = lenses_lib.DelAcl("TOPIC", "transactions", "GROUPA:UserA", "ALLOW", "*", "READ")
     
     print(result)
     'OK'
@@ -829,10 +752,10 @@ Parameters for the **CreateProcessor** method
 
 
     query = (
-        "SET autocreate=true; insert into test_processor_target SELECT * FROM test_processor_source"
+        "SET defaults.topic.autocreate=true; insert into test_processor_target SELECT TABLE * FROM test_processor_source"
     )
 
-    result = lenses_lib.CreateProcessor("test_processor1", query, 1, 'dev', 'ns', '1')
+    result = lenses_lib.CreateProcessor(name="test_processor", sql=query, runnerCount=1, clusterName='dev', namespace='ns')
 
     print(result)
     lsql_fa101b766ec04586b156a1d7f725f771
@@ -1244,7 +1167,7 @@ Parameters for the **CreateUser** method
     lenses_lib.CreateUser(
         acType="BASIC", 
         username="test_user", 
-        password="test_user", 
+        password="somePassword", 
         email=None, 
         groups="test_group_user"
     )

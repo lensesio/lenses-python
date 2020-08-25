@@ -31,7 +31,7 @@ class lensesEndpoints():
 
     def processorEndpoints(self):
         # DataProcessor
-        self.lensesProcessorsEndpoint = "/api/streams"
+        self.lensesProcessorsEndpoint = "/api/v1/streams"
 
     def websocketEndpoints(self):
         # DataWebsockets
