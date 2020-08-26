@@ -434,7 +434,7 @@ Parameters for the **SetAcl** method
 |host                        | -                                                            | Yes      | String     |
 |operation                   | -                                                            | Yes      | String     |
 
-    result = lenses_lib.SetAcl("Topic", "transactions", "GROUPA:UserA", "Allow", "*", "Read")
+    result = lenses_lib.SetAcl("TOPIC", "transactions", "GROUPA:UserA", "ALLOW", "*", "Read")
     
     print(result)
     'OK'
@@ -454,7 +454,7 @@ Parameters for the **DelAcl** method
 
 To delete a Kafka ACL, issue:
 
-    result = lenses_lib.DelAcl("Topic", "transactions", "GROUPA:UserA", "Allow", "*", "Read")
+    result = lenses_lib.DelAcl("TOPIC", "transactions", "GROUPA:UserA", "ALLOW", "*", "Read")
     
     print(result)
     'OK'
