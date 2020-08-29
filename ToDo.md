@@ -10,9 +10,9 @@ Subscribing creates a continuous query but does not list the client as a subscri
 
 **Cert verification**
 - Add option to trust self-signed certificates
-- Option to Disable/Enable host verification
+- Option to Disable/Enable host verification [ Done ]
 
-**Subscribe method should support Queues**
+**Subscribe method should support Queues** [ Done ]
 - After calling subscribe method, we should be able to consume a queue rather than
 Adding working with functions inside the subscribe loop
 
