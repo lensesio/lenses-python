@@ -4,6 +4,11 @@
 
 Python library for managing [Lenses.io](https://lenses.io) REST and WS APIs.
 
+
+# PiPy Quick Installation
+
+    pip install lensesio==4.0.0
+
 # Documentation
 
 See [Lenses.io Python documentation](https://docs.lenses.io/dev/python-lib/).
