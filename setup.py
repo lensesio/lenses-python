@@ -7,7 +7,7 @@ __CWD = path.abspath(path.dirname(__file__))
 with open(path.join(__CWD, 'README.md'), encoding='utf-8') as fstream:
     long_description = fstream.read()
 
-pkgversion = '3.0.0'
+pkgversion = '4.0.0'
 
 
 class Clean(Command):
