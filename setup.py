@@ -53,7 +53,6 @@ setup(
     author_email='info@lenses.io',
     license='Apache License 2.0',
     classifiers=[
-        'Development Status :: Production/Stable',
         'Intended Audience :: System Administrators',
         'Topic :: Software Development',
 

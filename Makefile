@@ -64,8 +64,8 @@ build_py:
 	@python3 setup.py sdist bdist_wheel
 
 install:
-	@if [ -e dist/lensesio-3.0.0-py3-none-any.whl ]; then \
-		pip install dist/lensesio-3.0.0-py3-none-any.whl; \
+	@if [ -e dist/lensesio-4.0.0-py3-none-any.whl ]; then \
+		pip install dist/lensesio-4.0.0-py3-none-any.whl; \
 	else \
 		echo "No dist package found, please run make build_py first, to build the package"; \
 	fi
@@ -73,7 +73,7 @@ install:
 test_install: virtenv
 	@./venv/bin/pip3 install -U setuptools
 	@./venv/bin/python3 setup.py sdist bdist_wheel
-	@./venv/bin/pip3 install -U dist/lensesio-3.0.0-py3-none-any.whl
+	@./venv/bin/pip3 install -U dist/lensesio-4.0.0-py3-none-any.whl
 
 mkvirtenv:
 	@if [ ! -e venv ]; then \

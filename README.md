@@ -170,7 +170,7 @@ Parameters for the **krb_auth** method
 **Note**: Kerberos support is only supported for linux platform and is not enabled by default.
 To enable Kerberos support follow kerberos dependency step in the `Install` section at the end
 
-        pip3 install dist/lensesio-3.0.0-py3-none-any.whl[kerberos]
+        pip3 install dist/lensesio-4.0.0-py3-none-any.whl[kerberos]
 
 For Kerberos authentcation, issue:
 
@@ -1614,13 +1614,13 @@ Activate the virtualenv (activated by default after creation):
 
 You can install by using pip
 
-    pip3 install dist/lensesio-3.0.0-py3-none-any.whl
+    pip3 install dist/lensesio-4.0.0-py3-none-any.whl
     
 for kerberos support, issue
 
 **Note**: This is only for Linux,Darwin OS
 
-    pip3 install dist/lensesio-3.0.0-py3-none-any.whl[kerberos]
+    pip3 install dist/lensesio-4.0.0-py3-none-any.whl[kerberos]
 
 ## Integration Tests
 
