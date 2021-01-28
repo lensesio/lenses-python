@@ -86,7 +86,7 @@ setup(
     ),
     python_requires='>=3',
     install_requires=[
-        'requests==2.22.0',
+        'requests==2.25.1',
         'websocket-client==0.56.0',
     ],
     extras_require={
