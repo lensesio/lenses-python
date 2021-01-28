@@ -10,7 +10,6 @@ class LensesFlows():
             if DICT_ENTRY['type'] in ['SOURCE', 'SINK', 'PROCESSOR']:
                 __TOPOLOGY_FILTERED[DICT_ENTRY['name']] = {
                     'descendants': DICT_ENTRY['descendants'],
-                    'description': DICT_ENTRY['description'],
                     'label': DICT_ENTRY['label'],
                     'parents': DICT_ENTRY['parents'],
                     'type': DICT_ENTRY['type'],

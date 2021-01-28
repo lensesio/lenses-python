@@ -6,7 +6,7 @@ for ((i=0;i<60;i++)); do
         --user admin \
         --pass admin \
         --insecure \
-        --host https://localhost:9991 \
+        --host http://localhost:9991 \
         connectors \
         --cluster-name dev 2>&1 >/dev/null && break
     sleep 5

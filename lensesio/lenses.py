@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 
-from lensesio.data.data_subscribe import DataSubscribe
 from lensesio.pulsar.pulsar_client import SetupPulsar
 from lensesio.core.exception import lenses_exception
 from lensesio.registry.schemas import SchemaRegistry
@@ -45,7 +44,7 @@ active_threads = {
 class main(
             Basic, KafkaTopic, SchemaRegistry, SQLExec,
             KafkaQuotas, Policy, DataProcessor, DataConnector,
-            KafkaACL, DataSubscribe, LensesFlows, lenses_exception,
+            KafkaACL, LensesFlows, lenses_exception,
             DataConsumers, Topology, AdminPanel, SetupPulsar,
         ):
     def __init__(
@@ -128,7 +127,6 @@ class main(
         DataProcessor.__init__(self, verify_cert=verify_cert)
         DataConnector.__init__(self, verify_cert=verify_cert)
         KafkaACL.__init__(self, verify_cert=verify_cert)
-        DataSubscribe.__init__(self, active_threads=active_threads, service_account=service_account, verify_cert=verify_cert)
         DataConsumers.__init__(self, verify_cert=verify_cert)
 
     def InitPulsarClient(self, host, **kwargs):

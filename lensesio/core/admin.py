@@ -122,7 +122,7 @@ class AdminPanel:
             __METHOD="post",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers,
+            __HEADERS=self.admin_x_headers,
             __DATA=payload,
             __VERIFY=self.verify_cert
         )
@@ -162,7 +162,7 @@ class AdminPanel:
             __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers,
+            __HEADERS=self.admin_x_headers,
             __DATA=payload,
             __VERIFY=self.verify_cert
         )
@@ -179,7 +179,7 @@ class AdminPanel:
             __METHOD="put",
             __EXPECTED="text",
             __URL=__RQE,
-            __HEADERS=self.admin_text_plain_headers,
+            __HEADERS=self.admin_x_headers,
             __DATA=payload,
             __VERIFY=self.verify_cert
         )

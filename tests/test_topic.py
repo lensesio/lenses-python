@@ -27,8 +27,12 @@ class TestTopic:
         topics_list = lenses_conn.LstOfTopicsNames()
         assert type(topics_list) is list and 'test_topic' in topics_list
 
-    def test_publish_to_topic(self, lenses_conn):
-        assert lenses_conn.Publish("test_topic", "test_key", "{'value':1}")['type'] == 'SUCCESS'
+    def test_sql_insert_to_topic(self, lenses_conn):
+        query = (
+            "INSERT INTO test_topic(_key, _value) VALUES('test_key', '1')"
+        )
+        result = lenses_conn.ExecSQL(query)
+        assert result['data'][0]['value']['flag'] == True
 
     def test_delete_topic_records(self, lenses_conn):
         msg = "Records from topic '%s' and partition '0' up to offset '10'" % 'test_topic'
