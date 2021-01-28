@@ -7,7 +7,7 @@ __CWD = path.abspath(path.dirname(__file__))
 with open(path.join(__CWD, 'README.md'), encoding='utf-8') as fstream:
     long_description = fstream.read()
 
-pkgversion = '4.0.0'
+pkgversion = '4.0.1'
 
 
 class Clean(Command):
@@ -85,7 +85,7 @@ setup(
     ),
     python_requires='>=3',
     install_requires=[
-        'requests==2.22.0',
+        'requests==2.25.1',
         'websocket-client==0.56.0',
     ],
     extras_require={
