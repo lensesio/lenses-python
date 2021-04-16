@@ -18,7 +18,6 @@ from lensesio.kafka.acls import KafkaACL
 from lensesio.data.policy import Policy
 from lensesio.data.sql import SQLExec
 from sys import modules as sys_mods
-from sys import exit
 import platform
 
 
@@ -44,7 +43,7 @@ active_threads = {
 class main(
             Basic, KafkaTopic, SchemaRegistry, SQLExec,
             KafkaQuotas, Policy, DataProcessor, DataConnector,
-            KafkaACL, LensesFlows, lenses_exception,
+            KafkaACL, LensesFlows,
             DataConsumers, Topology, AdminPanel, SetupPulsar,
         ):
     def __init__(
@@ -62,32 +61,32 @@ class main(
 
         self.active_threads = active_threads
 
-        try:
-            if auth_type not in ['basic', 'service', 'krb5']:
-                print('''
-                Parameters:
-                    Mandatory:
-                        auth_type=basic/krb5/service
-                        url=lenses endpoint
-                    Optional:
-                        username (
-                            if auth_type is basic
-                        )
-                        password (
-                            if username was defined
-                        )
-                        service_account (
-                            if auth_type is basic
-                        )
-                        krb_service (
-                            if auth_type is krb5 and platform
-                            is either one of linux, darwin
-                        )
-                ''')
-                exit(1)
-        except NameError:
-            print("Please provide auth_type [basic, krb5, service]")
-            exit(1)
+        if auth_type not in ['basic', 'service', 'krb5']:
+            raise lenses_exception('''
+            Parameters:
+                Mandatory:
+                    auth_type=basic/krb5/service
+                    url=lenses endpoint
+                Optional:
+                    username (
+                        if auth_type is basic
+                    )
+                    password (
+                        if username was defined
+                    )
+                    service_account (
+                        if auth_type is basic
+                    )
+                    krb_service (
+                        if auth_type is krb5 and platform
+                        is either one of linux, darwin
+                    )
+            ''')
+
+        if url is None:
+            raise lenses_exception("URL can not be empty")
+        elif not url.startswith("http://") and not url.startswith("https://"):
+            raise lenses_exception("URL Schema is missing. Please provide the schema also: http(s)://example.com")
 
         self.auth_type = auth_type
         self.url = url
@@ -100,22 +99,19 @@ class main(
             self.serviceConnect()
         elif self.auth_type == 'krb5':
             if platform.system().lower() not in ['linux', 'linux2', 'darwin']:
-                msg = "Error: gssapi kerberos integration is not supported for "
-                print(msg + platform.system())
-                exit(1)
-
+                raise lenses_exception(
+                    "Error: gssapi kerberos integration is not supported for " + platform.system()
+                )
             try:
                 from lensesio.core.krb_auth import krb5
                 self.krb5 = krb5
                 self.krb5.__init__(self, url=url, service=krb_service)
                 self.krb5.KrbAuth(self)
             except NameError:
-                print("Kerberos client lib is not installed")
-                return None
+                raise lenses_exception("Kerberos client lib is not installed")
 
         if self.ConnectionValidation() == 1:
-            print("Could not login to lenses. Please check the auth options")
-            exit(1)
+            raise lenses_exception("Could not login to lenses. Please check the auth options")
 
         AdminPanel.__init__(self, verify_cert=verify_cert)
         Topology.__init__(self, verify_cert=verify_cert)
@@ -133,5 +129,4 @@ class main(
         try:
             self.Pulsar = SetupPulsar.__init__(self, active_threads, host)
         except NameError:
-            print("Pulsar client lib is not installed")
-            return None
+            raise lenses_exception("Pulsar client lib is not installed")
