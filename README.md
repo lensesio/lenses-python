@@ -1,3 +1,5 @@
+**NOTE: This repository is deprecated. Please use directly the Lenses REST API.**
+
 ![Tox Workflow Tests](https://github.com/lensesio/lenses-python/workflows/Tox%20Workflow%20Tests/badge.svg)
 
 # Python - Lenses for Apache Kafka
